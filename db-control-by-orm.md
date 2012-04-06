@@ -113,10 +113,10 @@ R: (ID, 名前, 誕生日) = { (1, 初音ミク, 2007-08-31), (2, 鏡音リン, 
 例) artist テーブル:
 
 <table>
-  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
   <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
-  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
-  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td>2007-12-27</td></tr>
   <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
 </table>
 
@@ -343,7 +343,7 @@ SELECT * FROM artist WHERE name = '初音ミク' LIMIT 1;
 ```
 
 <table>
-  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
   <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
 </table>
 
@@ -377,9 +377,9 @@ SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10;
 ```
 
 <table>
-  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
-  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
-  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td>2007-12-27</td></tr>
 </table>
 
 *  DBIx::MoCo::List オブジェクトが返ってくる
@@ -430,10 +430,10 @@ INSERT INTO artist (id, name, birthday)
 ```
 
 <table>
-  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
   <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
-  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
-  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td>2007-12-27</td></tr>
   <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
   <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
 </table>
@@ -459,10 +459,10 @@ UPDATE artist SET name = '弱音ハク' WHERE id = 1;
 ```
 
 <table>
-  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
   <tr><td>1</td><td><del datetime="2011-08-19T08:50:33+09:00"><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></del><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BC%E5%B2%BB%A5%CF%A5%AF">弱音ハク</a></td><td>2007-08-31</td></tr>
-  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
-  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td>2007-12-27</td></tr>
   <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
   <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
 </table>
@@ -483,8 +483,8 @@ DELETE FROM artist WHERE id = 1;
 ```
 <table>
   <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
-  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
-  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td>2007-12-27</td></tr>
   <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
 </table>
 
