@@ -376,8 +376,7 @@ instanceOfFoo.foo(); //=> 'hello!'
 
 ##  JS におけるプロトタイプ (プロトタイプチェーン)
 
-f:id:cho45:20100723021218p:image
-
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/c/cho45/20100723/20100723021218.png" />
 
 ``` javascript
 function Foo() { }
@@ -458,7 +457,7 @@ DOM Level 0 の多くも HTML5 で標準化されている
 
 ##  DOM の基本的な考えかた
 
-f:id:cho45:20100721183313p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/c/cho45/20100721/20100721183313.png" />
 
 一番上にはドキュメントノード (文書ノード)
 
@@ -936,10 +935,10 @@ $.ajax({ url: url, ... });
 *  これまでの課題でやった Web アプリケーションの MVC とはちょっと違う
   *  「Web アプリケーションの MVC」を「MVC2」と呼ぶこともある
 ###  Web アプリケーションの MVC
-f:id:ninjinkun:20100802222932p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802222932.png" />
 *  Model は一方的に操作され、またはデータを読み取られるのみ
 ###  クライアントサイドプログラミングの MVC
-f:id:ninjinkun:20100802223034p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802223034.png" />
 *  Model はしばしば observer パターンを実装し、自身の状態の変更を View に<strong>通知する</strong>
 
 ##  クライアントサイドプログラミング
