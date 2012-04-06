@@ -59,13 +59,13 @@ use warnings;
 * デフォルトの振る舞いは互換性のために制限が弱い
 
 ## use strict; use warnings;を書かないと困ること
->|perl|
+``` perl
 my $message = "hello";
 print $messsage; # typo!
 # => エラーにならない!
 $messagge = "bye"; # typo!
 # => $messagge がグローバル変数になる！
-||<
+```
 * 細かな振る舞いはperodoc参照
 >||
 $ perldoc strict
