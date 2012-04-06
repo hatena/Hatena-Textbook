@@ -67,7 +67,8 @@ $messagge = "bye"; # typo!
 # => $messagge がグローバル変数になる！
 ```
 * 細かな振る舞いはperodoc参照
-```
+
+``` zsh
 $ perldoc strict
 $ perldoc perllexwarn
 ```
