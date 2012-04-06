@@ -189,6 +189,7 @@ my $ans2 = @x; # => 3
 
 ## コンテキストクイズ
 * <ここ> のコンテキストはスカラ? リスト?
+
 ``` perl
 sort <ここ>;
 length <ここ>;
@@ -211,6 +212,7 @@ scalar(<ここ>);
 * コンテキストの決まり方は覚えるしかない
   * 組み込み関数に注意 (length など)
   * 組み込み関数以外もprototypeという機能で実現可能なので注意
+
 ``` zsh
 $ perldoc perldata
 $ perldoc perlsub # Prototype の章
@@ -224,12 +226,14 @@ $ perldoc perlsub # Prototype の章
 
 ## データ構造はまりポイント1
 * 行列をつくろう
+
 ``` perl
 my @matrix = (
   (0, 1, 2, 3),
   (4, 5, 6, 7),
 );
 ```
+
 * どうなるでしょうか…
 
 
@@ -262,6 +266,7 @@ my %entry = (
 ## なぜか?
 * () の中はリストコンテキスト
 * リストコンテキスト内ではリストは展開される
+
 ``` perl
 my @matrix = (
   (0, 1, 2, 3),
@@ -325,12 +330,14 @@ print $new_f{perl}; # larry
 
 ## データ構造の作成
 * リファレンスはスカラ値 = リストコンテキストで展開されない
+
 ``` perl
 my $matrix = [
   [0, 1, 2, 3],
   [4, 5, 6, 6],
 ];
 ```
+
 ``` perl
 my $entry = {
   body => 'hello!',
@@ -341,6 +348,7 @@ my $entry = {
 
 ## 複雑なデリファレンス
 * 例: リファレンスを返すメソッドの返り値をデリファレンス
+
 ``` perl
 my $result = [
     map {
@@ -419,10 +427,12 @@ use My::File;
 # => My/File.pm がロードされる
 ```
 * @INC(グローバル変数)に設定されたパスを検索
+
 ``` perl
 use lib 'path/to/your/lib';
 $ perl -Ipath/to/your/lib;
 ```
+
 * path/to/your/lib/My/File.pm をさがしてあれば読み込む
 
 ## サブルーチン
@@ -526,6 +536,7 @@ warn Dumper($value); # スカラ値がよい
   * 制御のながれがすべて自由
 
 * Perl で gotoプログラミングした例(fizzbuzz)
+
 ``` perl
 my $i = 1;
 START:
@@ -601,6 +612,7 @@ fizzbuzz();
 
 ## 構造化プログラミングのみを用いる問題
 * 手続きとデータがばらばら
+
 ``` perl
 open my $fh, '<', $filename';
 while (my $line = readline($fh)) {
@@ -726,6 +738,7 @@ $sorter->set_values(5,4,3,2,1);
 * new()
   * リファレンス を パッケージ(クラス) で bless して返す
 * blessはデータと手続きを結びつける操作
+
 ``` perl
   my $self = bless { field => 1 }, "Sorter";
 ```
@@ -759,6 +772,7 @@ my $self = bless {
 * 可視性の指定(public/privateなど) はない
   * すべてが public
 * 命名規則などでゆるく隠蔽する
+
 ``` perl
 sub public_method {
   my $self = shift;
@@ -772,6 +786,7 @@ sub _private_method {
 
 ## 継承
 * use base を使う
+
 ``` perl
 package Me;
 use base "Father";
@@ -779,6 +794,7 @@ use base "Father";
 ```
 * 親クラスのメソッド
   * SUPER
+
 ``` perl
 sub new {
   my ($class) = @_;
