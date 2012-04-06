@@ -506,6 +506,7 @@ sub hello {
 
 ## Perlでデバッグ
 * use Data::Dumper; を良く使います
+
 ``` perl
 use Data::Dumper;
 warn Dumper($value); # スカラ値がよい
@@ -526,9 +527,10 @@ warn Dumper($value); # スカラ値がよい
 
 ## プログラミングにおける抽象化の歴史
 * 抽象化とは
->>
+
+``
 詳細を捨象し、一度に注目すべき概念を減らすことおよびその仕組み (Wikipediaより)
-<<
+``
 
 * 一度に考えないといけないことを減らす
   *  = スコープをせばめる
