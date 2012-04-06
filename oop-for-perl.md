@@ -36,8 +36,8 @@
   * http://b.hatena.ne.jp/t/perl
 
 ## 副読サイト
-* http://perldoc.jp/: perldocの日本語訳
-* https://metacpan.org/: CPANの検索
+* http://perldoc.jp/ : perldocの日本語訳
+* https://metacpan.org/ : CPANの検索
 
 ## Perlプログラミング勘所
 * Perlでおさえておきたい/よくはまるポイントを説明
@@ -50,10 +50,10 @@
 
 ## use stirct;use warnings;
 * ファイルの先頭には必ず書きましょう
->|perl|
+```perl
 use strict;
 use warnings;
-||<
+```
 * デフォルトの振る舞いは互換性のために制限が弱い
 
 ## use strict; use warnings;を書かないと困ること
@@ -1132,9 +1132,9 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
     * perldoc perlvars を見るべし
 * 関数
   * perldoc -f open
-  * [http://perldoc.jp/:title=perldoc.jp]: perldocの日本語訳¥
+  * http://perldoc.jp/ : perldocの日本語訳
 * CPANモジュール
-* [https://metacpan.org/:title=metacpan]
+* https://metacpan.org/
 
 ## 良い本を読みましょう
 * はじめてのPerl
