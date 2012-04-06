@@ -1,9 +1,11 @@
-#  今日は何をしますか
+# ORM によるデータベース操作 (DBIx::MoCo を使った開発) 
+
+##  今日は何をしますか
 
 *  データベース・OR マッパーの役割を理解し、MoCo を使えるようになる
 *  来週以降の Web アプリのための下地づくり
 
-#  カリキュラムについて
+##  カリキュラムについて
 
 *  Perl & OOP
 *  <strong>OR マッパーによるデータベース操作 ← いまここ</strong>
@@ -15,13 +17,13 @@
 *  インターネットサービスの企画 (課題なし)
 *  はてなのインフラストラクチャについて (課題なし)
 
-#  今日の講義
+##  今日の講義
 
-##  課題
+###  課題
 
 *  MoCo を用いて、コマンドラインインターフェースで日記を書けるツールを作成してもらいます
 
-##  構成
+###  構成
 
 *  基本編
   *  ORM、MoCo の基本的な概念や使い方を紹介します
@@ -32,7 +34,7 @@
 *  駆け足で進みますのでがんばってついてきてください
 *  質問があれば途中でも聞いてください
 
-#  データの永続化
+##  データの永続化
 
 *  アプリケーションが扱うデータ
   *  ユーザ情報・何らかの投稿・後から集計したデータなど
@@ -40,7 +42,7 @@
   *  アプリケーションの複数のインスタンスは物理的・時間的制約によりメモリを共有できない
 *  というわけでデータの永続化 (データストレージ) が必要です
 
-#  簡単なデータストレージの例
+##  簡単なデータストレージの例
 
 <div style="text-align: center"><img src="http://cdn-ak.f.st-hatena.com/images/fotolife/m/motemen/20110816/20110816202128.gif"></div>
 
@@ -58,7 +60,7 @@
 名無しさん<>sage<>2011/08/19(金) 06:21:30.21 <> こんにちは <>
 ```
 
-#  2ちゃんねる+αを考えてみる
+##  2ちゃんねる+αを考えてみる
 
 ふつうのウェブサービスっぽくしてみる
 
@@ -69,14 +71,14 @@
 
 *  面倒
 
-##  一般にウェブサービスは成長します
+###  一般にウェブサービスは成長します
 
 *  データは大量・増える一方
   *  データの量に (あまり) 依らずに、効率よくデータを取得できる必要がある
 *  サービスは 24 時間 365 日提供したい
   *  アプリケーション・データの冗長化
 
-#  そのための データベース です
+##  そのための データベース です
 
 *  それなりの規模のウェブサービスを作るときに想像されること……
   *  データを構造化
@@ -86,25 +88,25 @@
 *  ライブラリがあり
 *  運用実績も豊富
 
-#  使ったことありますか?
+##  使ったことありますか?
 
 *  関係 (リレーショナル) データベース / SQL
 *  OR マッパー
 *  DBI
 *  MoCo
 
-#  関係データベースとは？
+##  関係データベースとは？
 
 *  関係モデルに基づくデータベース
 
-#  関係モデル
+##  関係モデル
 
 *  関係は属性と組 (タプル) の集合で表される
 *  関係代数に基づき演算が定義される
 
 R: (ID, 名前, 誕生日) = { (1, 初音ミク, 2007-08-31), (2, 鏡音リン, 2007-12-27), (3, 鏡音レン, 2007-12-27), (4, 巡音ルカ, 2009-01-30) }
 
-#  関係データベース
+##  関係データベース
 
 *  データベースに複数のテーブルが属する
 *  データは表で表される
@@ -127,7 +129,7 @@ album テーブル:
   <tr><td>1</td><td>1</td><td>みくのかんづめ</td><td>2008-12-3</td></tr>
 </table>
 
-##  SQL
+###  SQL
 
 *  SQL という言語により表のデータの問い合わせ、更新などを行う
 
@@ -150,7 +152,7 @@ UPDATE artist SET birthday = '2008-07-18' WHERE name LIKE '鏡音%';
 *  動詞 (SELECT, INSERT, UPDATE, DELETE)
 *  対象: WHERE …
 
-##  キー (インデックス)
+###  キー (インデックス)
 
 *  カラムの組み合わせについてインデックス (索引) を作成することができる
 
@@ -162,11 +164,11 @@ UPDATE artist SET birthday = '2008-07-18' WHERE name LIKE '鏡音%';
 *  ユニークキー
   *  テーブル内で一意なキー (の組み合わせ)
 
-##  前提本
+###  前提本
 
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/m/motemen/20110815/20110815211306.jpg">
 
-#  RDBMS
+##  RDBMS
 
 *  Relational DataBase Management System
 *  関係データベースの実装
@@ -177,14 +179,14 @@ UPDATE artist SET birthday = '2008-07-18' WHERE name LIKE '鏡音%';
     *  トランザクション
 *  はてなでは MySQL を採用
 
-#  Perl から RDB を使う: DBI
+##  Perl から RDB を使う: DBI
 
 *  Perl からデータベースに接続するモジュール
   *  OR マッパーではない
 *  [DBI](http://search.cpan.org/~timb/DBI-1.618/DBI.pm)
   *  (DBD::*) MySQL、PostgreSQL、SQLite、…
 
-#  DBI を用いる
+##  DBI を用いる
 
 
 ``` perl
@@ -223,16 +225,16 @@ my $albums = $dbh->selectall_arrayref('SELECT * FROM album WHERE artist_id = ?',
 *  SQL を直に書かなきゃいけない
 *  結果がただのハッシュ
 
-#  OR マッパーの登場です
+##  OR マッパーの登場です
 
 *  ORM: <strong>O</strong>bject-<strong>R</strong>elational <strong>mapping</strong> (オブジェクト関係マッピング)
   *  Object: オブジェクト指向でいうオブジェクト
   *  Relational: 関係データベース (relational database; RDB)
 
-#  オブジェクト指向とは？
+##  オブジェクト指向とは？
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/m/motemen/20100519/20100519180705.jpg" width=500 />
 
-#  OR マッパーを使った書き方 (DBIx::MoCo)
+##  OR マッパーを使った書き方 (DBIx::MoCo)
 
 ``` perl
 use Vocaloid::MoCo::Artist;
@@ -256,7 +258,7 @@ my $albums = $artist->albums;
   *  ただし必要な情報が入ったモジュール (Vocaloid::MoCo::Artist) は書かないといけない
   *  詳しくは後で
 
-#  MoCo (もこ) とは?
+##  MoCo (もこ) とは?
 
 *  DBIx::MoCo
 *  はてなのサービスで使われている OR マッパー
@@ -264,7 +266,7 @@ my $albums = $artist->albums;
   *  jkondo (社長です) 作、現在は motemen (わたしです) がメンテナ
 *  はてなスター、はてなブックマーク、はてなハイク、うごメモはてな、はてなココ、…
 
-#  MoCo で何ができたか
+##  MoCo で何ができたか
 
 
 ``` perl
@@ -290,7 +292,7 @@ my $albums = $artist->albums;
 
 *  意味的に関連する別のテーブルへのアクセスをメソッドとして定義できる
 
-#  OR マッパーの機能
+##  OR マッパーの機能
 
 *  DB に格納されているレコードとコード中で活躍するオブジェクトとの変換
 *  接続情報の管理
@@ -299,7 +301,7 @@ my $albums = $artist->albums;
 
 など
 
-#  MoCo の概要
+##  MoCo の概要
 
 *  1 クラスが 1 テーブルに対応 (Active Record パターン)
   *  1 インスタンス = テーブルの 1 行
@@ -324,7 +326,7 @@ __PACKAGE__->table('album'); # MoCo::Album は album テーブルに対応
 *  以下、MoCo のメソッドをざっと見ていきます！
 *  CRUD のうちどれに当たるかを意識しておきましょう
 
-#  $class->find
+##  $class->find
 
 *  条件に合う行を取得
 
@@ -346,7 +348,7 @@ SELECT * FROM artist WHERE name = '初音ミク' LIMIT 1;
   <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
 </table>
 
-#  $class->search
+##  $class->search
 
 *  条件に合う行を複数取得
 
@@ -383,7 +385,7 @@ SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10;
 
 *  DBIx::MoCo::List オブジェクトが返ってくる
 
-#  DBIx::MoCo::List
+##  DBIx::MoCo::List
 
 *  search メソッドで返ってくるオブジェクト
 *  ほとんどただの配列だけど、操作を Ruby っぽく書ける
@@ -408,7 +410,7 @@ SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10;
 *  dup
 *  dump
 
-#  $class->create
+##  $class->create
 
 *  行の挿入
 
@@ -437,7 +439,7 @@ INSERT INTO artist (id, name, birthday)
   <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
 </table>
 
-#  $instance->$column()
+##  $instance->$column()
 
 *  得られた行の 1 つのフィールドへのアクセス (読み取り/書き込み)
 
@@ -445,10 +447,10 @@ INSERT INTO artist (id, name, birthday)
 ``` perl
 $artist = Vocaloid::MoCo::Artist->find(name => '初音ミク');
 
-# 現在の値を取得
+## 現在の値を取得
 print $artist->name;
 
-# 新しい値を設定
+## 新しい値を設定
 $artist->name('弱音ハク');
 ```
 
@@ -466,7 +468,7 @@ UPDATE artist SET name = '弱音ハク' WHERE id = 1;
   <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
 </table>
 
-#  $instance->delete
+##  $instance->delete
 
 *  行の削除
 
@@ -487,7 +489,7 @@ DELETE FROM artist WHERE id = 1;
   <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
 </table>
 
-#  has-many
+##  has-many
 
 *  「ひとつの artist に複数の album が対応する」
 
@@ -527,7 +529,7 @@ $artist->albums->each(sub {
 SELECT * FROM album WHERE artist_id = 1;
 ```
 
-#  has-a
+##  has-a
 
 *  「ひとつの album にひとつの artist が対応する」
 
@@ -563,7 +565,7 @@ print $artist->name, "\n";
 SELECT * FROM album WHERE title = 'supercell' LIMIT 1;
 ```
 
-#  inflate/deflate
+##  inflate/deflate
 
 *  行の特定のカラムについて、「スカラー値 ⇔ Perl のオブジェクト」の変換ルールを指定
 
@@ -598,7 +600,7 @@ __PACKAGE__->inflate_column(
 $artist->birthday->strftime('%x');
 ```
 
-#  SQL を書く: SQL::Abstract を使った書き方
+##  SQL を書く: SQL::Abstract を使った書き方
 
 *  もうすぐ休憩です
 *  [cpan:SQL::Abstract]
@@ -619,7 +621,7 @@ my $artists = Vocaloid::MoCo::Artist->search(
 SELECT * FROM artist WHERE name = ? AND birthday > ?;
 ```
 
-#  SQL::Abstract を使わない書き方
+##  SQL::Abstract を使わない書き方
 
 
 ``` perl
@@ -635,7 +637,7 @@ my $artists = Vocaloid::MoCo::Artist->search(
 SELECT * FROM artist WHERE name = '初音ミク';
 ```
 
-##  セキュリティー
+###  セキュリティー
 
 *  文字列連結は一般に安全ではない！
   *  $name がユーザの入力だった場合
@@ -647,27 +649,27 @@ SELECT * FROM artist WHERE name = '初音ミク';
 SELECT * FROM artist WHERE name = ''; DROP TABLE artist; '';
 ```
 
-#  語られなかったこと
+##  語られなかったこと
 
 *  透過キャッシュ
 *  has_a, has_many
 *  retrieve
 *  muid
 
-#  休憩
+##  休憩
 
-#  bookmark.pl を作ってみよう
+##  bookmark.pl を作ってみよう
 
 *  実践編です
 *  小さなブックマークアプリを書いていく過程を見ていきます
 
-##  できること (大雑把に)
+###  できること (大雑把に)
 
 *  ユーザは URL (エントリ) を個人のブックマークに追加し、コメントを残せる
 *  エントリはユーザに共通の情報を持つ (ページタイトルなど)
 *  とりあえず一人用で (マルチユーザも視野にいれつつ)
 
-##  add, list, delete
+###  add, list, delete
 
 3 操作くらいできるようにしてみたい
 
@@ -710,7 +712,7 @@ deleted [4] Google <http://www.google.com/>
   @2011-08-16 ごー
 ```
 
-#  …という bookmark.pl を作ってみよう
+##  …という bookmark.pl を作ってみよう
 
 コードを手元に
 
@@ -732,12 +734,12 @@ deleted [4] Google <http://www.google.com/>
 *  MoCo.pm を必要最低限書く
 *  アプリケーションのロジックを書く
 
-#  テーブルの設計
+##  テーブルの設計
 
 *  どんな概念が登場するか？
   *  何が一意であるべきか
 
-##  user
+###  user
 
 <table>
   <tr><th>id</th><th>name</th></tr>
@@ -748,7 +750,7 @@ deleted [4] Google <http://www.google.com/>
 
 *  UNIQUE KEY (name)
 
-##  entry
+###  entry
 
 ユーザに共通の、URL に関する情報
 
@@ -761,7 +763,7 @@ deleted [4] Google <http://www.google.com/>
 
 *  UNIQUE KEY (url)
 
-##  bookmark
+###  bookmark
 
 ユーザが URL をブックマークした情報 (ユーザ×エントリ)
 <table>
@@ -775,13 +777,13 @@ deleted [4] Google <http://www.google.com/>
 
 *  UNIQUE KEY (user_id, entry_id)
 
-#  コードの設計
+##  コードの設計
 
 *  ロジックをモデル (MoCo) に集約
   *  プログラムがすっきりする
   *  テスト書きやすい
 
-#  最初に利用例を考えてみるといいです
+##  最初に利用例を考えてみるといいです
 
 
 ``` perl
@@ -801,7 +803,7 @@ $user->delete_bookmark($entry);
 *  とりあえずテストを書いてみる
 *  とりあえず一番外側のスクリプトを書いてみる
 
-#  bookmark.pl
+##  bookmark.pl
 
 *  アプリケーションのロジックはモデルクラス (MoCo) に集約
 *  コマンドライン周りの処理だけ記述
@@ -855,7 +857,7 @@ sub list_bookmarks {
 }
 ```
 
-#  MoCoを使う流れ
+##  MoCoを使う流れ
 
 <img src="http://img.f.hatena.ne.jp/images/fotolife/o/onishi/20090805/20090805033558.png">
 
@@ -863,14 +865,14 @@ sub list_bookmarks {
 *  DBIx::MoCo を継承した Bookmark::MoCo
 *  Bookmark::MoCo を継承した Bookmark::MoCo::***
 
-##  submodule として追加
+###  submodule として追加
 
 
 ``` text
 % git submodule add https://github.com/hatena/DBIx-MoCo.git modules/DBIx-MoCo
 ```
 
-#  まずは DataBase.pm を書いてみるか
+##  まずは DataBase.pm を書いてみるか
 
 *  DB の接続情報を設定
 *  dbi:mysql:dbname=intern_bookmark
@@ -891,7 +893,7 @@ __PACKAGE__->password('');
 1;
 ```
 
-#  それから MoCo.pm
+##  それから MoCo.pm
 
 *  モデルクラス共通の振る舞いを記述
 
@@ -908,7 +910,7 @@ __PACKAGE__->db_object('Bookmark::DataBase');
 1;
 ```
 
-##  moco()
+###  moco()
 
 *  Intern::Bookmark::MoCo には moco という関数が
 
@@ -929,7 +931,7 @@ moco('User')->find(name => 'onishi')
 moco('Entry')->find(id => 1)
 ```
 
-#  各モデルクラス
+##  各モデルクラス
 
 *  DataBase クラスの指定は親クラスで行われているので不要
 
@@ -948,7 +950,7 @@ __PACKAGE__->table('user');
 *  その他 MoCo::Entry, MoCo::Bookmark も同じように
 *  3 つのテーブルに対応する 3 つのクラス
 
-#  relationship 的なもの
+##  relationship 的なもの
 
 
 ``` perl
@@ -974,7 +976,7 @@ sub bookmarks {
 }
 ```
 
-#  カラムをオブジェクトとして扱う (inflate / deflate)
+##  カラムをオブジェクトとして扱う (inflate / deflate)
 
 *  $bookmark->created_on が DateTime オブジェクトになってると何かと便利
 
@@ -994,7 +996,7 @@ __PACKAGE__->inflate_column(
 );
 ```
 
-#  トリガ
+##  トリガ
 
 
 ``` perl
@@ -1016,7 +1018,7 @@ __PACKAGE__->add_trigger(
 *  create メソッドに渡された引数が $args に入ってます
 *  親クラスに書いておけばすべての MoCo::*** で有効
 
-#  トリガのフックポイント
+##  トリガのフックポイント
 
 *  before_create ($class, $args) ※1
 *  after_create  ($class, $self)
@@ -1029,7 +1031,7 @@ before_create, before_update だけ引数が異なるので注意
 *  トリガは (使用するなら) デフォルト値を埋めるくらいの用途に留めましょう
   *  トリガの中でさらに DB 操作を行うようになると収集がつかなくなる
 
-#  utf8_columns
+##  utf8_columns
 
 *  特定カラムを文字列としてアクセス
 *  inflate_column と同じようなことをやっている
@@ -1045,7 +1047,7 @@ __PACKAGE__->utf8_columns(qw(comment));
   *  外界との入出力はつねにバイト列、プログラムの内部では文字列
   *  文字化けとか "Wide character ..." の警告を見かけたら自分がどちらを扱っているかに注意しましょう
 
-#  ロジックの実装
+##  ロジックの実装
 
 *  ここが一番楽しいところですね！
 
@@ -1080,7 +1082,7 @@ sub add_bookmark {
 *  croak: use [cpan:Carp] すると使えます
   *  die と似てるけど呼び出し元で死ぬ
 
-#  開発のお供に
+##  開発のお供に
 
 *  [cpan:Devel::KYTProf] を使うのがオススメ
   *  use するだけ
@@ -1125,7 +1127,7 @@ print Dumper($x);
 
 *  repl もいいですね ([cpan:Eval::WithLexicals], [cpan:Devel::REPL])
 
-#  テスト
+##  テスト
 
 *  書いたプログラムが正しいかどう確かめるか？
   *  小規模なら実際に動かしてみるのでもやっていける
@@ -1136,13 +1138,13 @@ print Dumper($x);
     *  昔の自分も他人です (だいたい一晩から)
 *  今回は単体テストを書きましょう
 
-##  テストすべきこと
+###  テストすべきこと
 
 *  正しい条件で正しく動くこと
 *  おかしな条件で正しく動くこと (エラーを吐くなど)
 *  境界条件で正しく動くこと
 
-#  テスト例
+##  テスト例
 
 
 ``` perl
@@ -1183,7 +1185,7 @@ __PACKAGE__->runtests;
 
 *  [cpan:Test::Class] という JUnit ライクなテストフレームワークを使っています
 
-#  テスト用モジュールを書いておくと便利
+##  テスト用モジュールを書いておくと便利
 
 
 ``` perl
@@ -1208,7 +1210,7 @@ sub truncate_db {
 *  本番とは別のテスト用データベースの dsn を設定する
 *  HTTP アクセスしないフラグを立てる、等々
 
-#  心構え: テストは安心して実行できるように
+##  心構え: テストは安心して実行できるように
 
 *  本番の DB にアクセスしないようにする
   *  テスト専用の DB を用意して、テストでは必ずそちらを使うようにする
@@ -1216,7 +1218,7 @@ sub truncate_db {
 *  外部との通信を発生させない
   *  テストの高速化にもつながります
 
-#  ディレクトリ構成
+##  ディレクトリ構成
 
 ``` text
  - bookmark.pl
@@ -1233,17 +1235,17 @@ sub truncate_db {
  - modules   - DBIx-MoCo
 ```
 
-#  以上
+##  以上
 
 *  かけ足で説明してきましたが、全容はもっと深いので、ソースや pod (perldoc) を読んでみてください
 *  試行錯誤もいいですが人に訊くのが一番楽!!!
 
-#  課題
+##  課題
 
 *  コマンドラインインターフェースで日記を書けるツール diary.pl を作成してください (必須)
 *  diary.pl に機能を追加してください (記事のカテゴリ機能など)
 
-##  基本機能
+###  基本機能
 
 *  記事の追加
 *  記事の一覧表示
@@ -1251,14 +1253,14 @@ sub truncate_db {
 *  記事の削除
 *  マルチユーザー (ただし今回はシングルユーザーでしか利用しない)
 
-##  テーブル設計
+###  テーブル設計
 
 とりあえず 2 テーブルでいってみましょうか
 
 *  user
 *  entry
 
-##  実行例
+###  実行例
 
 
 ``` text
@@ -1268,7 +1270,7 @@ sub truncate_db {
 % ./diary.pl delete 記事ID # 記事を削除
 ```
 
-##  スキーマ設計 (例)
+###  スキーマ設計 (例)
 
 *  望むように独自のスキーマを設計してよいです
 *  プライマリキーには AUTO_INCREMENT を指定しておくと便利
@@ -1296,14 +1298,14 @@ CREATE TABLE entry (
 );
 ```
 
-##  オプション課題 独自機能
+###  オプション課題 独自機能
 
 *  アプリケーションに独自の機能を追加してみてください
   *  記事のカテゴリ分け機能
   *  検索
   *  などなど
 
-##  評価基準
+###  評価基準
 
 *  基本機能 5 点
   *  記事の追加・一覧 3 点
@@ -1313,7 +1315,7 @@ CREATE TABLE entry (
 *  設計 2 点
 *  テスト 1 点
 
-##  諸注意
+###  諸注意
 
 *  コミット先こんな感じで
 
@@ -1342,7 +1344,7 @@ hitode909 さんだったら、
 CREATE DATABASE intern_diary_hitode909;
 ```
 
-##  mysqldump お願い
+###  mysqldump お願い
 
 評価のため mysqldump もお願いします。
 
@@ -1362,14 +1364,14 @@ hitode909 さんだったら、
 
 これも commit, push してください。
 
-#  ヒント(& BK)
+##  ヒント(& BK)
 
-##  今日書くコードは明日以降も利用します！
+###  今日書くコードは明日以降も利用します！
 
 *  CLI 以外の利用も見据えた設計を
 *  アプリケーションに必要な機能は MoCo クラス内に書きましょう
 
-##  コマンドラインに関すること
+###  コマンドラインに関すること
 
 *  <code>@ARGV</code> 変数
   *  ./diary.pl hoge fuga として起動すると <code>@ARGV = ('hoge', 'fuga')</code> となります
@@ -1381,15 +1383,15 @@ hitode909 さんだったら、
 my $data = join "\n", <STDIN>;
 ```
 
-#  ご清聴ありがとうございました
+##  ご清聴ありがとうございました
 
 *  分からないことはメンターか隣りのインターンに尋ねましょう！
   *  人気の質問に関してはあとでまとめて補足をするかもしれないのでどんどん訊いてください
 *  今日は歓迎会です
 
-#  補足編
+##  補足編
 
-#  SQL
+##  SQL
 
 
 ``` sql
@@ -1442,7 +1444,7 @@ CREATE TABLE table_name (
 *  KEY には検索に使うカラム (WHERE で使うカラム) を指定しておく
   *  検索高速化のためのインデックスが作られる
 
-#  SQL::Abstract
+##  SQL::Abstract
 
 詳しくは [cpan:SQL::Abstract] をみて
 
@@ -1497,7 +1499,7 @@ IN で指定する値が空でも SQL::Abstract 的には問題ないけど MySQ
     },
 ```
 
-#  Placeholder
+##  Placeholder
 
 SQL 文に「?」(placeholder) を埋め込むとその部分に入る値を別に渡せる。
 
@@ -1518,7 +1520,7 @@ Placeholder を使うと、
   *  「SELECT * FROM artist WHERE name = '初音ミク'」と「SELECT * FROM artist WHERE name = '鏡音リン'」のどちらも「SELECT * FROM artist WHERE name = ?」になる
 ... というメリットがある。
 
-#  ORM
+##  ORM
 
 *  オブジェクト生成のオーバーヘッド
   *  Perl のオブジェクト生成 (bless) は結構コストが高い
@@ -1551,7 +1553,7 @@ my $related = $related_class->where(
 );
 ```
 
-#  byte string & utf8 string
+##  byte string & utf8 string
 
 <a href="http://search.cpan.org/~nwclark/perl-5.8.8/lib/utf8.pm">perldoc utf8</a>, <a href="http://search.cpan.org/~nwclark/perl-5.8.8/pod/perlunicode.pod">perlunicode</a>
 
@@ -1573,7 +1575,7 @@ $chars = 'あいうえお';
 warn length $chars; # 5
 ```
 
-#  byte/character convertion
+##  byte/character convertion
 
 [cpan:Encode]
 
@@ -1594,7 +1596,7 @@ $bytes = encode 'utf8', $chars& # 文字列を符号化してバイト列に
 $chars = decode 'utf8', $bytes& # バイト列を復号して文字列に
 ```
 
-#  DateTime
+##  DateTime
 
 [cpan:DateTime], [cpan:DateTime::Format::MySQL]
 
