@@ -901,9 +901,11 @@ $.ajax({ url: url, ... });
 *  <span lang="en">Model-View-Controller</span>
 *  これまでの課題でやった Web アプリケーションの MVC とはちょっと違う
   *  「Web アプリケーションの MVC」を「MVC2」と呼ぶこともある
+
 ####  Web アプリケーションの MVC
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802222932.png" />
 *  Model は一方的に操作され、またはデータを読み取られるのみ
+
 ####  クライアントサイドプログラミングの MVC
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802223034.png" />
 *  Model はしばしば observer パターンを実装し、自身の状態の変更を View に<strong>通知する</strong>
