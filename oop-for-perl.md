@@ -478,6 +478,7 @@ sub func4 { $_[0]->{arg1} } # @_ の第0要素
 
 ## サブルーチンの名前空間
 * パッケージに定義される
+
 ``` perl
 pacakge Greetings;
 sub hello { }
@@ -487,6 +488,7 @@ sub hello { }
 ```
 
 * ネストしてもパッケージに定義されるので注意
+
 ``` perl
 pacakge Greetings;
 sub hello { 
