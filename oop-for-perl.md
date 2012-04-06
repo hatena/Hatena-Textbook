@@ -50,10 +50,12 @@
 
 ## use stirct;use warnings;
 * ファイルの先頭には必ず書きましょう
-```perl
+
+``` perl
 use strict;
 use warnings;
 ```
+
 * デフォルトの振る舞いは互換性のために制限が弱い
 
 ## use strict; use warnings;を書かないと困ること
