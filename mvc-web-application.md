@@ -7,13 +7,13 @@
 
 ##  今日の内容
 
-*  1. HTTPとURI
-*  2. Webアプリケーション概説
-*  3. MVCフレームワーク
-*  4. Ridge
+* 1. HTTPとURI
+* 2. Webアプリケーション概説
+* 3. MVCフレームワーク
+* 4. Ridge
   *  この節だけボリューム多い
-*  5. Perl WAF界隈の最新動向
-*  6. 課題
+* 5. Perl WAF界隈の最新動向
+* 6. 課題
 
 *  以下、Web Application FrameworkはWAFと表記します
 
@@ -174,7 +174,7 @@ POST http://example.com/bookmark.edit
 
 ###  最もシンプルな図
 
-f:id:ninjinkun:20100728230306p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100728/20100728230306.png" />
 
 *  動作
   *  サーバが<em>クライアントから</em>HTTPリクエストを受けとる
@@ -182,7 +182,7 @@ f:id:ninjinkun:20100728230306p:image
 
 ###  サーバとアプリケーションを分離した図
 
-f:id:ninjinkun:20100728230305p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100728/20100728230305.png" />
 
 *  追加された動作
   *  アプリケーションが<em>サーバから</em>サーバリクエストを受けとる
@@ -195,7 +195,7 @@ f:id:ninjinkun:20100728230305p:image
 
 ###  WAFとWebアプリケーション処理を分離した図
 
-f:id:ninjinkun:20100729220833p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100729/20100729220833.png" />
 
 *  追加された動作
   *  WAFが<em>サーバから</em>サーバリクエストを受けとる
@@ -234,7 +234,7 @@ f:id:ninjinkun:20100729220833p:image
 
 ###  古典的なMVC
 
-f:id:ninjinkun:20100802223034p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802223034.png" />
 
 *  GUIのMVCフレームワーク
   *  Cocoa
@@ -242,7 +242,7 @@ f:id:ninjinkun:20100802223034p:image
 
 ###  WebアプリケーションのMVC
 
-f:id:ninjinkun:20100802222932p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802222932.png" />
 
 *  Webアプリケーション用に再定義された
   *  MVC Model 2と呼ばれることも
@@ -261,7 +261,7 @@ f:id:ninjinkun:20100802222932p:image
   *  Webでは: Webアプリケーションフレームワーク
   *  はてなでは: <strong>Ridge</strong>
 
-##  ここまでのまとめ
+###  ここまでのまとめ
 *  MVCとはModel, View, Controllerにより表現とロジックを分離したもの
 *  表現とロジックの分離により、デザイナーとエンジニアで作業が分担できる
 
@@ -306,16 +306,6 @@ f:id:ninjinkun:20100802222932p:image
 * <strong>読んでわかるフレームワーク</strong>
 * 足りないものはCPAN or 自分で作る
 
-####  最近のサービスは Ridge 製
-* はてなハイク
-* はてなスター
-* はてなキーワード
-* 新はてなブックマーク
-* Myはてな
-* うごメモはてな
-* はてなモノリス
-* はてなココ
-
 ####  では、いよいよ
 * Ridgeを使ってWebアプリを作ります
 
@@ -333,9 +323,12 @@ f:id:ninjinkun:20100802222932p:image
 
 
 ###  4.2.1 URI設計
+
 はてなでは
-  * スキーマ設計
-  * URI設計
+
+* スキーマ設計
+* URI設計
+
 の順に行うので、まずURIを考えます
 
 ####  Bookmarkアプリでの要件
@@ -556,7 +549,7 @@ sub default : Public {
 *  リクエストに関する処理 $r->req
 *  レスポンスに関する処理 $r->res
 *  その他もろもろ
-*  詳細は[[Ridge API]]を見よ
+*  詳細は https://github.com/hatena/Ridge
 
 
 
@@ -661,6 +654,7 @@ sub default : Public {
 ```
 
 フィルタ
+
 * HTMLフィルタ
 
 ``` html
@@ -711,9 +705,9 @@ VMethods, 特殊な変数...
 
 
 参考
+
 * 配列、ハッシュ、スカラーに対しては大抵の操作があります
   * http://template-toolkit.org/docs/manual/VMethods.html
-
 * 他にもマニアックな機能多数
   * [[Template-Toolkit TIPS]]
 
@@ -1056,7 +1050,7 @@ my $env = {
   * Catalyst, Jifty, Mojolicious, <strong>Ridge</strong>...
 
 * 最初の図で表現すると
-f:id:ninjinkun:20100802092500p:image
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802092500.png" />
 
 ####  Plack
 * PSGIの<strong>リファレンス実装</strong>
@@ -1068,7 +1062,6 @@ f:id:ninjinkun:20100802092500p:image
 ####  Plack Ridge
 * RidgeにPlackを組み込んだ実装
 * Ridge::Request/ResponseをPlack::Request/Responseのアダプタに
-* id:cho45先生の合宿成果
 
 ####  PSGI/Plackで嬉しいこと
 * Apache以外の選択肢が使える
@@ -1271,10 +1264,9 @@ __END__
 ```
 
 ###  参考資料
-* [[Ridge API]]
+* https://github.com/hatena/Ridge
 *  perldoc -m Ridge
 * http://template-toolkit.org/docs/manual/VMethods.html
-* [[Template-Toolkit TIPS]]
 
 ####  Ridgeの処理の流れ
 1. 初期化処理
