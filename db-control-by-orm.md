@@ -112,15 +112,20 @@ R: (ID, 名前, 誕生日) = { (1, 初音ミク, 2007-08-31), (2, 鏡音リン, 
 
 例) artist テーブル:
 
-|*id|*name|*birthday|
-|1|初音ミク|2007-08-31|
-|2|鏡音リン|2007-12-27|
-|3|鏡音レン|2007-12-27|
-|4|巡音ルカ|2009-01-30|
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
+</table>
 
 album テーブル:
-|*id|*artist_id|*name|*released_on|
-|1|1|みくのかんづめ|2008-12-3|
+
+<table>
+  <tr><th>id</th><th>artist_id</th><th>name</th><th>released_on</th></tr>
+  <tr><td>1</td><td>1</td><td>みくのかんづめ</td><td>2008-12-3</td></tr>
+</table>
 
 ##  SQL
 
@@ -176,7 +181,7 @@ UPDATE artist SET birthday = '2008-07-18' WHERE name LIKE '鏡音%';
 
 *  Perl からデータベースに接続するモジュール
   *  OR マッパーではない
-*  [cpan:DBI]
+*  [DBI](http://search.cpan.org/~timb/DBI-1.618/DBI.pm)
   *  (DBD::*) MySQL、PostgreSQL、SQLite、…
 
 #  DBI を用いる
@@ -229,7 +234,6 @@ my $albums = $dbh->selectall_arrayref('SELECT * FROM album WHERE artist_id = ?',
 f:id:motemen:20100519180705j:image
 
 #  OR マッパーを使った書き方 (DBIx::MoCo)
-
 
 ``` perl
 use Vocaloid::MoCo::Artist;
@@ -338,9 +342,10 @@ print $artist->birthday, "\n";
 SELECT * FROM artist WHERE name = '初音ミク' LIMIT 1;
 ```
 
-|*id|*name|*birthday|
-|1|初音ミク|2007-08-31|
-
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
+</table>
 
 #  $class->search
 
@@ -371,9 +376,11 @@ $artists->each(sub {
 SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10;
 ```
 
-|*id|*name|*birthday|
-|2|鏡音リン|2007-12-27|
-|3|鏡音レン|2007-12-27|
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+</table>
 
 *  DBIx::MoCo::List オブジェクトが返ってくる
 
@@ -422,12 +429,14 @@ INSERT INTO artist (id, name, birthday)
     VALUES (5, '重音テト', '2008-04-01');
 ```
 
-|*id|*name|*birthday|
-|1|初音ミク|2007-08-31|
-|2|鏡音リン|2007-12-27|
-|3|鏡音レン|2007-12-27|
-|4|巡音ルカ|2009-01-30|
-|5|重音テト|2008-04-01|
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>1</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></td><td>2007-08-31</td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
+  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
+</table>
 
 #  $instance->$column()
 
@@ -449,12 +458,14 @@ $artist->name('弱音ハク');
 UPDATE artist SET name = '弱音ハク' WHERE id = 1;
 ```
 
-|*id|*name|*birthday|
-|1|<del datetime="2011-08-19T08:50:33+09:00">初音ミク</del>弱音ハク|2007-08-31|
-|2|鏡音リン|2007-12-27|
-|3|鏡音レン|2007-12-27|
-|4|巡音ルカ|2009-01-30|
-|5|重音テト|2008-04-01|
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>1</td><td><del datetime="2011-08-19T08:50:33+09:00"><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E9%B2%BB%A5%DF%A5%AF">初音ミク</a></del><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BC%E5%B2%BB%A5%CF%A5%AF">弱音ハク</a></td><td>2007-08-31</td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
+  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
+</table>
 
 #  $instance->delete
 
@@ -470,11 +481,12 @@ $artist->delete;
 ``` sql
 DELETE FROM artist WHERE id = 1;
 ```
-
-|*id|*name|*birthday|
-|2|鏡音リン|2007-12-27|
-|3|鏡音レン|2007-12-27|
-|4|巡音ルカ|2009-01-30|
+<table>
+  <tr><th>id</th><th>name</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/birthday">birthday</a></th></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EA%A5%F3">鏡音リン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>3</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%B6%C0%B2%BB%A5%EC%A5%F3">鏡音レン</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/2007%2D12%2D27">2007-12-27</a></td></tr>
+  <tr><td>4</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%BD%E4%B2%BB%A5%EB%A5%AB">巡音ルカ</a></td><td>2009-01-30</td></tr>
+</table>
 
 #  has-many
 
@@ -728,10 +740,12 @@ deleted [4] Google <http://www.google.com/>
 
 ##  user
 
-|*id|*name|
-|1|antipop|
-|2|motemen|
-|3|cho45|
+<table>
+  <tr><th>id</th><th>name</th></tr>
+  <tr><td>1</td><td>antipop</td></tr>
+  <tr><td>2</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/motemen">motemen</a></td></tr>
+  <tr><td>3</td><td>cho45</td></tr>
+</table>
 
 *  UNIQUE KEY (name)
 
@@ -739,23 +753,26 @@ deleted [4] Google <http://www.google.com/>
 
 ユーザに共通の、URL に関する情報
 
-|*id|*url|*title|
-|1|http://www.example.com/|IANA — Example domains|
-|2|http://www.hatena.ne.jp/|はてな|
-|3|http://motemen.appspot.com/|motemen|
+<table>
+  <tr><th>id</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a></th><th>title</th></tr>
+  <tr><td>1</td><td><a href="http://www.example.com/" target="_blank">http://www.example.com/</a></td><td>IANA — Example domains</td></tr>
+  <tr><td>2</td><td><a href="http://www.hatena.ne.jp/" target="_blank">http://www.hatena.ne.jp/</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA">はてな</a></td></tr>
+  <tr><td>3</td><td><a href="http://motemen.appspot.com/" target="_blank">http://motemen.appspot.com/</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/motemen">motemen</a></td></tr>
+</table>
 
 *  UNIQUE KEY (url)
 
 ##  bookmark
 
 ユーザが URL をブックマークした情報 (ユーザ×エントリ)
-
-|*id|*user_id|*entry_id|*comment|
-|1|1 (= antipop)|1 (= example.com)|例示用ドメインか〜。|
-|2|1|2 (= はてな)|はてな〜。|
-|3|2 (= motemen)|3 (= motemen.com)|僕のホームページです|
-|4|3 (= cho45)|3|モテメンさんのホームページですね|
-|5|3|1|example ですね|
+<table>
+  <tr><th>id</th><th>user_id</th><th>entry_id</th><th>comment</th></tr>
+  <tr><td>1</td><td>1 (= antipop)</td><td>1 (= <a class="okeyword" href="http://d.hatena.ne.jp/keyword/example%2Ecom">example.com</a>)</td><td>例示用<a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>か〜。</td></tr>
+  <tr><td>2</td><td>1</td><td>2 (= <a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA">はてな</a>)</td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA">はてな</a>〜。</td></tr>
+  <tr><td>3</td><td>2 (= <a class="okeyword" href="http://d.hatena.ne.jp/keyword/motemen">motemen</a>)</td><td>3 (= <a class="okeyword" href="http://d.hatena.ne.jp/keyword/motemen">motemen</a>.com)</td><td>僕の<a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A5%DB%A1%BC%A5%E0%A5%DA%A1%BC%A5%B8">ホームページ</a>です</td></tr>
+  <tr><td>4</td><td>3 (= cho45)</td><td>3</td><td>モテメンさんの<a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A5%DB%A1%BC%A5%E0%A5%DA%A1%BC%A5%B8">ホームページ</a>ですね</td></tr>
+  <tr><td>5</td><td>3</td><td>1</td><td>example ですね</td></tr>
+</table>
 
 *  UNIQUE KEY (user_id, entry_id)
 
