@@ -7,13 +7,13 @@
 
 ##  今日の内容
 
-* 1. HTTPとURI
-* 2. Webアプリケーション概説
-* 3. MVCフレームワーク
-* 4. Ridge
-  *  この節だけボリューム多い
-* 5. Perl WAF界隈の最新動向
-* 6. 課題
+1. HTTPとURI
+2. Webアプリケーション概説
+3. MVCフレームワーク
+4. Ridge
+  * この節だけボリューム多い
+5. Perl WAF界隈の最新動向
+6. 課題
 
 *  以下、Web Application FrameworkはWAFと表記します
 
@@ -332,11 +332,13 @@ POST http://example.com/bookmark.edit
 の順に行うので、まずURIを考えます
 
 ####  Bookmarkアプリでの要件
-|パス|動作|
-|/|ブックマーク一覧|
-|/bookmark?id=id|ブックマークの permalink|
-|/bookmark.add?url=url&comment=comment (POST)|ブックマークの追加|
-|/bookmark.delete?id=id (POST)|ブックマークの削除|
+<table>
+  <tbody><tr><td>パス</td><td>動作</td></tr>
+  <tr><td>/</td><td>ブックマーク一覧</td></tr>
+  <tr><td>/bookmark?id=id</td><td>ブックマークの <a class="okeyword" href="http://d.hatena.ne.jp/keyword/permalink">permalink</a></td></tr>
+  <tr><td>/bookmark.add?<a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a>=<a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a>&amp;comment=comment (POST)</td><td>ブックマークの追加</td></tr>
+  <tr><td>/bookmark.delete?id=id (POST)</td><td>ブックマークの削除</td></tr>
+</tbody></table>
 
 ####  既に出来上がったものがこちらに
 ここでデモ
@@ -423,13 +425,16 @@ sub default : Public {
 * 階層 → エンジン名
 * "." 以降 → アクション
 
-|パス | Engine+Action|テンプレート|
-|/|Engine::Index::default()|templates/index.html|
-|/index.hoge|Engine::Index::hoge()|templates/index.hoge.html|
-|/foo|Engine::Foo::default()|templates/foo.html|
-|/foo.hoge|Engine::Foo::hoge()|templates/foo.hoge.html|
-|/foo/|Engine::Foo::Index::default()| templates/foo/index.html|
-|/foo/bar|Engine::Foo::Index::Bar::default()| templates/foo/bar/index.html|
+<table>
+  <tbody><tr><td>パス </td><td> Engine+Action</td><td>テンプレート</td></tr>
+  <tr><td>/</td><td>Engine::Index::default()</td><td>templates/index.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+  <tr><td>/index.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a></td><td>Engine::Index::<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>()</td><td>templates/index.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+  <tr><td>/foo</td><td>Engine::Foo::default()</td><td>templates/foo.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+  <tr><td>/foo.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a></td><td>Engine::Foo::<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>()</td><td>templates/foo.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+  <tr><td>/foo/</td><td>Engine::Foo::Index::default()</td><td> templates/foo/index.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+  <tr><td>/foo/bar</td><td>Engine::Foo::Index::Bar::default()</td><td> templates/foo/bar/index.<a class="okeyword" href="http://d.hatena.ne.jp/keyword/html">html</a></td></tr>
+</tbody></table>
+
 * ※ "hoge.json" というパスではアクションは json にならず Engine::Hoge::default() が呼ばれ、ビューが JSON::Syckになる
 * (BK) JSON::SyckはobsoluteなのでJSON::XSを使って自前で書こう
 
@@ -460,11 +465,13 @@ Server is now launched as debug mode. Server bind to port 3000, ready to accept 
 
 ###  4.2.3 URIに対応したコードを書く
 ####  URI設計(再掲）
-|パス|動作|
-|/|ブックマーク一覧|
-|/bookmark?id=id|ブックマークの permalink|
-|/bookmark.add?url=url&comment=comment (POST)|ブックマークの追加|
-|/bookmark.delete?id=id (POST)|ブックマークの削除|
+<table>
+  <tbody><tr><td>パス</td><td>動作</td></tr>
+  <tr><td>/</td><td>ブックマーク一覧</td></tr>
+  <tr><td>/bookmark?id=id</td><td>ブックマークの <a class="okeyword" href="http://d.hatena.ne.jp/keyword/permalink">permalink</a></td></tr>
+  <tr><td>/bookmark.add?<a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a>=<a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a>&amp;comment=comment (POST)</td><td>ブックマークの追加</td></tr>
+  <tr><td>/bookmark.delete?id=id (POST)</td><td>ブックマークの削除</td></tr>
+</tbody></table>
 
 ####  一覧ページ (/) を作る
 
