@@ -614,7 +614,7 @@ fizzbuzz();
 * 手続きとデータがばらばら
 
 ``` perl
-open my $fh, '<', $filename';
+open my $fh, '<', $filename;
 while (my $line = readline($fh)) {
   print $line;
 }
@@ -641,6 +641,7 @@ close $fh;
   * => 設計しやすい
 
 ## 例
+
 ``` perl
 use IO::File;
 my $file = IO::File->new($filename, 'r');
@@ -663,6 +664,7 @@ $flie->close;
 ## 本題
 
 ## Perlにおけるクラスとインスタンス
+
 ``` text
       クラス: [ データ構造定義 + 手続定義 ]
                        ↓　生成
@@ -674,6 +676,7 @@ $flie->close;
 
 ##  クラス定義 (クラス名)
 * 課題ででたSorterクラス(簡易版)
+
 ``` perl
 # パッケージに手続きを定義
 package Sorter; # クラス名
@@ -684,6 +687,7 @@ use warnings;
 ```
 
 ## クラス定義 (コンストラクタ/フィールド)
+
 ``` perl
 # コンストラクタ
 # Sorter->new; のように呼び出す
@@ -701,6 +705,7 @@ sub new {
 ```
 
 ## クラス定義 (メソッド)
+
 ``` perl
 ＃$sorter->set_values(0,1,2,3) のように呼び出す
 sub set_values {
@@ -725,6 +730,7 @@ sub sort {
 ```
 
 ## クラスの使用
+
 ``` perl
 use Sorter;
 
@@ -806,6 +812,7 @@ sub new {
 ## 多重継承
 * Mixiinをやりたいときなどにつかう
 * 乱用しない
+
 ``` perl
 package Me;
 use base qw(Father Mother); # 左 => 右の順
@@ -828,6 +835,7 @@ use base qw(Father Mother); # 左 => 右の順
 * JavaでいうObjectのようなもの
 * UNIVERSALに定義するとどのオブジェクトからも呼べる
 * isa()
+
 ``` perl
 my $dog = Dog->new(); 
 $dog->isa('Dog');    # true 
@@ -835,6 +843,7 @@ $dog->isa('Animal'); # true
 $dog->isa('Man');    # false 
 ```
 * can()
+
 ``` perl
 my $bark = $dog->can('bark'); 
 $man->$bark();
@@ -842,11 +851,10 @@ $man->$bark();
 
 ## AUTOLOAD
 *呼び出されたメソッドがMy::Classクラスに見つからない場合、
-
-**My::Class::AUTOLOADメソッドを探す
-**親クラスのAUTOLOADメソッドを探す
-**UNIVERSAL::AUTOLOADを探す
-**なかったらエラー
+  * My::Class::AUTOLOADメソッドを探す
+  * 親クラスのAUTOLOADメソッドを探す
+  * UNIVERSAL::AUTOLOADを探す
+  * なかったらエラー
 
 * AUTOLOADメソッドで未定義のメソッド呼び出しを補足
 * Ruby の method_missing
@@ -855,6 +863,7 @@ $man->$bark();
 * フィールドを動的に定義できたりする
 * 想像できない振る舞いを作り出し得るのでなるべく使わない
   * こういう仕組みがあることは理解しておく
+
 ``` perl
 package Foo;
 
@@ -882,6 +891,7 @@ sub AUTOLOAD {
 * 想像できない振る舞いを作り出し得るのでなるべく使わない
   * こういう仕組みがあることは理解しておく
 * URI
+
 ``` perl
 my $uri = URI->new('http://exapmle.com/');
 ... do something ...
@@ -889,6 +899,7 @@ print "URI is $uri";
 ```
 
 * DateTime
+
 ``` perl
 $new_dt = $dt + $duration_obj;
 $new_dt = $dt - $duration_obj;
@@ -908,6 +919,7 @@ for my $dt (sort @dts) {          # sort内で使われる<=>がoverloadされ�
 ## Class::Accessor::Fast
 * コンストラクタ/フィールドのアクセサを自動的に定義
 ### before
+
 ``` perl
 package Foo;
 
@@ -941,6 +953,7 @@ sub baz{
 ```
 
 ### after
+
 ``` perl
 package Foo;
 
@@ -975,6 +988,7 @@ __PACKAGE__->mk_accessors(qw(foo bar baz));
 ## 他のクラスビルダー
 
 ### Class::Accessor::Lite
+
 ``` perl
 package Foo;
  
@@ -1057,6 +1071,7 @@ use Class::Accessor::Lite (
 * Test::Class
 
 ## Test::More
+
 ``` perl
 use Test::More;
 
@@ -1101,6 +1116,7 @@ isa_ok( exception { $foo->method }, 'Some::Exception::Class', '例外クラス�
 * テストコードは t ディレクトリに.t拡張子をつけて保存
   * t/hoge.t
 * proveコマンド(Test::Moreに付属)で実行する
+
 ``` zsh
 $ prove -lvr t
 t/hoge.t .. 
@@ -1114,15 +1130,18 @@ Result: PASS
 
 ## テストを書くコツ
 * まず、こういう振る舞いで有るべきというテストを書く
+
 ``` perl
 is_deeply( [numsort(2,3,4,0,1)], [0,1,2,3,4], 'ランダムな数列をsortすると昇順に並ぶ' );
 ```
 * 次に境界条件での振る舞いを検証するテストを書く
+
 ``` perl
 is_deeply( [numsort()], [], '空配列をsortしたら空になる' );
 is_deeply( [numsort(100)], [100], '1要素ならそのまま' );
 ```
 * 例外条件についても確かめる
+
 ``` perl
 ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 ```
@@ -1281,6 +1300,7 @@ intern/username/100802/exercise1
                       /  ...
 ```
 Perlの慣習として、以下のディレクトリ構成でコミットするといろいろ良いです。
+
 ``` text
 .
 |-- lib
