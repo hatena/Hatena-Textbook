@@ -409,6 +409,7 @@ $ perldoc perlref
 * 名前空間
 * モジュールロードのしくみ
 * クラス(後述)
+
 ``` perl
 package Hoge;
 our $PACKAGE_VAL = 10;
