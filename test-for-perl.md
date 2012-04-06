@@ -188,7 +188,7 @@ ok ref $encode_guess && $encode_guess eq 'UTF-16LE', 'encoding is utf-16le'
 ```
 
 #  Test::Class
-で、Test::More を使ってきたけど、[http://search.cpan.org/perldoc?Test::Class:title=Test::Class] を使うともっと便利にテストできる。これを使ったテストは
+で、Test::More を使ってきたけど、[Test::Class](http://search.cpan.org/perldoc?Test::Class) を使うともっと便利にテストできる。これを使ったテストは
 
 
 ``` perl
@@ -224,7 +224,7 @@ Test::Class の便利なところは、TEST_METHOD 環境変数にメソッド�
 
 ##  prove のオプション
 
-詳しくは "[http://search.cpan.org/perldoc?prove:title=perldoc prove]" を読みましょう。
+詳しくは [perldoc prove](http://search.cpan.org/perldoc?prove) を読みましょう。
 
 ###  -l
  -Ilib と一緒
