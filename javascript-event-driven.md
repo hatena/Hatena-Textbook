@@ -795,45 +795,6 @@ req.onreadystatechange = function (e) {
 req.send(null);
 ```
 
-<!--
-##  Same-Origin Policy
-
-*  http://en.wikipedia.org/wiki/Same_origin_policy
-
-*  ウェブアプリでセキュリティを考えるとき重要な概念です
-*  同一生成元ポリシーともいいます
-*  プロトコル + ドメインが同一でなければリソースへのアクセス権がない
-*  どういうとき?
-
-##  Same-Origin Policy (2)
-
-(別ドメイン、と書きますが正確には別オリジンです)
-
-*  XMLHttpRequest
-  *  別ドメインへリクエストを出すことはできない
-*  iframe
-  *  別ドメインを iframe にロードすることはできる
-  *  別ドメインの iframe の document に触れることはできない
-*  なぜ?
-
-##  Same-Origin Policy (3)
-
-*  別のドメインへGETできたりしたらどうなるか?
-  *  その人のプライベートなリソースを取得できる
-  *  クッキーが盗られるのでリソースへ書きこみもできる
-
-##  クロスドメインリクエスト
-
-*  とはいえ、クロスドメインなアクセスが一切なしだと困る
-*  JSONP
-  *  callback({json}); という形の出力をすることで script 要素を使ってドメインを超える
-*  Cross-Origin XHR (これから)
-  *  標準化された HTTP を拡張したプロトコルを使ってクロスドメイン通信の承認をする
-
-他にもいろいろあるが基本的には JSONP しか使われない。
-
-  * >
-
 ##  質問
 
 *  <code>XMLHttpRequest</code>
