@@ -15,7 +15,7 @@
 
 ### Git
 
-* [デザイナのためのGit](https://github.com/hatena/Git-for-Designers/blob/master/README.md)
+* [デザイナのためのGit](https://github.com/hatena/Git-for-Designers)
 * WEB+DB PRESS vol.50 はじめてのGit
 
 
