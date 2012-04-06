@@ -68,7 +68,7 @@ $messagge = "bye"; # typo!
 ```
 * 細かな振る舞いはperodoc参照
 
-``` zsh
+``` text
 $ perldoc strict
 $ perldoc perllexwarn
 ```
