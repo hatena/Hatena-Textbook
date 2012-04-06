@@ -231,7 +231,7 @@ my $albums = $dbh->selectall_arrayref('SELECT * FROM album WHERE artist_id = ?',
 
 #  オブジェクト指向とは？
 
-f:id:motemen:20100519180705j:image
+<img src="http://tc1.search.naver.jp/?/kaze/mission/USER/20120315/11/18671/0/1440x810xb8e4d76b29e94a4ea7c2ee0.jpg/r.300x600" width=300/>
 
 #  OR マッパーを使った書き方 (DBIx::MoCo)
 
@@ -754,7 +754,7 @@ deleted [4] Google <http://www.google.com/>
 ユーザに共通の、URL に関する情報
 
 <table>
-  <tr><th>id</th><th><a class="okeyword" href="http://d.hatena.ne.jp/keyword/url">url</a></th><th>title</th></tr>
+  <tr><th>id</th><th>url</th><th>title</th></tr>
   <tr><td>1</td><td><a href="http://www.example.com/" target="_blank">http://www.example.com/</a></td><td>IANA — Example domains</td></tr>
   <tr><td>2</td><td><a href="http://www.hatena.ne.jp/" target="_blank">http://www.hatena.ne.jp/</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA">はてな</a></td></tr>
   <tr><td>3</td><td><a href="http://motemen.appspot.com/" target="_blank">http://motemen.appspot.com/</a></td><td><a class="okeyword" href="http://d.hatena.ne.jp/keyword/motemen">motemen</a></td></tr>
