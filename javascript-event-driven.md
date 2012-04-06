@@ -5,7 +5,7 @@
 
 
 
-#  アジェンダ
+##  アジェンダ
 
 *  JavaScript の言語について
 *  DOM について
@@ -13,14 +13,14 @@
 *  jQuery について
 *  MVC アーキテクチャについて
 
-#  まずはじめに
+##  まずはじめに
 
-##  <span lang="en">Just moment!</span>
+###  <span lang="en">Just moment!</span>
 *  Web で JS を使うとき、HTML の知識が前提となることが多い
   *  http://www.kanzaki.com/docs/htminfo.html
     *  少なくとも「簡単なHTMLの説明」は押さえておきたい。
 
-##  目的
+###  目的
 
 講義時間は限られているので
 
@@ -30,7 +30,7 @@
 
 覚えようとするとクソ多いのでリファレンスひける部分は覚えない
 
-##  JS とはどんな言語であるか?
+###  JS とはどんな言語であるか?
 
 *  基本クライアントサイド=ブラウザで動く
   *  実装がたくさんある
@@ -38,7 +38,7 @@
   *  ウェブアプリを書く上で必須なため
 *  フロントエンドの重要性
 
-##  先に JS のデバッグ方法
+###  先に JS のデバッグ方法
 
 *  デバッガ
   *  Firefox なら Firebug、Google Chrome ならデベロッパー ツール
@@ -58,13 +58,13 @@
 *  これらを仕込んで、リロードしまくることで開発します
   *  エラーコンソールをどうやって開くかからはじめましょう
 
-##  クロスブラウザについて
+###  クロスブラウザについて
 
 ここでクロスブラウザについて覚えても仕方ないので、Firefox と Firebug で開発することを前提にします。
 
-#  JavaScript 言語について
+##  JavaScript 言語について
 
-##  言語的特徴
+###  言語的特徴
 
 *  変数に型なし
   *  プリミティブな型 + オブジェクティブな型
@@ -78,7 +78,7 @@
 
 ひとつずつ説明していきます
 
-##  変数に型なし
+###  変数に型なし
 
 Perl と一緒で、Java や C などと違う点
 
@@ -93,7 +93,7 @@ foo = {};
 
 値自体には当然ちゃんと型があります
 
-##  JSの型
+###  JSの型
 
 *  <code>undefined</code>
 *  <code>null</code>
@@ -108,7 +108,7 @@ foo = {};
 
 オブジェクト以外はプリミティブです。
 
-##  JSの型 - <code>typeof</code>
+###  JSの型 - <code>typeof</code>
 
 <a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/11_Expressions.html#section-11.4.3"><code>typeof</code> 演算子</a>で調べることができます
 
@@ -130,7 +130,7 @@ typeof alert;
 <code>"undefined"</code>, <code>"number"</code>, <code>"boolean"</code>, <code>"string"</code>, <code>"object"</code>
 
 
-##  JSの型 - <code>typeof</code>
+###  JSの型 - <code>typeof</code>
 
 
 ``` javascript
@@ -145,7 +145,7 @@ typeof new String(""); //=> "object"
 typeof alert;    //=>"object"
 ```
 
-##  JS の型、object 型
+###  JS の型、object 型
 
 *  <code>Array</code> や <code>RegExp</code> など
 *  <code>string</code>, <code>number</code> をラップする <code>String</code>, <code>Number</code>
@@ -167,7 +167,7 @@ new String("foobar").toLowerCase();
 
 とはいえ大抵はオブジェクトへの変換を気にする必要はありません。
 
-##  <code>object</code> 型
+###  <code>object</code> 型
 
 そもそもオブジェクト型って何かというと、名前と値のセット (プロパティ) を複数持ったものです。
 
@@ -189,7 +189,7 @@ var obj = {
 
 配列もJSではオブジェクトとして扱えます。
 
-##  <code>undefined</code> と <code>null</code>
+###  <code>undefined</code> と <code>null</code>
 
 
 ``` javascript
@@ -210,7 +210,7 @@ typeof foo; //=> object
 (<code>object</code> が入っていることを示したいが空にしときたいとか)
 
 
-##  関数はデータ
+###  関数はデータ
 
 JS では関数もデータになれ、<code>Function</code> オブジェクトのインスタンス扱いです。(第一級のオブジェクトというやつです)
 
@@ -227,7 +227,7 @@ fun.bar = 'foobar';
 fun();
 ```
 
-##  関数はデータ (2)
+###  関数はデータ (2)
 
 JS では関数もデータになれ、<code>Function</code> オブジェクトのインスタンス扱いです。(第一級のオブジェクトというやつです)
 
@@ -245,7 +245,7 @@ fun(function () {
 });
 ```
 
-##  関数の定義
+###  関数の定義
 
 
 ``` javascript
@@ -263,7 +263,7 @@ var foobar = function () {
 
 はほぼ同じです (呼べるようになるタイミングが違います)
 
-##  関数: <code>arguments</code>
+###  関数: <code>arguments</code>
 
 
 ``` javascript
@@ -277,7 +277,7 @@ foobar(1, 2);
 ```
 
 
-##  変数のスコープ
+###  変数のスコープ
 
 関数スコープです。<code>for</code> などのループでスコープを作らないことに注意
 
@@ -302,7 +302,7 @@ function (list) {
 }
 ```
 
-##  変数のスコープ：ハマりポイント
+###  変数のスコープ：ハマりポイント
 
 
 ``` javascript
@@ -327,7 +327,7 @@ var foo = 1;
 })();
 ```
 
-##  小ネタ: 配列的なオブジェクトを配列にする
+###  小ネタ: 配列的なオブジェクトを配列にする
 
 
 ``` javascript
@@ -350,23 +350,23 @@ var array = Array.prototype.slice.call(arrayLike, 0);
 
 <code>arguments</code> や <code>NodeList</code> なども <code>Array</code> ではない <code>Array</code>-like なもの
 
-##  プロトタイプ指向
+###  プロトタイプ指向
 
 他のあるオブジェクトを元にして新規にオブジェクトをクローン (インスタンス化) していくオブジェクト指向技術
 
 クラス指向はクラスからしかインスタンス化できないが、プロトタイプ指向ではあらゆるオブジェクトを基に新たなオブジェクトを生成できる
 
-###  メリット
+####  メリット
 
 *  柔軟
 *  HTML のように個々の要素がほぼ同じだけど微妙に違う場合に便利
 
-###  デメリット
+####  デメリット
 
 *  自由すぎる
 
 
-##  JS におけるプロトタイプ
+###  JS におけるプロトタイプ
 
 プロトタイプにしたいオブジェクトに初期化関数を組み合せることでオブジェクトをクローンできる
 
@@ -381,7 +381,7 @@ var instanceOfFoo = new Foo();
 instanceOfFoo.foo(); //=> 'hello!'
 ```
 
-##  JS におけるプロトタイプ (プロトタイプチェーン)
+###  JS におけるプロトタイプ (プロトタイプチェーン)
 
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/c/cho45/20100723/20100723021218.png" />
 
@@ -406,7 +406,7 @@ instanceOfBar.bar(); //=> 'hello!'
 
 プロトタイプチェーンは長くなると意味不明になりがちなので、あんまりやらないことが多い気がします。(継承やりすぎると意味不明なのがひどくなった感じです)
 
-##  <code>this</code> について
+###  <code>this</code> について
 
 *  <code>this</code> という暗黙的に渡される引数のようなものがあります
 *  Perl の <code>$self</code> みたいなやつです
@@ -421,7 +421,7 @@ a.foo(); //=> true
 a.foo.call({}); //=> false
 ```
 
-##  JS の使われかた
+###  JS の使われかた
 
 *  HTML の
 *  <code>script</code> 要素で
@@ -433,7 +433,7 @@ a.foo.call({}); //=> false
 <script type="text/javascript" src="script.js"></script>
 ```
 
-##  JS については以上です
+###  JS については以上です
 
 質問など
 
@@ -445,9 +445,9 @@ a.foo.call({}); //=> false
 
 (あとで書いてみると疑問になることが多いと思うので聞いてください)
 
-#  DOM について
+##  DOM について
 
-##  DOM とは
+###  DOM とは
 
 *  Document Object Model の略です
 *  HTML とか CSS を扱うときの API を定めたものです
@@ -462,13 +462,13 @@ a.foo.call({}); //=> false
 
 DOM Level 0 の多くも HTML5 で標準化されている
 
-##  DOM の基本的な考えかた
+###  DOM の基本的な考えかた
 
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/c/cho45/20100721/20100721183313.png" />
 
 一番上にはドキュメントノード (文書ノード)
 
-##  DOM の構成要素
+###  DOM の構成要素
 
 *  <code>Node</code>
   *  全ての DOM の構成要素のベースクラス
@@ -485,7 +485,7 @@ DOM Level 0 の多くも HTML5 で標準化されている
 
 <code>Text</code> も <code>Attribute</code> も <code>Node</code> のうちです。これらがツリー構造 (文書木) になっています。
 
-##  よく使うメソッド
+###  よく使うメソッド
 
 *  <code>document.createElement('div')</code>
   *  要素ノードをつくる 
@@ -505,7 +505,7 @@ DOM Level 0 の多くも HTML5 で標準化されている
 *  https://developer.mozilla.org/en/DOM/element
 *  https://developer.mozilla.org/en/DOM/document
 
-##  例えばテキストノードを要素に追加する場合
+###  例えばテキストノードを要素に追加する場合
 
 
 ``` html
@@ -534,7 +534,7 @@ containerNode.appendChild(elementNode);
 *  ブラウザの画面に表示されるのは文書木に属するノード
 *  ノードを作った段階では、そのノードはまだ文書木に属していない
 
-##  空白もノードです
+###  空白もノードです
 
 
 ``` html
@@ -549,7 +549,7 @@ alert(document.getElementById('sample').firstChild); //=> ?
 ```
 
 
-##  続きはリファレンスで
+###  続きはリファレンスで
 
 言語的な部分は仕様を読むのが正確でてっとりばやい(和訳あるし)
 
@@ -557,7 +557,7 @@ alert(document.getElementById('sample').firstChild); //=> ?
 
 ちょい読んでみましょう
 
-##  続きはリファレンスで (2)
+###  続きはリファレンスで (2)
 
 DOM 的な部分は Mozilla Developer Center がよくまとまっている(部分的に和訳ある)
 
@@ -567,9 +567,9 @@ DOM も仕様を読むのは参考になる (和訳あり)
 
 *  http://www2u.biglobe.ne.jp/~oz-07ams/prog/
 
-#  イベント
+##  イベント
 
-##  並列性
+###  並列性
 
 *  JS に並列性はない・組み込みのスレッドはない
 *  同時に処理されるコードは常に1つ
@@ -577,7 +577,7 @@ DOM も仕様を読むのは参考になる (和訳あり)
 *  多くのブラウザはループ中スクロールさえできない
   *  Opera 10.60 では止まらないようになっている
 
-##  非同期プログラミング
+###  非同期プログラミング
 
 待たない/待てないプログラミングのこと
 
@@ -585,23 +585,23 @@ DOM も仕様を読むのは参考になる (和訳あり)
 *  待てないのでイベントを設定する (方法としてはコールバック)
 *  待たないので他の処理を実行できる
 
-##  イベント
+###  イベント
 
 JS で重要なのは「イベント」の処理方法です。
 
 JS では非同期プログラミングをしなければなりません。
 
-##  イベントドリブン
+###  イベントドリブン
 
 *  JS ではブラウザからのイベントをハンドリングします
 
-###  メリット
+####  メリット
 
 *  同時に2つのコードが実行されないので同期とかがいりません
   *  変数代入で変に悩まなくてよい
 *  イベントが発火するまで JS レベルでは一切 CPU を食わない
 
-###  デメリット
+####  デメリット
 
 *  1つ1つの処理を最小限にしないと全部止まります
   *  JS関係は全て止まります
@@ -609,7 +609,7 @@ JS では非同期プログラミングをしなければなりません。
 *  コールバックを多用するので場合によっては読みにくい
   *  あっちいったりこっちいったり
 
-##  イベントの例
+###  イベントの例
 
 *  <code>setTimeout(callback, time)</code>
   *  一定時間後にコールバックをよばせる
@@ -618,7 +618,7 @@ JS では非同期プログラミングをしなければなりません。
   *  あるイベントに対してコールバックを設定する
   *  イベントはあらかじめ定められている
 
-##  <code>setTimeout</code>
+###  <code>setTimeout</code>
 
 
 ``` javascript
@@ -629,7 +629,7 @@ alert('1');
 ```
 https://developer.mozilla.org/ja/DOM/window.setTimeout
 
-##  <code>addEventListener</code>
+###  <code>addEventListener</code>
 
 
 ``` javascript
@@ -639,7 +639,7 @@ document.body.addEventListener('click', function (e) {
 ```
 https://developer.mozilla.org/ja/DOM/element.addEventListener
 
-##  イベントの例
+###  イベントの例
 
 *  <code>mousedown</code>
 *  <code>mousemove</code>
@@ -650,7 +650,7 @@ https://developer.mozilla.org/ja/DOM/element.addEventListener
 
 などなど。いっぱいあります。http://esw.w3.org/List_of_events
 
-##  イベントバブリング
+###  イベントバブリング
 
 
 ``` html
@@ -664,7 +664,7 @@ https://developer.mozilla.org/ja/DOM/element.addEventListener
 http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/
 <img src="http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/images/eventflow.png" />
 
-##  <code>load</code> イベントについて
+###  <code>load</code> イベントについて
 
 *  DOM の構築
 *  画像のロード
@@ -682,7 +682,7 @@ window.addEventListener('load', function (e) {
 
 みたいに書くのが普通
 
-##  イベントオブジェクトの構成要素
+###  イベントオブジェクトの構成要素
 
 
 ``` javascript
@@ -701,7 +701,7 @@ document.body.addEventListener('click', function (e) {
 
 https://developer.mozilla.org/en/DOM/event をみるといいです
 
-##  オブジェクトのメソッドをイベントハンドラとして使う
+###  オブジェクトのメソッドをイベントハンドラとして使う
 
 ``` javascript
 function Notifier(element, message) {
@@ -722,21 +722,21 @@ new Notifier(document.body, 'Clicked!');
 *  <code>addEventListener('click', this.notify, false)</code> では<code>notify</code> 中の <code>this</code> が何を指すかわからない
 *  最近のブラウザなら <code>this.notify.bind(this)</code> とも書ける
 
-##  質問
+###  質問
 
 *  非同期プログラミンング
 *  並列性なし
 *  イベントドリブン
 *  イベントオブジェクト
 
-#  XMLHttpRequest
+##  XMLHttpRequest
 
-##  <code>XMLHttpRequest</code>
+###  <code>XMLHttpRequest</code>
 
 *  所謂 AJAX というやつのキモ
 *  JS から HTTP リクエストを出せる
 
-##  生 <code>XMLHttpRequest</code> の使いかた
+###  生 <code>XMLHttpRequest</code> の使いかた
 
 
 ``` javascript
@@ -758,7 +758,7 @@ req.send(null);
 
 とはいえ一回は生で使ってみましょう
 
-##  XMLHttpRequest での POST
+###  XMLHttpRequest での POST
 
 POST するリクエスト body を自力で 作ります
 
@@ -780,7 +780,7 @@ req.send(data);
 
 みたいなのが普通。<a href="http://www.studyinghttp.net/cgi-bin/rfc.cgi?1867">multipart</a>も送れるけどまず使わない
 
-##  JSON をリモートから読みこむ
+###  JSON をリモートから読みこむ
 
 *  JSON : オブジェクトのシリアライズ形式の一種。JS のオブジェクトリテラル表記と一部互換性がある
 最近のブラウザなら <code>JSON</code> オブジェクトがありますが、古いブラウザにも対応するときは自分で <code>eval</code> します
@@ -802,17 +802,17 @@ req.onreadystatechange = function (e) {
 req.send(null);
 ```
 
-##  質問
+###  質問
 
 *  <code>XMLHttpRequest</code>
 
-###  ハマりポイント
+####  ハマりポイント
 
 *  http 経由じゃないと XHR うまくうごかない
 
-#  jQuery
-
 ##  jQuery
+
+###  jQuery
 
 *  世界的によく使われているライブラリ
 *  はてなでも採用事例が増えてきている
@@ -827,7 +827,7 @@ $(function ($) {
 });
 ```
 
-##  jQuery を使う
+###  jQuery を使う
 
 
 ``` html
@@ -840,7 +840,7 @@ $(function ($) {
 *  http://docs.jquery.com/
 *  http://api.jquery.com/
 
-##  jQuery の使い方
+###  jQuery の使い方
 
 
 ``` javascript
@@ -858,7 +858,7 @@ $('<p>HTML fragment</p>');
   //   その要素が含まれる jQuery オブジェクトを作成
 ```
 
-##  jQuery の使い方、イベント編
+###  jQuery の使い方、イベント編
 
 
 ``` javascript
@@ -875,7 +875,7 @@ $(document).on('click', '.foo', function (event) { ... });
   //   foo クラスを持つ要素の click イベントを監視
 ```
 
-##  jQuery の使い方、リクエスト編
+###  jQuery の使い方、リクエスト編
 
 
 ``` javascript
@@ -890,29 +890,29 @@ $.post(url, { foo: 42 }).done(function (res) {
 $.ajax({ url: url, ... });
 ```
 
-##  質問
+###  質問
 
 *  jQuery
 
-#  MVC アーキテクチャ
-
 ##  MVC アーキテクチャ
+
+###  MVC アーキテクチャ
 
 *  <span lang="en">Model-View-Controller</span>
 *  これまでの課題でやった Web アプリケーションの MVC とはちょっと違う
   *  「Web アプリケーションの MVC」を「MVC2」と呼ぶこともある
-###  Web アプリケーションの MVC
+####  Web アプリケーションの MVC
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802222932.png" />
 *  Model は一方的に操作され、またはデータを読み取られるのみ
-###  クライアントサイドプログラミングの MVC
+####  クライアントサイドプログラミングの MVC
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/ninjinkun/20100802/20100802223034.png" />
 *  Model はしばしば observer パターンを実装し、自身の状態の変更を View に<strong>通知する</strong>
 
-##  クライアントサイドプログラミング
+###  クライアントサイドプログラミング
 *  Web API (HTTP リクエストを送り、テキストや JSON で結果を受け取るような API) をそのまま Model として使うこともある
 *  規模が小さい場合、View と Controller は一緒くたに実装することもある
 
-###  例
+####  例
 
 *  <code>/api/time.json</code> にアクセスすると <code>{ "time": "2012-04-01 12:00:00" }</code> というJSON 形式で現在時刻を返す API があるとする
 *  ボタンを押すと時刻表示を更新するようなウィジェットを作る
@@ -947,7 +947,7 @@ $(function () {
 </p>
 ```
 
-##  Observer パターン
+###  Observer パターン
 *  jQuery を使えば大抵のオブジェクト上で observer パターンを実装できる
 
 ``` html
@@ -993,13 +993,13 @@ $(function () {
 ```
 *   1 秒ごとに「有効」「無効」(または <span lang="en">"Enabled", "Disabled"</span>) の表示が切り替わる
 
-##  質問
+###  質問
 
 *  MVC アーキテクチャ
 
-#  課題
+##  課題
 
-##  課題1 (3.5点)
+###  課題1 (3.5点)
 
 *  ページ継ぎ足し機構を作れ (ダイアリー、グループにあるようなもの)
   *  DOM を理解する
@@ -1007,7 +1007,7 @@ $(function () {
   *  イベントを理解する (<code>click</code>, <code>load</code>)
 jQuery、Ten といったフレームワークを使ってもよい
 
-###  ヒント
+####  ヒント
 
 手順
 
@@ -1024,20 +1024,20 @@ jQuery、Ten といったフレームワークを使ってもよい
 *  <code>static/js/diary.js</code> などに JS ファイルを設置すると、
 *  HTML からは <code>&lt;script type="text/javsacript" src="/js/diary.js"&gt;&lt;/script&gt;</code> でその JS ファイルを参照できます
 
-###  配点
+####  配点
 
 *  動くこと (1.5)
 *  設計 (1)
 *  UIへの配慮 (1)
 
-##  課題2 (3.5点)
+###  課題2 (3.5点)
 
 タイマーを管理する <code>Timer</code> クラスをつくれ。
 
 *  コールバックを概念を理解する
 jQuery、Ten といったフレームワークを使っては<strong>いけない</strong>
 
-###  仕様
+####  仕様
 
 
 ``` javascript
@@ -1055,7 +1055,7 @@ timer.stop();
     //=> タイマーをストップさせる。
 ```
 
-###  例
+####  例
 
 
 ``` javascript
@@ -1073,19 +1073,19 @@ document.body.addEventListener('click', function () {
 
 以上のようなインターフェイスの <code>Timer</code> クラスを作れ。(ライブラリを使わずに)
 
-###  ヒント
+####  ヒント
 
 + <code>Timer</code> の <code>addListener</code> は自分で実装しろということです (DOM のメソッドではない)
 + <a href="https://developer.mozilla.org/ja/DOM/window.setTimeout"><code>setTimeout()</code></a> を使うことになると思います
 
 
-###  配点
+####  配点
 
 *  動くこと (1.5)
 *  設計 (1)
 *  <code>removeListener</code> を実装 (1)
 
-##  課題3 (3点)
+###  課題3 (3点)
 
 *  その場編集機能を作れ
   *  要素の作成、追加、削除
@@ -1093,7 +1093,7 @@ document.body.addEventListener('click', function () {
   *  その場編集用 API の設計
 jQuery、Ten といったフレームワークを使ってもよい
 
-###  配点
+####  配点
 
 *  動くこと (1)
 *  設計 (1)
