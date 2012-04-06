@@ -17,7 +17,7 @@
 
 ## はじめに
 * 事前課題
-  *http://github.com/hakobe/Sorter
+  * http://github.com/hakobe/Sorter
 
 * 前提
   * はじめてのPerl、続はじめてのPerlに目を通している
@@ -36,8 +36,8 @@
   * http://b.hatena.ne.jp/t/perl
 
 ## 副読サイト
-* [http://perldoc.jp/:title=perldoc.jp]: perldocの日本語訳
-* [https://metacpan.org/:title=metacpan]: CPANの検索
+* http://perldoc.jp/: perldocの日本語訳
+* https://metacpan.org/: CPANの検索
 
 ## Perlプログラミング勘所
 * Perlでおさえておきたい/よくはまるポイントを説明
