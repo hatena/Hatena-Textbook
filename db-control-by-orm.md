@@ -230,8 +230,7 @@ my $albums = $dbh->selectall_arrayref('SELECT * FROM album WHERE artist_id = ?',
   *  Relational: 関係データベース (relational database; RDB)
 
 #  オブジェクト指向とは？
-
-<img src="http://tc1.search.naver.jp/?/kaze/mission/USER/20120315/11/18671/0/1440x810xb8e4d76b29e94a4ea7c2ee0.jpg/r.300x600" width=300/>
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/m/motemen/20100519/20100519180705.jpg" width=500 />
 
 #  OR マッパーを使った書き方 (DBIx::MoCo)
 
