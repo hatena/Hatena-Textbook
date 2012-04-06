@@ -10,7 +10,7 @@
 
 ##  <span lang="en">Just moment!</span>
 *  Web で JS を使うとき、HTML の知識が前提となることが多い
-  *  [http://www.kanzaki.com/docs/htminfo.html:title=ごく簡単なHTMLの説明]
+  *  http://www.kanzaki.com/docs/htminfo.html
     *  少なくとも「簡単なHTMLの説明」は押さえておきたい。
 
 ##  目的
@@ -654,9 +654,8 @@ https://developer.mozilla.org/ja/DOM/element.addEventListener
 *  イベントは実際に発生したノードから親に向かって浮上 (バブル) していく
 *  バブルしないイベントもある (<code>focus</code>、<code>load</code>、etc.)
 
->http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/:title>
-[http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/images/eventflow.png:image]
-<<
+http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/
+<img src="http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/images/eventflow.png" />
 
 ##  <code>load</code> イベントについて
 
@@ -870,8 +869,8 @@ $(function ($) {
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 ```
 
-*  [http://docs.jquery.com/:title]
-*  [http://api.jquery.com/:title]
+*  http://docs.jquery.com/
+*  http://api.jquery.com/
 
 ##  jQuery の使い方
 
