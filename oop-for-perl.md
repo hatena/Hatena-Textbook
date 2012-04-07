@@ -445,12 +445,13 @@ $ perl -Ipath/to/your/lib;
 
 ## サブルーチン
 ``` perl
-&hello() # 定義前に呼ぶにはは&がいる 
+&hello # 定義前に括弧なしで呼ぶにはは&がいる 
 sub hello {
   my ($name) = @_; # @_内の自分で処理
   return "Hello, $name";
 }
-hello(); # 定義後であれば & は不要
+hello();
+hello; 定義後であれば括弧は不要
 ```
 
 ## 引数処理イディオム1
