@@ -22,4 +22,5 @@
 
 * [Perlを使ったテストの書き方](https://github.com/hatena/Hatena-Textbook/blob/master/test-for-perl.md)
 
-
+## ライセンス
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />
