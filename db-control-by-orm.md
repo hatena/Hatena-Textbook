@@ -1644,3 +1644,9 @@ use DateTime;
 $dt = DateTime->from_epoch(epoch => $time);
 warn $dt->epoch;
 ```
+
+
+
+
+
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />

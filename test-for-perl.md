@@ -310,3 +310,9 @@ verbose になる
   *  ストレージに入っているデータに出来る限り紐づかないクラスを作る(実装的に)
 
 などがあります。
+
+
+
+
+
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />

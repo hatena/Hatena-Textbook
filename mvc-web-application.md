@@ -1291,3 +1291,9 @@ __END__
 1. after_dispatchトリガ実行
 1. ヘッダ生成
 1. ビューに従って結果を表示
+
+
+
+
+
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />

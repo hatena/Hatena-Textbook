@@ -1100,3 +1100,9 @@ jQuery、Ten といったフレームワークを使ってもよい
 *  動くこと (1)
 *  設計 (1)
 *  UIへの配慮 (1)
+
+
+
+
+
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />

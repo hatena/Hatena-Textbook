@@ -1342,3 +1342,9 @@ Perlの慣習として、以下のディレクトリ構成でコミットする�
 ## やること
 * git clone
 * 課題
+
+
+
+
+
+<img src="http://creativecommons.jp/wp/wp-content/uploads/2009/10/by-nc-sa.png" />
