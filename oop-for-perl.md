@@ -488,7 +488,7 @@ sub func4 { $_[0]->{arg1} } # @_ の第0要素
 * パッケージに定義される
 
 ``` perl
-pacakge Greetings;
+package Greetings;
 sub hello { }
 1;
 
@@ -498,7 +498,7 @@ sub hello { }
 * ネストしてもパッケージに定義されるので注意
 
 ``` perl
-pacakge Greetings;
+package Greetings;
 sub hello { 
   sub make_msg { }
   sub print {}
