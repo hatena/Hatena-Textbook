@@ -720,7 +720,7 @@ sub new {
 ## クラス定義 (メソッド)
 
 ``` perl
-＃$sorter->set_values(0,1,2,3) のように呼び出す
+# $sorter->set_values(0,1,2,3) のように呼び出す
 sub set_values {
     my ($self, @values) = @_; # $self には$sorterが入る
     $self->{values} = [@values];
