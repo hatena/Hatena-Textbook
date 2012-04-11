@@ -183,7 +183,7 @@ UPDATE artist SET birthday = '2008-07-18' WHERE name LIKE '鏡音%';
 
 *  Perl からデータベースに接続するモジュール
   *  OR マッパーではない
-*  [DBI](http://search.cpan.org/~timb/DBI-1.618/DBI.pm)
+*  [DBI](http://search.cpan.org/~timb/DBI/DBI.pm)
   *  (DBD::*) MySQL、PostgreSQL、SQLite、…
 
 ##  DBI を用いる
@@ -368,7 +368,7 @@ $artists->each(sub {
 });
 ```
 
-*  where => {} で条件を指定する。[cpan:SQL::Abstract] 形式で指定できる
+*  where => {} で条件を指定する。[SQL::Abstract](http://search.cpan.org/~frew/SQL-Abstract/lib/SQL/Abstract.pm) 形式で指定できる
 *  order で順序を指定する (カラム名 ASC|DESC)
 *  offset, limit で範囲を絞る
 
@@ -390,7 +390,7 @@ SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10;
 *  search メソッドで返ってくるオブジェクト
 *  ほとんどただの配列だけど、操作を Ruby っぽく書ける
 *  DB 操作に関わるメソッドはありません
-*  c.f. [cpan:List::Rubyish]
+*  c.f. [List::Rubyish](http://search.cpan.org/~yappo/List-Rubyish/lib/List/Rubyish.pm)
 
 *  <strong>push, pop, shift, unshift, add, append, prepend</strong>
 *  <strong>length, size</strong>
@@ -603,7 +603,7 @@ $artist->birthday->strftime('%x');
 ##  SQL を書く: SQL::Abstract を使った書き方
 
 *  もうすぐ休憩です
-*  [cpan:SQL::Abstract]
+*  [SQL::Abstract](http://search.cpan.org/~frew/SQL-Abstract/lib/SQL/Abstract.pm)
 
 
 ``` perl
@@ -1079,12 +1079,12 @@ sub add_bookmark {
 }
 ```
 
-*  croak: use [cpan:Carp] すると使えます
+*  croak: use [Carp](http://search.cpan.org/~zefram/Carp/lib/Carp.pm) すると使えます
   *  die と似てるけど呼び出し元で死ぬ
 
 ##  開発のお供に
 
-*  [cpan:Devel::KYTProf] を使うのがオススメ
+*  [Devel::KYTProf](http://search.cpan.org/~onishi/Devel-KYTProf/lib/Devel/KYTProf.pm) を使うのがオススメ
   *  use するだけ
 
 
@@ -1109,7 +1109,7 @@ bookmarked [6] はてな <http://www.hatena.ne.jp/>
 ```
 
 *  または環境変数 <code>MOCO_DEBUG</code> を真にする
-*  それから… [cpan:Data::Dumper] いいです
+*  それから… [Data::Dumper](http://search.cpan.org/~smueller/Data-Dumper/Dumper.pm) いいです
 
 
 ``` perl
@@ -1125,7 +1125,7 @@ print Dumper($x);
 #         };
 ```
 
-*  repl もいいですね ([cpan:Eval::WithLexicals], [cpan:Devel::REPL])
+*  repl もいいですね ([Eval::WithLexicals](http://search.cpan.org/~dgl/Eval-WithLexicals/lib/Eval/WithLexicals.pm), [Devel::REPL](http://search.cpan.org/~doy/Devel-REPL/lib/Devel/REPL.pm))
 
 ##  テスト
 
@@ -1183,7 +1183,7 @@ sub add_bookmark : Test(5) {
 __PACKAGE__->runtests;
 ```
 
-*  [cpan:Test::Class] という JUnit ライクなテストフレームワークを使っています
+*  [Test::Class](http://search.cpan.org/~adie/Test-Class/lib/Test/Class.pm) という JUnit ライクなテストフレームワークを使っています
 
 ##  テスト用モジュールを書いておくと便利
 
@@ -1214,7 +1214,7 @@ sub truncate_db {
 
 *  本番の DB にアクセスしないようにする
   *  テスト専用の DB を用意して、テストでは必ずそちらを使うようにする
-  *  [cpan:DBIx::RewriteDSN] を使うのもよいです
+  *  [DBIx::RewriteDSN](http://search.cpan.org/~satoh/DBIx-RewriteDSN/lib/DBIx/RewriteDSN.pm) を使うのもよいです
 *  外部との通信を発生させない
   *  テストの高速化にもつながります
 
@@ -1375,7 +1375,7 @@ hitode909 さんだったら、
 
 *  <code>@ARGV</code> 変数
   *  ./diary.pl hoge fuga として起動すると <code>@ARGV = ('hoge', 'fuga')</code> となります
-*  コマンドライン引数をパーズするには [cpan:Getopt::Long]
+*  コマンドライン引数をパーズするには [Getopt::Long](http://search.cpan.org/~jv/Getopt-Long/lib/Getopt/Long.pm)
 *  標準入力からの読み取り
 
 
@@ -1446,7 +1446,7 @@ CREATE TABLE table_name (
 
 ##  SQL::Abstract
 
-詳しくは [cpan:SQL::Abstract] をみて
+詳しくは [SQL::Abstract](http://search.cpan.org/~frew/SQL-Abstract/lib/SQL/Abstract.pm) をみて
 
 
 ``` perl
@@ -1577,7 +1577,7 @@ warn length $chars; # 5
 
 ##  byte/character convertion
 
-[cpan:Encode]
+[Encode](http://search.cpan.org/~dankogai/Encode/Encode.pm)
 
 *  入出力は基本的にバイト列になっている
   *  ファイル、DB、HTTP、...
@@ -1598,7 +1598,7 @@ $chars = decode 'utf8', $bytes& # バイト列を復号して文字列に
 
 ##  DateTime
 
-[cpan:DateTime], [cpan:DateTime::Format::MySQL]
+[DateTime](http://search.cpan.org/~drolsky/DateTime/lib/DateTime.pm), [DateTime::Format::MySQL](http://search.cpan.org/~drolsky/DateTime-Format-MySQL/lib/DateTime/Format/MySQL.pm)
 
 *  Perl で日時を表すときは DateTime がよく使われる
 
