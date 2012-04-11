@@ -133,6 +133,7 @@ for my $e (@array) { # 全要素ループ
 
 ## ハッシュ
 * %ash とおぼえましょう
+
 ``` perl
 my %hash = (
   perl  => 'larry',
@@ -166,6 +167,7 @@ for my $key (keys %hash) { # 全要素
 ## データ型まとめ
 * スカラ-$ /配列-@ /ハッシュ-%
 * $val と @val と %val は別の変数
+
 ``` zsh
 $ perldoc perldata
 ```
@@ -385,6 +387,7 @@ my $foo = { a => 1, b => 2, c => 3};
 
 ## おすすめ
 必要なときだけデリファレンスする
+
 ``` perl
 my $list = [1, 2, 3];
 push @$list, 4;
@@ -407,6 +410,7 @@ my ($res1, $res2)
 * スカラ/配列/ハッシュへの参照
 * 複雑なデータ構造を扱うときに必須
 * 記法がちょっと複雑
+
 ``` zsh
 $ perldoc perlreftut
 $ perldoc perlref
@@ -863,7 +867,7 @@ $man->$bark();
 ```
 
 ## AUTOLOAD
-*呼び出されたメソッドがMy::Classクラスに見つからない場合、
+* 呼び出されたメソッドがMy::Classクラスに見つからない場合、
   * My::Class::AUTOLOADメソッドを探す
   * 親クラスのAUTOLOADメソッドを探す
   * UNIVERSAL::AUTOLOADを探す
