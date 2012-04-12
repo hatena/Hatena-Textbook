@@ -742,7 +742,7 @@ new Notifier(document.body, 'Clicked!');
 ``` javascript
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/api/foo', true);
-req.onreadystatechange = function (e) {
+xhr.onreadystatechange = function (e) {
   if (xhr.readyState == 4) {
     if (xhr.status == 200) {
       alert(xhr.responseText);
@@ -751,7 +751,7 @@ req.onreadystatechange = function (e) {
     }
   }
 };
-req.send(null);
+xhr.send(null);
 ```
 
 通常どんなJSフレームワークもラッパーが実装されてます
@@ -766,7 +766,7 @@ POST するリクエスト body を自力で 作ります
 ``` javascript
 var xhr = new XMLHttpRequest();
 xhr.open('POST', '/api/foo', true);
-req.onreadystatechange = function (e) { };
+xhr.onreadystatechange = function (e) { };
 var params = { foo : 'bar', baz : 'Hello World' };
 var data = ''
 for (var name in params) if (params.hasOwnProperty(name)) {
@@ -774,8 +774,8 @@ for (var name in params) if (params.hasOwnProperty(name)) {
 }
 // data //=> 'foo=bar&baz=Hello%20World&'
 
-req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-req.send(data);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.send(data);
 ```
 
 みたいなのが普通。<a href="http://www.studyinghttp.net/cgi-bin/rfc.cgi?1867">multipart</a>も送れるけどまず使わない
@@ -790,7 +790,7 @@ https://developer.mozilla.org/ja/Using_native_JSON
 ``` javascript
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/api/status.json', true);
-req.onreadystatechange = function (e) {
+xhr.onreadystatechange = function (e) {
   if (xhr.readyState == 4) {
     if (xhr.status == 200) {
       var json = eval('(' + xhr.responseText + ')');
@@ -799,7 +799,7 @@ req.onreadystatechange = function (e) {
     }
   }
 };
-req.send(null);
+xhr.send(null);
 ```
 
 ###  質問
@@ -1036,7 +1036,7 @@ jQuery、Ten といったフレームワークを使ってもよい
 
 タイマーを管理する <code>Timer</code> クラスをつくれ。
 
-*  コールバックを概念を理解する
+*  コールバックの概念を理解する
 jQuery、Ten といったフレームワークを使っては<strong>いけない</strong>
 
 ####  仕様
