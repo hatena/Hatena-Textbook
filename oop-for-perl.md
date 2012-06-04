@@ -133,6 +133,7 @@ for my $e (@array) { # 全要素ループ
 
 ## ハッシュ
 * %ash とおぼえましょう
+
 ``` perl
 my %hash = (
   perl  => 'larry',
@@ -166,6 +167,7 @@ for my $key (keys %hash) { # 全要素
 ## データ型まとめ
 * スカラ-$ /配列-@ /ハッシュ-%
 * $val と @val と %val は別の変数
+
 ``` zsh
 $ perldoc perldata
 ```
@@ -385,6 +387,7 @@ my $foo = { a => 1, b => 2, c => 3};
 
 ## おすすめ
 必要なときだけデリファレンスする
+
 ``` perl
 my $list = [1, 2, 3];
 push @$list, 4;
@@ -407,6 +410,7 @@ my ($res1, $res2)
 * スカラ/配列/ハッシュへの参照
 * 複雑なデータ構造を扱うときに必須
 * 記法がちょっと複雑
+
 ``` zsh
 $ perldoc perlreftut
 $ perldoc perlref
@@ -488,7 +492,7 @@ sub func4 { $_[0]->{arg1} } # @_ の第0要素
 * パッケージに定義される
 
 ``` perl
-pacakge Greetings;
+package Greetings;
 sub hello { }
 1;
 
@@ -498,7 +502,7 @@ sub hello { }
 * ネストしてもパッケージに定義されるので注意
 
 ``` perl
-pacakge Greetings;
+package Greetings;
 sub hello { 
   sub make_msg { }
   sub print {}
@@ -720,7 +724,7 @@ sub new {
 ## クラス定義 (メソッド)
 
 ``` perl
-＃$sorter->set_values(0,1,2,3) のように呼び出す
+# $sorter->set_values(0,1,2,3) のように呼び出す
 sub set_values {
     my ($self, @values) = @_; # $self には$sorterが入る
     $self->{values} = [@values];
@@ -863,7 +867,7 @@ $man->$bark();
 ```
 
 ## AUTOLOAD
-*呼び出されたメソッドがMy::Classクラスに見つからない場合、
+* 呼び出されたメソッドがMy::Classクラスに見つからない場合、
   * My::Class::AUTOLOADメソッドを探す
   * 親クラスのAUTOLOADメソッドを探す
   * UNIVERSAL::AUTOLOADを探す
