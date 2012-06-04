@@ -55,7 +55,7 @@
   * パッケージ 
   * サブルーチン
 
-## use stirct;use warnings;
+## use strict;use warnings;
 * ファイルの先頭には必ず書きましょう
 
 ``` perl
