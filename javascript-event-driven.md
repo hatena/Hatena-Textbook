@@ -71,10 +71,12 @@
   *  ただしプリミティブ型も自動的にオブジェクティブ型へ変換される
 *  関数はデータとして扱える (オブジェクト)
 *  文法は C に似てる
-*  言語的な部分は<a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/">ECMAScript として標準化</a>されている
+*  言語のコア部分は ECMAScript として標準化されている
+  *  <a href="https://developer.mozilla.org/ja/JavaScript/Guide/JavaScript_Overview#JavaScript_.E3.81.A8_ECMAScript_.E4.BB.95.E6.A7.98">JavaScript と ECMAScript 仕様について (JavaScript Overview - MDN)</a>
+  *  ECMAScript 仕様は <a title="Standard ECMA-262 Edition 5.1" href="http://ecma-international.org/ecma-262/5.1/">ECMA-262 (5.1)</a> (日本語版 : <a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/">ECMA-262 3rd 日本語版</a>)
   *  ActionScript も同じ。AS やったことあるなら JS は DOM さえ覚えれば良い
-*  プロトタイプ指向なためクラスというものはない
-  *  クラス指向を模倣することはできる
+*  プロトタイプベースの継承構造をサポートしており, クラスというものはない
+  *  クラスベースの継承を模倣することはできる
 
 ひとつずつ説明していきます
 
@@ -95,16 +97,16 @@ foo = {};
 
 ###  JSの型
 
-*  <code>undefined</code>
-*  <code>null</code>
-*  <code>number</code>
-*  <code>boolean</code>
-*  <code>string</code>
-*  <code>object</code>
+*  <code>Undefined</code>
+*  <code>Null</code>
+*  <code>Number</code>
+*  <code>Boolean</code>
+*  <code>String</code>
+*  <code>Object</code>
   *  <code>({})</code>
   *  <code>[]</code>
 
-<code>number</code>, <code>boolean</code>, <code>string</code> とかは<a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/9_Type_Conversion.html">プリミティブ値</a>と呼ばれます
+<code>Number</code>, <code>Boolean</code>, <code>String</code> などの型に属する値は<a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/9_Type_Conversion.html">プリミティブ値</a>と呼ばれます
 
 オブジェクト以外はプリミティブです。
 
@@ -145,11 +147,11 @@ typeof new String(""); //=> "object"
 typeof alert;    //=>"object"
 ```
 
-###  JS の型、object 型
+###  JS の型、Object 型
 
-*  <code>Array</code> や <code>RegExp</code> など
-*  <code>string</code>, <code>number</code> をラップする <code>String</code>, <code>Number</code>
-*  <code>Function</code>
+*  <code>Array</code> オブジェクトや <code>RegExp</code> オブジェクトなど
+*  <code>String</code> 値, <code>Number</code> 値をラップする <code>String</code> オブジェクト, <code>Number</code> オブジェクト
+*  <code>Function</code> オブジェクト
 
 プリミティブ型からオブジェクト型へは自動変換がかかります (<code>null</code>, <code>undefined</code> 以外)
 
@@ -158,7 +160,7 @@ typeof alert;    //=>"object"
 "foobar".toLowerCase();
 ```
 
-としたとき、<code>"foobar"</code> は <code>string</code> プリミティブであるにも関わらず、メソッドを呼べるのはメソッドを呼ぼうとしたときに自動的に <code>String</code> オブジェクトへ変換されるからです。
+としたとき、<code>"foobar"</code> は <code>String</code> 値 (プリミティブ) であるにも関わらず、メソッドを呼べるのはメソッドを呼ぼうとしたときに自動的に <code>String</code> オブジェクトへ変換されるからです。
 
 
 ``` javascript
@@ -167,16 +169,16 @@ new String("foobar").toLowerCase();
 
 とはいえ大抵はオブジェクトへの変換を気にする必要はありません。
 
-###  <code>object</code> 型
+###  <code>Object</code> 型
 
-そもそもオブジェクト型って何かというと、名前と値のセット (プロパティ) を複数持ったものです。
+そもそもオブジェクトって何かというと、名前と値のセット (プロパティ) を複数持ったものです。
 
 連想配列とかハッシュとか言えばだいたい想像できると思います。
 
 
 ``` javascript
 var obj = {}; // オブジェクトリテラル記法。new Object() と同じ
-obj['foo'] = 'bar'; // foo という名前に 'bar' という値をセットしている。
+obj['foo'] = 'bar'; // foo という名前のプロパティの値として 'bar' をセットしている。
 obj.foo = 'bar'; // これも上と全く同じ意味
 ```
 
@@ -187,7 +189,7 @@ var obj = {
 };
 ```
 
-配列もJSではオブジェクトとして扱えます。
+JS では配列もオブジェクトです。
 
 ###  <code>undefined</code> と <code>null</code>
 
@@ -212,7 +214,7 @@ typeof foo; //=> object
 
 ###  関数はデータ
 
-JS では関数もデータになれ、<code>Function</code> オブジェクトのインスタンス扱いです。(第一級のオブジェクトというやつです)
+JS では関数もデータになれ、<code>Function</code> コンストラクタのインスタンス扱いです。(第一級のオブジェクトというやつです)
 
 変数に代入でき、引数として関数を渡すことが可能です。
 
@@ -229,7 +231,7 @@ fun();
 
 ###  関数はデータ (2)
 
-JS では関数もデータになれ、<code>Function</code> オブジェクトのインスタンス扱いです。(第一級のオブジェクトというやつです)
+JS では関数もデータになれ、<code>Function</code> コンストラクタのインスタンス扱いです。(第一級のオブジェクトというやつです)
 
 変数に代入でき、引数として関数を渡すことが可能です。
 
@@ -348,7 +350,7 @@ var array = Array.prototype.slice.call(arrayLike, 0);
 *  <code>length</code> プロパティを持っていること
 *  数字 (の文字列) を配列の要素のプロパティとして持っていること
 
-<code>arguments</code> や <code>NodeList</code> なども <code>Array</code> ではない <code>Array</code>-like なもの
+<code>arguments</code> や <code>NodeList</code> オブジェクトなども <code>Array</code> ではない <code>Array</code>-like なもの
 
 ###  プロトタイプ指向
 
@@ -404,15 +406,15 @@ instanceOfBar.bar(); //=> 'hello!'
 *  暗黙的参照は既定オブジェクトである <code>Object</code> まで暗黙的な参照を持っている
   *  => プロトタイプチェイン
 
-プロトタイプチェーンは長くなると意味不明になりがちなので、あんまりやらないことが多い気がします。(継承やりすぎると意味不明なのがひどくなった感じです)
+プロトタイプチェインは長くなると意味不明になりがちなので、あんまりやらないことが多い気がします。(継承やりすぎると意味不明なのがひどくなった感じです)
 
-###  <code>this</code> について
+###  <code>this</code> キーワードについて
 
 *  <code>this</code> という暗黙的に渡される引数のようなものがあります
 *  Perl の <code>$self</code> みたいなやつです
 *  普通はレシーバーが渡されます
   *  <code>foo.bar()</code> の <code>foo</code> のことをレシーバといいます
-*  明示的に渡せすこともできる (<code>apply</code>, <code>call</code>)
+*  明示的に渡すこともできる (<a href="http://ecma-international.org/ecma-262/5.1/#sec-15.3.4.3"><code>Function.prototype.apply</code> メソッド</a>, <a href="http://ecma-international.org/ecma-262/5.1/#sec-15.3.4.4"><code>Function.prototype.call</code> メソッド</a>)
 
 
 ``` javascript
@@ -483,7 +485,7 @@ DOM Level 0 の多くも HTML5 で標準化されている
 *  <code>DocumentFragment</code>
   *  文書木に属さない木の根を表現する
 
-<code>Text</code> も <code>Attribute</code> も <code>Node</code> のうちです。これらがツリー構造 (文書木) になっています。
+<code>Text</code> も <code>Attr</code> も <code>Node</code> のうちです。これらがツリー構造 (文書木) になっています。
 
 ###  よく使うメソッド
 
@@ -553,7 +555,8 @@ alert(document.getElementById('sample').firstChild); //=> ?
 
 言語的な部分は仕様を読むのが正確でてっとりばやい(和訳あるし)
 
-*  http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/
+*  http://ecma-international.org/ecma-262/5.1/
+*  http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/ (日本語版; 3rd)
 
 ちょい読んでみましょう
 
@@ -784,7 +787,8 @@ xhr.send(data);
 
 *  JSON : オブジェクトのシリアライズ形式の一種。JS のオブジェクトリテラル表記と一部互換性がある
 最近のブラウザなら <code>JSON</code> オブジェクトがありますが、古いブラウザにも対応するときは自分で <code>eval</code> します
-https://developer.mozilla.org/ja/Using_native_JSON
+  *  https://developer.mozilla.org/ja/Using_native_JSON
+  *  RFC : <a href="http://tools.ietf.org/html/rfc4627">RFC 4627 - The application/json Media Type for JavaScript Object Notation (JSON)</a>
 
 
 ``` javascript
