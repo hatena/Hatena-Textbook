@@ -335,7 +335,7 @@ var arrayLike = {
   '0' : 'aaa',
   '1' : 'bbb',
   '2' : 'ccc',
-  '3' : 'ddd',
+  '3' : 'ddd'
 };
 arrayLike.length = 4;
 var array = Array.prototype.slice.call(arrayLike, 0);
