@@ -414,7 +414,7 @@ instanceOfBar.bar(); //=> 'hello!'
 *  Perl の <code>$self</code> みたいなやつです
 *  普通はレシーバーが渡されます
   *  <code>foo.bar()</code> の <code>foo</code> のことをレシーバといいます
-*  明示的に渡すこともできる (<a href="http://ecma-international.org/ecma-262/5.1/#sec-15.3.4.3"><code>Function.prototype.apply</code> メソッド</a>, <a href="http://ecma-international.org/ecma-262/5.1/#sec-15.3.4.4"><code>Function.prototype.call</code> メソッド</a>)
+*  明示的に渡すこともできる (<a href="https://developer.mozilla.org/ja/JavaScript/Reference/Global_Objects/Function/apply" title="Function.prototype.apply - MDN"><code>Function.prototype.apply</code> メソッド</a>, <a href="https://developer.mozilla.org/ja/JavaScript/Reference/Global_Objects/Function/call" title="Function.prototype.call - MDN"><code>Function.prototype.call</code> メソッド</a>)
 
 
 ``` javascript
