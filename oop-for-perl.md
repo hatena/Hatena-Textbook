@@ -24,7 +24,7 @@
 
 ## はじめに
 * 事前課題
-  * http://github.com/hakobe/Sorter
+  * https://github.com/hatena/Hatena-Intern-Exercise2013
 
 * 前提
   * はじめてのPerl、続はじめてのPerlに目を通している
@@ -48,14 +48,15 @@
 
 ## Perlプログラミング勘所
 * Perlでおさえておきたい/よくはまるポイントを説明
-  * use strict;use warnings;
+  * use strict; use warnings;
+  * use utf8;
   * データ型
   * コンテキスト 
   * リファレンス
   * パッケージ 
   * サブルーチン
 
-## use strict;use warnings;
+## use strict; use warnings;
 * ファイルの先頭には必ず書きましょう
 
 ``` perl
@@ -79,6 +80,110 @@ $messagge = "bye"; # typo!
 $ perldoc strict
 $ perldoc perllexwarn
 ```
+
+## use utf8;
+
+Perl での文字コードの扱いについて
+
+* Perl では文字列は以下のどちらかで表されます
+  * Perl の内部表現に変換された文字列
+  * バイト列
+
+## なんのこっちゃ
+
+次の内容を UTF-8 でファイル(hoge.pl)に保存します
+
+``` perl
+print 'ほげ';
+```
+
+実行します
+
+``` bash
+$ perl hoge.pl
+ほげ
+```
+
+ええやん
+
+## じゃ次
+
+length は文字数をカウントする関数
+
+``` perl
+print length 'ほげ';
+```
+
+実行します
+
+``` bash
+$ perl hoge.pl
+6
+```
+
+あかんやん(´･ω･｀)
+
+## なぜか
+
+* 'ほげ' はマルチバイト文字
+* 何もしないと Perl は 'ほげ' をバイト列とみなす
+* utf8 の 'ほげ' は 6 バイトなので length 'ほげ' は 6 になる
+* 文字数数えるのに困る
+
+## そこで use utf8;
+
+``` perl
+use utf8;
+print length 'ほげ';
+```
+
+``` bash
+$ perl hoge.pl
+2
+```
+
+ええやん!
+
+## なにをしたの
+
+* utf8 プラグマをつけると、 Perl はコード内のマルチバイト文字を UTF8 の文字列として解釈し、Perl 内部表現の文字列に変換する
+* UTF8 で記述された 'ほげ' を UTF8 として解釈すると当然 2 文字なので、length 'ほげ' は 2 になる
+
+めでたしめでたし!!
+
+## ...けど
+
+``` perl
+use utf8;
+print 'ほげ';
+```
+
+``` bash
+$ perl hoge2.pl
+Wide character in print at hoge2.pl line 2.
+ほげ
+```
+
+なんか出た・・・
+
+'ほげ' は Perl 内部表現に変換されているので、そのまま Perl の世界の外には出そうとすると怒られる
+再びバイト列に変換してあげる必要がある
+
+``` perl
+use utf8;
+use Encode;
+print encode_utf8 'ほげ';
+```
+
+これでおk!
+
+## use utf8;
+
+* まとめると
+  * ファイルは UTF-8 で保存する
+  * use utf8; プラグマを忘れないように
+* 難しかったらこれだけ守って下さい
+* strict と warnings も忘れずに
 
 ## データ型
 * スカラ
@@ -129,7 +234,7 @@ for my $e (@array) { # 全要素ループ
 ```
 *  チェックしておこう！
   * 関数: push/pop/shift/unshift/map/grep/join/sort/splice
-  * モジュール: List::Util/List::MoreUtils
+  * モジュール: List::Util/List::MoreUtils/List::UtilsBy
 
 ## ハッシュ
 * %ash とおぼえましょう
@@ -692,11 +797,11 @@ $flie->close;
 |オブジェクト|特定のパッケージにbless()されたリファレンス|
 
 ##  クラス定義 (クラス名)
-* 課題ででたSorterクラス(簡易版)
+* 課題ででた Parser クラス(簡易版)
 
 ``` perl
 # パッケージに手続きを定義
-package Sorter; # クラス名
+package Parser; # クラス名
 use strict;
 use warnings;
 
@@ -707,41 +812,21 @@ use warnings;
 
 ``` perl
 # コンストラクタ
-# Sorter->new; のように呼び出す
+# Parser->new; のように呼び出す
 sub new {
     my ($class) = @_; # クラス名が入る
-    # データを用意する
-    my $data_structure = {
-        values => [],
-    };
-    # 手続き(= パッケージ)とデータを結びつける
-    my $self = bless $data_structure, $class;
-    return $self;                     
+    return bless \%args, __PACKAGE__;
 }
-# 続く
 ```
 
 ## クラス定義 (メソッド)
 
 ``` perl
-# $sorter->set_values(0,1,2,3) のように呼び出す
-sub set_values {
-    my ($self, @values) = @_; # $self には$sorterが入る
-    $self->{values} = [@values];
-    return $self;
+# $parser->parse(filename => 'hoge.log'); のように呼び出す
+sub parse {
+    my ($self, $filename) = @_;
+    ...
 }
-
-sub get_values {
-    my ($self) = @_;
-
-    return @{ $self->{values} };
-} 
-
-sub sort {
-    my ($self) = @_;
-   
-    $self->{values} = [ sort { $a <=> $b } @{ $self->{values} } ];
-}  
 
 1; # おまじない
 ```
@@ -749,21 +834,21 @@ sub sort {
 ## クラスの使用
 
 ``` perl
-use Sorter;
+use Parser;
 
-my $sorter = Sorter->new;
-$sorter->set_values(5,4,3,2,1);
+my $parser = Parser->new;
+$parser->parse(filename => 'hoge.log');
 ```
 
 ## コンストラクタ
 * コンストラクタは自分で定義する
-* オブジェクトも自分で作る
+* (blessされた)オブジェクトも自分で作る
 * new()
   * リファレンス を パッケージ(クラス) で bless して返す
 * blessはデータと手続きを結びつける操作
 
 ``` perl
-  my $self = bless { field => 1 }, "Sorter";
+  my $self = bless { filename => 'hoge.log' }, "Parser";
 ```
 
 ## クラスメソッドとインスタンスメソッド
@@ -772,9 +857,11 @@ $sorter->set_values(5,4,3,2,1);
 * 呼出時: クラスから呼び出すかインスタンスから呼び出すか
 
 ``` perl
+# この二つが等価
 Class->method($arg1, $arg2);
 &Class::method("Class", $arg1, $arg2);
 
+# この二つが等価
 $object->method($arg1, $arg2);
 &Class::method($object, $arg1, $arg2);
 ```
@@ -808,11 +895,11 @@ sub _private_method {
 * 完全に隠蔽する方法もある(クロージャを使う)
 
 ## 継承
-* use base を使う
+* use parent を使う
 
 ``` perl
 package Me;
-use base "Father";
+use parent "Father";
 1;
 ```
 * 親クラスのメソッド
@@ -827,12 +914,12 @@ sub new {
 ```
 
 ## 多重継承
-* Mixiinをやりたいときなどにつかう
+* Mixinをやりたいときなどにつかう
 * 乱用しない
 
 ``` perl
 package Me;
-use base qw(Father Mother); # 左 => 右の順
+use parent qw(Father Mother); # 左 => 右の順
 1;
 ```
 * メソッドの検索アルゴリズム
@@ -911,8 +998,8 @@ sub AUTOLOAD {
 
 ``` perl
 my $uri = URI->new('http://exapmle.com/');
-... do something ...
-print "URI is $uri";
+$uri->path('hoge');
+print "URI is $uri"; # 'URI is http://exapmle.com/hoge'
 ```
 
 * DateTime
@@ -933,8 +1020,19 @@ for my $dt (sort @dts) {          # sort内で使われる<=>がoverloadされ�
 
 * たいへんなので自動化されている
 
-## Class::Accessor::Fast
-* コンストラクタ/フィールドのアクセサを自動的に定義
+## Class::Accessor::Lite
+
+* 継承ツリーを汚さない
+* おすすめ
+
+``` perl
+package Foo;
+
+use Class::Accessor::Lite (
+    new => 1,
+    rw  => [ qw(foo bar baz) ],
+);
+```
 
 ### before
 
@@ -970,53 +1068,11 @@ sub baz{
 1;
 ```
 
-### after
-
-``` perl
-package Foo;
-
-use base qw(Class::Accessor::Fast);
-__PACKAGE__->mk_accessors(qw(foo bar baz));
-
-1;
-```
-
-## Class::Data::Inheritable
-* 継承可能なクラス変数を作成する
-
-``` perl
-use base qw(Class::Data::Inheritable);
-__PACKAGE__->mk_classdata(dsn => 'dbi:mysql:dbname=foo');
-1;
-```
-
-## よくあるクラス
-
-``` perl
-package UsualClass;
-use base qw(Class::Accessor::Fast Class::Data::Inheritable);
-__PACKAGE__->mk_classdata(hoge => "classdata");
-__PACKAGE__->mk_accessors(qw(foo bar baz));
-
-# メソッド定義とか
-
-1;
-```
-
 ## 他のクラスビルダー
 
-### Class::Accessor::Lite
-
-``` perl
-package Foo;
- 
-use Class::Accessor::Lite (
-    new => 1,
-    rw  => [ qw(foo bar baz) ],
-);
-```
-* 継承ツリーを汚さない
-* おすすめ
+### Class::Accessor::Fast
+* コンストラクタ/フィールドのアクセサを自動的に定義
+* 利用するのに Class::Accessor::Fast を継承する必要があるので使いにくい
 
 ### Moose
 * モダンなオブジェクト指向を実現するモジュール
@@ -1046,7 +1102,8 @@ use Class::Accessor::Lite (
   * 責任のないことはやっちゃだめ
 * 責務を綺麗に切り分けることで、綺麗に設計できる
 
-## オブジェクト指向のまとめ
+
+## Perl のオブジェクト指向のまとめ
 * 手作り感あふれるオブジェクト指向
   * package に手続きを定義
   * blessでデータ(リファレンス)と結びつける
@@ -1108,6 +1165,7 @@ done_testing;
 ```
 
 ## Test::Fatal
+
 ``` perl
 use Test::Fatal;
 
@@ -1117,18 +1175,28 @@ isa_ok( exception { $foo->method }, 'Some::Exception::Class', '例外クラス�
 ```
 
 ## Test::Class
-* メソッドにテストコードをわける
+* テストコードをメソッドにわける
 * xUnit系
 
-* Sorterのテストをみてね！
+``` perl
+package Example::Test;
+use parent qw(Test::Class);
+use Test::More;
 
-## その他
+sub setup : Test(setup) {
+    # 各々のテストが実行される前に実行される
+};
 
-### Test::Name::FromLine
-* 名前のついていないテストを見やすく表示してくれる
+sub test_pop : Tests {
+    ok ...
+    is ...
+    is_deeply ...
+};
 
-### Test::Most
-* 便利なテストモジュールを一気にuseしてくれる
+sub teardown : Test(teardown) {
+    # 各々のテストが実行された後に実行される
+};
+```
 
 ## テストの実行
 * テストコードは t ディレクトリに.t拡張子をつけて保存
@@ -1164,11 +1232,6 @@ is_deeply( [numsort(100)], [100], '1要素ならそのまま' );
 ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 ```
 
-## Test::Hatena
-* はてな社内で標準化中のテストフレームワーク
-* Test::More/Test::Exception 他、便利な関数
-* 単体テスト/結合テスト/副作用のあるテストに対応
-
 ## リファクタリング
 
 * リファクタリングとは？
@@ -1186,11 +1249,15 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 * perldoc perltoc 便利！
   * 定義済み変数　$_ @_ $@ 
     * perldoc perlvars を見るべし
+* 正規表現
+  * perldoc perlre
 * 関数
   * perldoc -f open
   * http://perldoc.jp/ : perldocの日本語訳
 * CPANモジュール
-* https://metacpan.org/
+  * perldoc LWP::UserAgent
+  * https://metacpan.org/
+* perldoc -t (日本語が文字化けしたら)
 
 ## 良い本を読みましょう
 * はじめてのPerl
@@ -1198,6 +1265,41 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 * Perlベストプラクティス
   * Perl::Critic
 * モダンPerl入門
+
+## インタラクティブシェル
+
+- perl -de0
+- Eval::WithLexicals
+    - tinyreplというスクリプトが入る
+    - rlwrap と一緒に使うと楽です
+- Devel::REPL
+    - re.plというスクリプトが入る
+    - Carp::REPL
+
+## データの中身を見る
+
+* Data::Dumper
+* YAML
+* etc.
+
+``` perl
+use Data::Dumper;
+
+my $foo = {
+    bar => 'bar',
+    baz => [qw(hoge fuga)],
+};
+
+print Dumper $foo;
+
+# $VAR1 = {
+#           'bar' => 'bar',
+#           'baz' => [
+#                      'hoge',
+#                      'fuga'
+#                    ]
+#         };
+```
 
 ## プロジェクトのコードを書く心構え
 * コードが読まれるものであることを意識する
@@ -1214,54 +1316,8 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 * 今日かいて今日はまろう
   * と言っても時間はあまりないので無理せず
 
-# 課題
+## 課題
 
-## 課題1
-この講義をふまえて、事前課題で作成したSorterクラスを改良・完成させてください。
-
-### 以下再掲
-以下のようなインターフェースをもつ、整数値を昇順にソートするソート器クラスをPerlを用いて実装してください。余裕がある人は、アルゴリズム別のSorterのサブクラスを実装してみてください。
-
-``` perl
-my $sorter = Sorter->new;
-$sorter->set_values(5,4,3,2,1);
-$sorter->sort;
-$sorter->get_values # (1,2,3,4,5) が返ってくる
-```
-
-実装に際しては、以下の条件を守ってください。
-
-* Perl組み込みのsort関数やソートを行うためのCPANモジュール を利用しない
-* アルゴリズムはクイックソートを用いる
-
-## 課題2
-オブジェクト指向連結リスト My::List を作成してください。(C言語で良く使われる連結リストデータ構造を、オブジェクト指向Perlで書いた物、と思ってください。)
-
-リストの各要素には任意のデータ (スカラー、オブジェクト、リファレンス etc) を保存できるものとします。連結リストはオブジェクト指向インタフェースを持ちます。リストの要素を先頭から手繰る(たぐる)のにイテレータを用意してください。
-
-My::List のプログラムインタフェースは以下のようになるでしょう。例は、リストに "Hello" "World" "2008" という 3 つの文字列を保存して、イテレータでそれらを取り出し出力するコードです。
-
-``` perl
-my $list = My::List->new;
-
-$list->append("Hello");
-$list->append("World");
-$list->append(2008);
-
-my $iter = $list->iterator;
-while ($iter->has_next) {
-    print $iter->next->value;
-}
-```
-
-リストの各要素は My::List 内に配列として保持するのではなく、ハッシュベースなリスト要素のオブジェクトをリファレンスで繋いだ連結リストとして保持する、という点に注意してください
-
-* 連結リストがどのようなデータ構造か分からない場合は『定本 Cプログラマのためのアルゴリズムとデータ構造 (SOFTBANK BOOKS)』 P.50 - 66 を参照してください。(なお、連結リストなどはアルゴリズムとデータ構造の基礎ですので、その知識がない場合は本書籍を通読することをお薦めします。)
-* イテレータについては『増補改訂版Java言語で学ぶデザインパターン入門』の第一章を参照してください。
-
-両書籍とも、会社の本棚にあります。
-
-## 課題3(オプション)
 twitterもどきをつくろう。
 
 以下のようなことができる小鳥オブジェクトを実装してください。
@@ -1271,9 +1327,9 @@ twitterもどきをつくろう。
 * 小鳥はfollowしている小鳥のつぶやきを見ることができる
 
 いろいろな設計方法が考えられます。すっきりしたかっこいいのを考えてみましょう。
-余裕があれば、mentions(@記法)やunfolllow や block、 lists などの機能も実装してみてください。
+余裕があれば、mentions(@記法)やunfollow や block、 lists などの機能も実装してみてください。
 
-プログラムのインターフェースは自由です。例えば以下のようなインターフェースが考えられます。下の例では、SmallBirdクラスしか存在していませんが、つぶやき全体を管理するクラスがあっても良いかもしれません。Observerパターンを使ってみてもよいでしょう。
+プログラムのインターフェースは自由です。例えば以下のようなインターフェースが考えられます。下の例では、Birdクラスしか存在していませんが、つぶやき全体を管理するクラスがあっても良いかもしれません。Observerパターンを使ってみてもよいでしょう。
 
 ``` perl
 use Bird;
@@ -1305,18 +1361,18 @@ print $b3_timelines->[0]->message; # jkondo: 今日はあついですね！
   * 課題の本質的なところさえ実装すれば、CPANモジュールで楽をするのはアリ
   * 何が本質なのかを見極めるのも課題のうち
 * 余裕があったら機能追加してみましょう
+* 講義および教科書絡まなんだことを課題に反映させる
+* きれいな設計・コードを心がけよう
+
+## 課題の提出方法
+
 * 課題については以下の通り、ディレクトリを作成してコミットしてください。
   * pushするのを忘れずに!
 
 ``` text
-intern/username/100802/exercise1
-                      /exercise2
-                      /exercise3
-               /100803/exercise1
-                      /exercise2
-                      /  ...
-                      /  ...
+intern/username/
 ```
+
 Perlの慣習として、以下のディレクトリ構成でコミットするといろいろ良いです。
 
 ``` text
@@ -1331,24 +1387,5 @@ Perlの慣習として、以下のディレクトリ構成でコミットする�
 * テストファイルを置くディレクトリはt
 * テストスクリプトは prove -Ilib t で実行できます
 * あるいはテストスクリプト単体を perl -Ilib t/00_base.t で実行します。
-
-## 課題の採点基準
-各課題の満点 = 課題1: 4点 + 課題2: 4点 + 課題3: 2点 = 10点
-
-* 講義および教科書の理解度が課題の実装に反映されているかどうか。
-* テスト用スクリプトが実際に動作するかどうか。
-* 設計・コードがきれいに書けているかどうか。
-* 独自に機能追加が行われているかどうか。
-
-* 課題1と課題2をじっくりやったあと3に挑戦してください
-
-
-## やること
-* git clone
-* 課題
-
-
-
-
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.1/jp/88x31.png" /></a><br />この 作品 は <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">クリエイティブ・コモンズ 表示 - 非営利 - 継承 2.1 日本 ライセンスの下に提供されています。</a>

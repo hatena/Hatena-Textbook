@@ -7,9 +7,11 @@
 ## 研修用資料
 
 * [Perl によるオブジェクト指向プログラミング](https://github.com/hatena/Hatena-Textbook/blob/master/oop-for-perl.md)
-* [ORM によるデータベース操作 (DBIx::MoCo を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/db-control-by-orm.md)
-* [MVC によるウェブアプリケーション開発 (Ridge を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/mvc-web-application.md)
+* [Perlでのデータベース操作(DBI を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/db-control-by-dbi.md)
+* [MVC によるウェブアプリケーション開発 (Plack を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/mvc-web-application-with-plack.md)
 * [JavaScript によるイベントドリブン](https://github.com/hatena/Hatena-Textbook/blob/master/javascript-event-driven.md)
+* [iOS アプリ開発環境のセットアップ](https://github.com/hatena/Hatena-Textbook/blob/master/ios-app-development-setup.md)
+* [Web API を利用する iOS アプリ作成](https://github.com/hatena/Hatena-Textbook/blob/master/ios-app-development-with-web-api.md)
 
 ## 参考資料
 
@@ -24,3 +26,8 @@
 
 ## ライセンス
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.1/jp/88x31.png" /></a><br />この 作品 は <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">クリエイティブ・コモンズ 表示 - 非営利 - 継承 2.1 日本 ライセンスの下に提供されています。</a>
+
+クレジット表記例
+```
+Copyright 2013 <a href="https://github.com/hatena/Hatena-Textbook">はてな教科書</a> by <a href="http://www.hatena.ne.jp/">はてな</a>
+```
