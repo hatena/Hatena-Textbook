@@ -1066,7 +1066,7 @@ Human *human = [[Human alloc] init];
 [human addObserver:self forKeyPath:@"lastName" options:NSKeyValueObservingOptionNew context:nil];
 ```
 
-このようにすることで、他のオブジェクトのプロパティを監視します。`keyPath` というのは、KVC (Key Value Coding)` からくる概念で、`keyPath` に指定された文字列から一定のルールで呼び出されるメソッドが決定されます。今回のような場合では特に意識しなくてもアクセッサが呼ばれるので、ここで詳しくは説明しません。必要に応じてドキュメントを参照してください。
+このようにすることで、他のオブジェクトのプロパティを監視します。`keyPath` というのは、KVC (Key Value Coding) からくる概念で、`keyPath` に指定された文字列から一定のルールで呼び出されるメソッドが決定されます。今回のような場合では特に意識しなくてもアクセッサが呼ばれるので、ここで詳しくは説明しません。必要に応じてドキュメントを参照してください。
 
 ```objc
 [[self mutableArrayValueForKey:@"bookmarks"]
