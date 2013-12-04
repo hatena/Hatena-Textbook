@@ -814,7 +814,7 @@ use warnings;
 # コンストラクタ
 # Parser->new; のように呼び出す
 sub new {
-    my ($class) = @_; # クラス名が入る
+    my ($class, %args) = @_; # クラス名が入る
     return bless \%args, __PACKAGE__;
 }
 ```
