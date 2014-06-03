@@ -1510,7 +1510,7 @@ var $article = $('<div>').addClass('article');
 $article.append($('<div>').addClass('date').text(date));
 $article.append($('<h1>').addClass('title').text(title));
 $article.append($('<div>').addClass('body').text(body));
-$article.append($('<div>').addClass('comments));
+$article.append($('<div>').addClass('comments'));
 var $comments = $('<div>').addClass('comments');
 for(var i = 0; i < comments.length; i++) {
   $comments.append($('<div>').addClass('comment'));
