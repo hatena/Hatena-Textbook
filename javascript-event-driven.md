@@ -71,10 +71,10 @@
 * 参考に: [JavaScript History](https://www.slideshare.net/badatmath/js-shistory)
 
 ## JS が使われる場所
-
-* 基本的にはブラウザ上の処理
-  * 処理系がたくさんある
-  * ブラウザ上以外でも動く (node.js など)
+* 基本的にはブラウザ上の処理だが、処理系がたくさんあり、最近では色んな所で使われている
+  * node.jsでサーバサイドがjsで書ける
+  * Bower、Gruntなどの開発ツールもnode.jsでできている
+  * node-webkit使えばデスクトップで動作するクロスプラットフォームなアプリが書ける
   * スマフォアプリも書ける (Windows Phone、Firefox OS などではネイティブでサポート、Titanium、PhoneGap なども)
 * Web アプリケーションにはほぼ必須
   * はてなのエンジニアはみんな誰もがある程度書ける
@@ -133,9 +133,9 @@ A; //=> "`A` という変数名"
 Perl と一緒で、Java や C などと違う点
 
 ```javascript
-var foo = "";
-foo = 1;
-foo = {};
+var foo = ""; // 文字列
+foo = 1;      // 数値
+foo = {};     // オブジェクト
 ```
 
 ## 値の型
@@ -310,8 +310,6 @@ var nums = [1,2,3,4].map(function (value, index, array) {
     // 他にも filter とか forEach とか reduce とか
 ```
 
-* 事前課題講評で説明したやつ
-
 ## プリミティブ値に対するプロパティアクセス
 
 ```javascript
@@ -373,15 +371,15 @@ C、Java あたりと似てるものが多い
   * ホストオブジェクトは `"object"` とは限らない
 
 ```javascript
-typeof undefined;
-typeof 0;
-typeof true;
-typeof {};
-typeof [];
-typeof null;
-typeof "";
-typeof new String("");
-typeof alert;
+typeof undefined; // undefined
+typeof 0;         // number
+typeof true;      // boolean
+typeof {};        // object
+typeof [];        // object
+typeof null;      // object
+typeof "";        // string
+typeof new String(""); // object
+typeof alert; // function
 ```
 
 ## 数値と文字列の変換への変換
@@ -425,6 +423,7 @@ Number("3");
 ## 値の比較
 
 比較は `===`、`!==` で行うとハマらない
+`==`、`!=`を使用すると勝手に型変換されるので使わない
 
 ```javascript
 3 ==  '3'; //=> true
@@ -460,7 +459,7 @@ typeof foo; //=> object
 
 何も入ってないことを示す
 
-(<code>object</code> が入っていることを示したいが空にしときたいとか)
+(<code>object</code> が入っていることを示したいが空にしときたいとか。定義されているのでobjectではある)
 
 
 ## 関数は値
@@ -595,6 +594,7 @@ function foobar() {
 }
 foobar(1, 2);
 ```
+`arguments`の中に引数がすべて入っている。`function foobar(hoge, fuga) { ... }` としなくとも引数を受け取れる、ということ
 
 ## <code>this</code> キーワード
 
@@ -605,12 +605,12 @@ foobar(1, 2);
   * <code>foo.bar()</code> の <code>foo</code> のことをレシーバといいます
 * 明示的に渡すこともできる (<a href="https://developer.mozilla.org/ja/JavaScript/Reference/Global_Objects/Function/apply" title="Function.prototype.apply - MDN"><code>Function.prototype.apply</code> メソッド</a>, <a href="https://developer.mozilla.org/ja/JavaScript/Reference/Global_Objects/Function/call" title="Function.prototype.call - MDN"><code>Function.prototype.call</code> メソッド</a>)
 
-
 ```javascript
 var a = { foo : function () { alert( a === this ) } };
-a.foo(); //=> true
-a.foo.call({}); //=> false
+a.foo(); //=> true。この時、`a === this` の `this` は、 `a.foo()` のレシーバ、つまり `a` を指している。
+a.foo.call({}); //=> false。この時、`a === this` の `this` は、`call({})`によって、全く新しいオブジェクトに書き換えられた。よって、 thisはaではなくなり、`a === this` はfalseとなる。
 ```
+`call()` や `apply()` は、オブジェクトに予め用意されているメソッド。`this`を書き換える事ができる。
 
 ### ハマりどころ
 
@@ -626,7 +626,73 @@ var obj = {
 };
 
 obj.sayMyName(); // "Hatena" が alert される
-setTimeout(obj.sayMyName, 100); // "Hatena" でない文字列が alert される
+setTimeout(obj.sayMyName, 100); // `function() { alert(this.name) };` だけを渡していることになり、"Hatena" でない文字列が alert される
+setTimeout(function() {
+    // この様に `call` で `name`プロパティを含む `this`を指定してあげると、"Hatena-kyoto"という文字列が alert される
+    obj.sayMyName.call({name: "Hatena-kyoto"});
+} , 1000);
+setTimeout(function() {
+    // applyでも良いよ
+    obj.sayMyName.apply({name: "Hatena-kyoto"});
+}, 1000);
+```
+## applyとcallについてもう少しだけ
+* どちらも `this` を書き換えることのできるメソッド
+* どちらも第一引数は `this` を指定する。違うのは第二引数からの形式
+* 例えば、関数内のthisの値を指定して関数を呼び出すことができる
+
+* applyの使い方
+  * applyでは、第一引数に`this`、第二引数に「関数に渡したい引数」を指定する。第二引数は、配列`[]`でわたす。
+  * apply(thisにしたいオブジェクト, [this以外で渡したい引数。配列なので複数渡せる]);
+```javascript
+var drinks = [
+    { name : 'cola',  price : 500 },
+    { name : 'cider', price : 300 },
+    { name : 'water', price : 100 }
+];
+
+for (var i=0; i<drinks.length; i++) {
+    (function(text, emoticon) {
+        // ここでの this は drinks[i]
+        console.log(this.name + 'は' + this.price + '円なり！');
+        // textは第二引数配列の 'やった〜' で、emoticonは '(╹◡╹)'
+        console.log(text + emoticon);
+    }).apply(drinks[i], ['やった〜', '(╹◡╹)']);
+}
+
+// colaは500円なり！
+// やった〜〜(╹◡╹)
+// ciderは300円なり！
+// やった〜〜(╹◡╹)
+// waterは100円なり！
+// やった〜〜(╹◡╹)
+```
+
+* callの使い方
+  * callでは、第一引数に`this`、第二引数以降に「関数に渡したい引数」を指定する
+  * callはapplyと違って、引数いくらでも追加できる
+  * call(thisにしたいオブジェクト, [ 'this以外で渡したい引数' ], 'こんなことしてもよいし', [ 'こんなのも', '可能' ]);
+```javascript
+var drinks = [
+    { name : 'cola',  price : 500 },
+    { name : 'cider', price : 300 },
+    { name : 'water', price : 100 }
+];
+
+for (var i=0; i<drinks.length; i++) {
+    (function(text, emoticon) {
+        // ここでの this は
+        console.log(this.name + 'は' + this.price + '円なり！');
+        console.log(text + emoticon);
+    }).call(drinks[i], 'やった〜〜', '(╹◡╹)'); // applyでは [] で指定してたけど、callでは複数の値入れてる
+}
+
+// colaは500円なり！
+// やった〜〜(╹◡╹)
+// ciderは300円なり！
+// やった〜〜(╹◡╹)
+// waterは100円なり！
+// やった〜〜(╹◡╹)
 ```
 
 ## 変数のスコープ
@@ -770,14 +836,23 @@ foo.name; //=> "オブジェクト foo"
 var Foo = function () {
     // `new Foo();` すると、このオブジェクトの中身が実行される
     // そのときの `this` の値は新しく生成されたオブジェクト
+    this.price = 100; // このオブジェクトで保持するプロパティとなる
+    // var price = 100; ←こう書くとコンストラクタ終了後破棄される
 };
 // `prototype` プロパティは、すべての関数が元々持っているプロパティ
-Foo.prototype.sayHello = function () { alert('hello!') };
+Foo.prototype.sayHello = function () {
+    alert('hello!');
+};
+// いくつでも追加可能
+Foo.prototype.getPrice = function () {
+    return this.price;
 };
 
 // `foo` は `Foo` コンストラクタのインスタンス (`Foo` オブジェクト)
 var foo = new Foo();
 foo.sayHello(); //=> 'hello!'
+var price = foo.getPrice();
+console.log(price); //=> 100
 ```
 
 ![プロトタイプチェイン](javascript-event-driven/js-prototype-2.png)
@@ -808,6 +883,7 @@ foo.sayHello(); //=> 'hello!'
   * 最近だと CSS Animations などで対応したりとか
 * フォームに入力されたデータをバリデーションするために JS を使用したり
   * HTML 5 だと `input` 要素にバリデーションの機能があったり
+* Webブラウザに実装されているDBにアクセスしたり
 
 JavaScript でできること、他の方法でやったほうがいいこと、いろいろある
 
@@ -987,6 +1063,8 @@ $.get($url).done(function(res) {
   * jQuery にも 1.6 だか 1.7 だかで入った (確か; インターフェイスは違うけど)
 * 最近 DOM Standards に `Promise` API が入った
   * [http://dom.spec.whatwg.org/#promises](http://dom.spec.whatwg.org/#promises)
+* ECMA-262 6th edition に Promise が導入されそう
+    * ECMA-262 6th edition (Draft) : https://people.mozilla.org/~jorendorff/es6-draft.html#sec-promise-objects
 
 ```javascript
 // requestXHR は Promise オブジェクトを返す独自の関数
@@ -995,6 +1073,23 @@ requestXHR({ url: "http://example.com/aaa" }).then(function (xhr) {
     return requestXHR(/*...*/);
 }).then(function (xhr) {
     // ...
+});
+```
+
+jQueryで使う例(Deferred)
+```javascript
+var d = new $.Deferred();
+var testFunc = function() {
+    setTimeout(function() {
+        console.log('終わった');
+        d.resolve();
+    }, 5000);
+
+    return d.promise(); // そのうち処理が終わるよ、っていう`promise`を返す
+};
+var promise = testFunc(); // promiseが返る
+promise.done(function() {
+    console.log('callbackの処理');
 });
 ```
 
@@ -1195,7 +1290,7 @@ POST するリクエスト body を自力で 作ります
 ```javascript
 var xhr = new XMLHttpRequest();
 xhr.open('POST', '/api/foo', true);
-xhr.onreadystatechange = function (e) { };
+xhr.onreadystatechange = function (e) { }; // リクエスト状況が変化したら発火させる処理を書く
 var params = { foo : 'bar', baz : 'Hello World' };
 var data = ''
 for (var name in params) if (params.hasOwnProperty(name)) {
@@ -1244,6 +1339,7 @@ var json = eval('(' + xhr.responseText + ')');
 - リクエストは送れるけど本文は読み込めない
 - b.hatena.ne.jpからはb.hatena.ne.jpのリソースだけ読み込める
 - たとえば，b.hatena.ne.jpからd.hatena.ne.jpのデータをJavaScriptで読み込んで表示できない
+- iframeでは別ドメインでも内容を表示できるけど、その中身をjsで操作したりすることは一切出来ない
 
 ## 質問
 
@@ -1291,7 +1387,7 @@ var json = eval('(' + xhr.responseText + ')');
 * $(なんとか) みたいな書き方
 
 ## jQuery を使う
-- jQueryを読み込むとjQueryを読み込める
+- jQueryを読み込む
 
 ```html
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -1428,10 +1524,10 @@ $(document).on('click', '.foo', function (event) { ... });
 もちろんclickじゃなくても良い
 
 
-スクロールしたらalert(うざい)
+マウス動かしたらalert(うざい)
 ```javascript
 $(document).on('mousemove', function (event) {
-  alert('スクロールしました');
+  alert('マウス、動きました');
 });
 ```
 
@@ -1469,8 +1565,10 @@ $.ajax({ url: url, ... });
 - 「クリックすると→パレットが開いてコメントを入力して投稿すると→入力した保存されていること」
 - 非同期に状態が変わっていくので，非同期な状態の変化をテストする必要がある
 - ヘッドレスブラウザ(画面に表示しないけど中でDOMを構築するブラウザ)を使ったテスト
+  - 最近では`PhantomJS`をperlから操作して動作確認するとか
 - はてなでは手作業での動作確認が主
 - ブラウザによって挙動がちがう，テストは通っても特定の環境では動かないとか
+  - 特にIEは要注意。modern.ieで仮想マシン使って動作チェックする https://www.modern.ie/ja-jp
 - 今回の課題では自動テストは不要です
 
 ## JavaScriptではコールバック重要
@@ -1489,6 +1587,103 @@ $.get(url, function() {
 ```
 - 積極的に使おう
 - 同期的な処理でもコールバックを渡すインターフェイスにしておくことで，あとから内部的に非同期な処理に変更できる
+- ただしあんまり多用するとcallback地獄に陥る。以下は極端な例
+```JavaScript
+
+// 以下のasyncTaskメソッドを順番に実行していきたい
+(function() {
+var asyncTask1 = function(callback) {
+    setTimeout(function() {
+        console.log('asyncTask1');
+        callback(true);
+    }, 2000);
+};
+
+var asyncTask2 = function(callback) {
+    setTimeout(function() {
+        console.log('asyncTask2');
+        callback(true);
+    }, 2000);
+};
+
+var asyncTask3 = function(callback) {
+    setTimeout(function() {
+        console.log('asyncTask3');
+        callback(true);
+    }, 2000);
+};
+
+// callbackにするとネストしまくって見づらくなる
+asyncTask1(function(result) {
+    if (!result) {
+        console.log('error!!!!')
+        return;
+    };
+    asyncTask2(function() {
+        if (!result) {
+            console.log('error!!!!')
+            return;
+        };
+        asyncTask3(function() {
+            if (!result) {
+                console.log('error!!!!')
+                return;
+            };
+        });
+    });
+});
+})();
+
+// そこで、jQueryのDeferredを使う
+(function() {
+var asyncTask1 = function() {
+    var d = new $.Deferred();
+
+    setTimeout(function() {
+        console.log('asyncTask1');
+        // 処理が正常完了したらresolveを呼ぶ
+        d.resolve();
+    }, 2000);
+
+    return d.promise();
+};
+
+var asyncTask2 = function() {
+    var d = new $.Deferred();
+
+    setTimeout(function() {
+        console.log('asyncTask2');
+        // 処理が失敗したらrejectを呼ぶ
+        d.reject();
+    }, 2000);
+
+    return d.promise();
+};
+
+var asyncTask3 = function() {
+    var d = new $.Deferred();
+
+    setTimeout(function() {
+        console.log('asyncTask3');
+        d.resolve();
+    }, 2000);
+
+    return d.promise();
+};
+
+// メソッドチェーンでかけてスッキリ
+asyncTask1()
+  .then(asyncTask2) // ここでreject発生。failが呼ばれて処理終了
+  .then(asyncTask3)
+  .fail(function(e) {
+      console.log('error!!!!');
+  });
+})();
+
+```
+- Deferredの使い方色々あるので興味のある方は調べてみてください
+  - http://techblog.yahoo.co.jp/programming/jquery-deferred/
+
 
 ## 複雑な要素をページに挿入したい
 - たとえば，ブログのエントリをJSで出したいとき，ブログのエントリをJSで組み立てるのは大変
@@ -1541,16 +1736,16 @@ $('.articles').append($(template({article: article}));
   * エントリ一覧の情報にはエントリの本文も含めること
   * API はエントリ全件を一気に返すのではなく、一定件数ごとでページングするように (ページングの件数は指定しない)
   * URI やパラメータは自由
-* 作成した API を JS の XHR で叩いて、エントリ一覧を表示するページを作成せよ (XHR を内部的に使用しているライブラリを使用して良い)
+* 作成した API を JS の XHR で叩いて、エントリ一覧を表示するページを作成せよ
   * HTML 中にはエントリの情報を含んでないページを作って、JS で動的にエントリを表示する
   * JS では最低限 (API が返す) 最初のページが表示するように
-  * Intern-Bookmark-2013 の js ブランチのような感じ
+  * Intern-Bookmark-2014 の js ブランチのような感じ
   * ページの URI は自由
 * [応用] JS で表示するエントリ一覧をページングできるようにする
   * ページングの仕組みは自由 (古いエントリ一覧を残したままどんどん追加してもいいし、エントリ一覧全体を入れ替えても良い)
   * ページ遷移はしないように (同じ HTML 文書の中で表示を変更)
 * API の作成と XHR の使用が課題の目的
-  * ライブラリを使用しても良い (ライブラリの挙動は理解しておくこと)
+  * ライブラリは、jQuery, underscorejsを使用しても良いことにします (ライブラリの挙動は理解しておくこと)
 
 ### ヒント
 
@@ -1576,51 +1771,37 @@ jQuery用キーワード
 - UI
 
 ## 課題2
+日本の伝統的アプリケーション「マウスストーカー」を作れ
 
-タイマーを管理する <code>Timer</code> クラスをつくれ。
 
-* コールバックの概念を理解する
+### マウスストーカーとは
+- ホームページに配置してホームページを楽しくするアプリケーション
+- マウスストーカーで検索
+  - http://www.fsfield.info/develop/javascript/010/sample/
+  - http://ameblo.jp/maman44/entry-11134501119.html
+  - http://plusone.jpn.org/javascript/sample/mouse/kuma/mskuma.html
 
-jQuery、Ten といったフレームワークを使っては<strong>いけない</strong>
 
 ### 仕様
-
-``` javascript
-var timer = new Timer(time);
-    //=> time ミリ秒のタイマーを作る
-timer.addListener(callback1);
-    //=> タイマーが完了したときに呼ばれる関数を追加する
-    //=>  callback : Function => タイマーが完了したときに呼ばれる関数
-timer.addListener(callback2);
-    //=> タイマーが完了したときに呼ばれる関数は、複数指定できる
-timer.start();
-    //=> タイマーをスタートさせる。
-    //=> start() してからコンストラクタに指定したミリ秒後に addListener に指定したコールバックが呼ばれる
-timer.stop();
-    //=> タイマーをストップさせる。
-```
-
-### 例
-
-``` javascript
-var timer = new Timer(1000);
-timer.addListener(function (e) {
-  alert(e.realElapsed); //=> start() 時から実際に経過した時間
-  timer.start(); //=> 再度スタートできる
-});
-timer.start();
-
-document.body.addEventListener('click', function () {
-  timer.stop(); //=> クリックで止まる。
-}, false);
-```
-
-以上のようなインターフェイスの <code>Timer</code> クラスを作れ。(ライブラリを使わずに)
+- マウスカーソルを動かすとマウスカーソルの動きに対応して小さい画像などがマウスカーソルを置いかける
+- `Intern-Diary-2014/mouseStalker`というディレクトリを作って、その中に`main.html`と`main.js`を作ってください
+- jQuery, underscorejsを使用しても良いことにします (ライブラリの挙動は理解しておくこと)
 
 ### ヒント
 
-* <code>Timer</code> の <code>addListener</code> は自分で実装しろということです (DOM のメソッドではない)
-* <a href="https://developer.mozilla.org/ja/DOM/window.setTimeout"><code>setTimeout()</code></a> を使うことになると思います
++ <code>mousemove</code> イベント
++ 小さい画像などを表示
++ CSSで小さい画像などの位置を指定
+
+### 観点
+
+- 小さい画像などがマウスを置いかけること
+- 設計
+- ユーザー体験への配慮
+  - 動きの良さ
+  - ガタガタしないとか
+  - 少し遅れてついてくるとか
+  - 使っていて楽しいこと
 
 ## 課題3(オプション課題)
 

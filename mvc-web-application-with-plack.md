@@ -290,6 +290,8 @@ DELETE  http://example.com/bookmark/1 # 削除
 
 # 4. Hatena::Newbie
 
+WAFの実例を通じて実際の雰囲気を掴みましょう。
+
 ## 前提
 - CPANにはWAFの一部を実装したモジュールがひと通り
     - それらを組み合わせればよくなった
@@ -299,7 +301,7 @@ DELETE  http://example.com/bookmark/1 # 削除
 
 ## 目次
 - 4.1 Hatena::Newbieとは
-- 4.2 Intern-Bookmark-2013の構成
+- 4.2 Intern-Bookmark-2014とは
 - 4.3 ブックマーク一覧を作ってみよう
     - 4.3.1 URI設計
     - 4.3.2 Controllerを書こう
@@ -316,23 +318,24 @@ DELETE  http://example.com/bookmark/1 # 削除
     - 少し前のプロジェクトでは使われています(Bookmark, Star, Ugomemo)
 
 ではこれからbookmark.plをWebアプリにしていきましょう。
-お手本コードはIntern-Bookmarkの続きとして実装しています。こちらのレポジトリではログインなどの機能も作ってあるので、これから紹介するコードとは少し異なることに注意してください。
+Hatena::NewbieをコピペしてIntern::Bookmarkにリネームし、その上にbookmark.plの機能を移植していきます。
 
+その完成形のお手本を用意しました。この資料では説明しませんが、はてなOAuthによるユーザー認証まで作りこんでいるので資料のコードと若干内容が異なります。
 以下の手順でcloneしてみてください。
 
 ```
-git clone https://github.com/hatena/Intern-Bookmark-2013.git
+git clone https://github.com/hatena/Intern-Bookmark-2014.git
 ```
 
-## 4.2 Intern-Bookmark-2013の構成
-はてな研修用WAFのHatena::Newbieを利用して作成したWebアプリの例です
+## 4.2 Intern-Bookmark-2014とは
+はてな研修用WAFのHatena::Newbieを利用して作成したWebアプリの例です。
 
 ### ディレクトリ構成
 
 フレームワークなども全部このディレクトリに入っているので少し多めですが以下の様な構成になっています。
 ```Bash
-$ tree Intern-Bookmark-2013/
-Intern-Bookmark-2013/
+$ tree Intern-Bookmark-2014/
+Intern-Bookmark-2014/
 ├── README.md
 ├── cpanfile
 ├── db # DB設定ファイル
@@ -1236,6 +1239,20 @@ sub render_string {
 
 
 
+# おまけ3. インスタンスキャッシュ
+
+```perl
+$self->{_created} ||= eval {
+    Hatena::Newbie::Util::datetime_from_db($self->{created});
+};
+```
+
+- 二度目の呼び出しでは以前の呼び出しで生成したオブジェクトを返すことで高速化している
+- キャッシュしてはいけないものをキャッシュしてしまうと、分かりづらいバグになるので注意すること
+ - 現在時刻を返すメソッドでキャッシュしてしまう……とか
+
+
+
 # 課題内容
 - Hatena::Newbie を利用して、前回作った diary.pl を Web アプリケーションにして下さい
 
@@ -1278,7 +1295,7 @@ sub render_string {
 
 ## 参考 : Hatena::Newbieのclassの役割
 ```Bash
-Intern-Diary-2013/
+Intern-Diary-2014/
 ├── README.md
 ├── cpanfile
 ├── db # DB設定ファイル
