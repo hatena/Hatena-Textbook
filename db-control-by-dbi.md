@@ -1,7 +1,7 @@
 # Perlでのデータベース操作
 
 <!--
-編集者ノート (Last Update: 2013年8月):
+編集者ノート (Last Update: 2014年12月):
 * 使うライブラリやDBMSの例は時代によって変わるため、毎年見直しが必要です。
 * 課題の変更がある場合は Intern-Bookmark、Intern-Diary ディレクトリ構成の変更が必要です。
 * ディレクトリ構成によっては サンプルの use lib を変更する必要があります。
@@ -16,15 +16,15 @@
 * <strong>Perlでのデータベース操作 ← いまここ</strong>
 * WAF によるウェブアプリケーション開発
 * JavaScript で学ぶイベントドリブン
+* Web API を利用する iOS アプリ作成
 
-## 今日は何をしますか
+## アンケート
 
-* アプリケーションでデータベースをいかに扱うかを理解する
-* SQLを書けるようになる
-* PerlからMySQLにアクセスする方法を学ぶ
-* (課題) 来週以降の Web アプリのための下地づくり
+* SQL書いたことある
+* プログラミング言語から使ったことある
 
 ## 今日の講義
+
 * 基本編
   * データベースの基本的な概念や使い方を紹介します
 * 実践編
@@ -34,33 +34,16 @@
 
 ## 注意点
 
-* 大変重要な講義です
-
 * 駆け足で進みますのでがんばってついてきてください
 * 質問があれば途中でも聞いてください
   * わからないところをメモっておいて後で聞くのも良いです
 
-<!--
-流行り廃りがあまり無い、長く使える知識です。
-また、データベースはボトルネックになりやすく、良いプログラムを書くために必要な知識が多いです。
-データベース周りのセキュリティ脆弱性は命取りとなりますし、非常に重要な講義です。
--->
-
 ## データベースとは
 
 * データ (data) とは
+  * = コンピュータで取り扱う情報
 * データベース (database) とは
-  * = データの集合
-
-<!--
-データ = 情報化されたもの
-データベース = データを集合として扱いやすくしたもの
-
-データベースは広義ではコンピュータ上のものに限らない。
-たとえば辞書は単語のデータベース。タウンページは電話番号データベース。
-
-この後はコンピュータ上のデータベースについて解説します。
--->
+  * = データを集めて取り扱いやすくしたもの
 
 ## 簡単なデータベースの例
 
@@ -82,20 +65,13 @@
 
 ## 2ちゃんねる+αを考えてみる
 
-2ちゃんねるの機能追加をするなら
-
-* ユーザ認証: 過去の書き込みを一覧できるように
+* ユーザページ: 過去の書き込みを一覧できるように
   * → dat ファイルにユーザ名を記録して、一覧するときに全部検索？
 * 耐障害性: マシンが一台故障してもサービスが継続できるように
   * → dat ファイルを複数のマシンにコピーする？
 
-<!--
-datファイルはただのテキストファイルなので、一行ずつ順番にしか読み取ることができず効率が悪い
--->
 
-* 面倒
-
-### 一般にウェブサービスは成長します
+## ウェブサービスのデータは増え続けます
 
 * データは大量・増える一方
 * アクセスも増える一方
@@ -109,6 +85,7 @@ datファイルはただのテキストファイルなので、一行ずつ順�
 * **データの抽象化**
   * データがディスクにどのように格納されているかを意識する必要はない
 * **効率が良い**
+  * 用途に合わせて最適な構造でデータを記録できる
 * **並列アクセス可能に**
   * トランザクション・ロック機構がある
   * 並列にアクセスするアプリでも、利用するときは一つの接続のみを考えていれば良い
@@ -119,16 +96,17 @@ datファイルはただのテキストファイルなので、一行ずつ順�
 ## いろんなDBMS知ってますか?
 
 * [リレーショナルDBMS](http://ja.wikipedia.org/wiki/%E9%96%A2%E4%BF%82%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)
-  * SQLite / MySQL / PostgreSQL
+  * MySQL / PostgreSQL / SQLite
   * <a href="http://www.postgresql.org/files/postgresql.mp3" target="_blank">http://www.postgresql.org/files/postgresql.mp3</a>
 * カラム指向DBMS
   * BigTable / Apache Cassandra / Apache HBase
 * [ドキュメント指向DBMS](http://ja.wikipedia.org/wiki/Category:%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E6%8C%87%E5%90%91%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9)
   * MongoDB / Apache CouchDB
-* オブジェクト指向DBMS
-  * KiokuDB (Perl) / AllegroCache (Common Lisp)
 * グラフDBMS
-  * AllegroGraph (Common Lisp)
+  * Neo4j
+* キーバリューストア
+  * Memcached/Redis/Riak
+
 
 <!--
 データベースの「管理」の仕方 (データモデル) によってDBMSには種類がある。
@@ -147,15 +125,21 @@ RDBMS以外のDBMSを「NoSQL (Not only SQL)」と言う。
 * グラフDBMSは各レコードが蜘蛛の巣上に繋がったようなグラフデータを検索するために使うDBMS。
 -->
 
-* ここではRDBとRDBMSのみ言及する。
 
-##  関係データベースとは？
+## 関係データベース
 
-*  関係モデルに基づくデータベース
+* もっとも広く使われているデータベースの一種
+* 関係モデルに基づいたデータベースシステム
+  * MySQL/PostgreSQL/Oracle
+
 
 ##  関係モデル
 
-* 関係は属性を持った組 (タプル) の集合で表される
+* 関係モデルとは
+  * データを関係として表現し取り扱うモデル
+
+* 関係とは?
+  * 属性を持った組 (タプル) の集合で表される
 
 ``` text
 R: (ID, 名前, 誕生日) = {
@@ -172,18 +156,25 @@ R: (ID, 名前, 誕生日) = {
 関係 (テーブル) = { ... }
 -->
 
-* 関係は一般的に「テーブル (表)」と呼ばれる
+* 関係には和、差、直積、射影、結合などの演算を数学的に定義できる
+* 関係はわかりやすさのために「テーブル (表)」と呼ばれる
 
 <!--
 これは定義的な説明なので、軽く流して良い
 -->
 
-##  関係データベース
+##  関係モデルに基づいたデータベース
 
-* 実際のRDBMS
-* データベース は複数の「テーブル (表)」を持つ
-* データは「レコード (列)」で表される
+* = RDBMS
+* データベース は複数の「テーブル (表)」を持つ = 関係
+* データは「レコード (列)」で表される = 組
   * レコードは「カラム (属性) 」を持つ
+* SQL と呼ばれる言語に基づいて、テーブルを定義したりテーブルに対して演算を行うことができる
+
+## 関係データベースにおけるテーブル
+
+表とレコードとカラム
+
 
 ### artist テーブル:
 
@@ -202,10 +193,13 @@ R: (ID, 名前, 誕生日) = {
   <tr><td>1</td><td>1</td><td>みくのかんづめ</td><td>2008-12-03</td></tr>
 </table>
 
-## SQLで関係を定義する
-
-* SQL という組み込み言語によりデータベースの問い合わせ、更新などを行う
+## SQL
+* 関係データベースに問い合わせを行うための言語
 * SQLは標準化されており、ほとんどのRDBMSで使うことができる
+  * データの定義
+  * データの作成/読込/更新/削除
+
+## SQLで関係を定義する
 
 ### artist テーブル:
 
@@ -270,7 +264,7 @@ DELETE FROM artist WHERE id = 4;
 ## SELECT文
 
 * 最も使う文だが、かなり複雑
-* すべては説明できません
+* 使いこなせると便利!
 * See [MySQL 5.5 Reference Manual :: 13.2.9 SELECT Syntax](http://dev.mysql.com/doc/refman/5.5/en/select.html).
 
 ```
@@ -297,6 +291,34 @@ SELECT
       | INTO var_name [, var_name]]
     [FOR UPDATE | LOCK IN SHARE MODE]]
 ```
+
+
+## サブクエリ
+
+<!--
+ここはそれほど重要でないので軽く流しても良い
+-->
+
+* SELECT文の返り値をさらにSQL内に埋め込むことができます
+
+* 「鏡音リン」と同じ`birthday`の`artist`の`name`は？
+  * 2回に分けて考えよう
+  1. 「鏡音リン」の`birthday`は？
+  1. 1.の値と`birthday`が等しい`artist`は？
+
+``` sql
+SELECT birthday FROM artist WHERE name = '鏡音リン';
+```
+
+``` sql
+SELECT name FROM artist
+WHERE birthday = (SELECT birthday FROM artist WHERE name = '鏡音リン')
+  AND name != '鏡音リン';
+```
+
+* サブクエリの結果が多くなる場合、メモリを大量に食うので注意が必要
+* 慣れないうちは使うべきでない
+
 
 ## 練習問題1: WHERE節
 
@@ -471,32 +493,6 @@ GROUP BY sex;
 
 * フィールドに `AS ...` を指定すると結果テーブルのカラム名が変わる
 
-## サブクエリ
-
-<!--
-ここはそれほど重要でないので軽く流しても良い
--->
-
-* SELECT文の返り値をさらにSQL内に埋め込むことができます
-
-* 「鏡音リン」と同じ`birthday`の`artist`の`name`は？
-  * 2回に分けて考えよう
-  1. 「鏡音リン」の`birthday`は？
-  1. 1.の値と`birthday`が等しい`artist`は？
-
-``` sql
-SELECT birthday FROM artist WHERE name = '鏡音リン';
-```
-
-``` sql
-SELECT name FROM artist
-WHERE birthday = (SELECT birthday FROM artist WHERE name = '鏡音リン')
-  AND name != '鏡音リン';
-```
-
-* サブクエリの結果が多くなる場合、メモリを大量に食うので注意が必要
-* 慣れないうちは使うべきでない
-
 ## LEFT JOIN
 
 <!--
@@ -525,16 +521,19 @@ WHERE artist.name = '初音ミク';
 
 * トランザクションは不可分な処理のまとまり
 * 途中で失敗することが許されないデータアクセス群
+* ACID特性をもつ
+  * 原子性 atomicit
+  * 一貫性 consistency
+  * 独立性 isolation
+  * 耐久性 durability
 
 ### 例: 銀行の送金システム
   1. 元口座から1,000円引く
   1. 送金先の口座に1,000円足す
 * いずれかが失敗するとデータに不整合が生じる
-* 送金中にさらに送金しようとすると残額はどうなる？
+* 同時に送金されたときに正しく動く?
 
-## ここからが本番です
-
-* 今までは基本知識です
+## 〜〜〜 ここまで基礎知識 〜〜〜
 
 <!--
 インターン期間中ははてなの社員と同等のことを求められる場面も多いと思います
@@ -548,7 +547,7 @@ WHERE artist.name = '初音ミク';
 
 ## より良いスキーマ設計をするために
 
-### カラムのデータ型
+## カラムのデータ型
 
 * カラムのデータ型、特に数値型は桁あふれに気をつけること
 * MySQL 5.5の場合
@@ -558,7 +557,7 @@ WHERE artist.name = '初音ミク';
     * 18446744073709551615 (1844京)
 * ref [MySQL 5.5 Reference Manual :: 11 Data Types](http://dev.mysql.com/doc/refman/5.5/en/data-types.html)
 
-### 制約
+## 制約
 
 * レコードに必ず存在するカラムには`NOT NULL`制約をつける
 * カラムがテーブル内で一意の場合は`UNIQUE KEY`制約をつける
@@ -583,9 +582,19 @@ CREATE TABLE album (
 );
 ```
 
+## PRIMARY KEY
+
+* テーブル内でレコードを一意に識別することができるカラム (任意)
+  * 他のレコードと被ってはいけない (UNIQUE制約)
+  * 値がなければいけない (NOT NULL制約)
+* テーブルに1つだけ設定できる
+* 「インデックス」(後述) として使える
+* 「id」という名前
+
+
 ## テーブル間のリレーション
 
-### 一対多のリレーション
+## 一対多のリレーション
 
 <div style="text-align: center; background: #fff"><img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/nitro_idiot/20130812/20130812003717.png"></div>
 
@@ -593,13 +602,13 @@ CREATE TABLE album (
   * 一つの`album`に一人の`artist`しか対応づけられない
   * 一人の`artist`は複数の`album`を作れる
 
-### 多対多のリレーション
+## 多対多のリレーション
 
 <div style="text-align: center; background: #fff"><img src="http://cdn-ak.f.st-hatena.com/images/fotolife/n/nitro_idiot/20130812/20130812003716.png"></div>
 
 * オムニバス形式の`album`を登録するには？
 
-### album_artist_relationテーブル
+## album_artist_relationテーブル
 
 ``` sql
 CREATE TABLE album_artist_relation (
@@ -623,20 +632,36 @@ CREATE TABLE album_artist_relation (
 
 ### データベースがボトルネックになる理由
 
-* スケールがしづらい
+* RDBMSはスケールがしずらい
+  * 複数のサーバ間で一貫性と可用性を保つためデータを分散させにくい
+  * ヒント: CAP定理
 * アプリケーションサーバはスケールしやすい
   * マシンリソースが必要な処理はアプリケーションサーバでやるほうが良い
 
-## パフォーマンス対策
+## 推測するな計測せよ
 
-* 銀の弾丸はない
-* アンチパターンはある
+* 勘で対処してはいけない
+  * 無意味に複雑になるだけに終わる
+* 問題が起こったときに計測し、ボトルネックを潰そう
+* EXPLAIN文を使う
+
+
+``` sql
+EXPLAIN SELECT album.name
+FROM album LEFT JOIN artist ON album.artist_id = artist.id
+WHERE artist.name = '初音ミク';
+```
+
+## パフォーマンス対策
 
 * クエリ数に気をつける
   * ワンクエリで取れるところはワンクエリで
     * ループ内でクエリ投げるとかやりがち
 * 不要なクエリは投げない
-  * なぜORMを使うべきでないか
+* 遅くなりがちなクエリに気をつける
+  * インデックス使ってない
+  * 無茶なJOIN
+  * 無茶なサブクエリ
 
 <!--
 なぜはてながORMを使うのを止めたか。
@@ -650,11 +675,6 @@ SQLをオブジェクト指向的な書き方をしても、必ずしも良いSQ
 cho45「コストがかかることを抽象化して簡単にしてはならない」
 -->
 
-### 危ないクエリ
-
-* JOIN
-* サブクエリの利用
-
 <!--
 JOINやサブクエリはデータ量が多いとテンポラリ領域を使うため極端に遅くなる。
 件数が多い場合はアプリケーション側で連結処理を書くほうが良い。
@@ -662,32 +682,20 @@ JOINやサブクエリはデータ量が多いとテンポラリ領域を使う�
 ただし、バッチ処理などで使われることがある。
 -->
 
+
 ## インデックス
 
 * カラムの組み合わせについてインデックス (索引) を作成することができる
-* キー (Key) とも言われる
 
-* 普通のインデックス
-  * そのカラムについて`ORDER BY`や`SELECT`したい時に
-* ユニークキー
-  * テーブル内で一意なキー (の組み合わせ)
-* プライマリキー (主キー)
-  * テーブル内で一意なキー
-  * 最も高速
+* Bツリーがよく使われる
+* 計算量
+  * インデックスがない: O(n)
+  * インデックスあり: O(log n)
+
 
 <!--
 インデックスは複数指定することができます。そういうインデックスを複合インデックスと呼びます。
 -->
-
-### PRIMARY KEY
-
-* テーブル内でレコードを一意に識別することができるカラム (任意)
-  * 他のレコードと被ってはいけない (UNIQUE制約)
-  * 値がなければいけない (NOT NULL制約)
-* テーブルに1つだけ設定できる
-* 「インデックス」(後述) として使える
-* 「id」という名前
-
 <!--
 PRIMARY KEYは合ったほうが良いが、必ずしも「id」という名前やINTEGERである必要はない。
 Active Record系のORMを使うと自動でこういったカラムになるためこれが慣習になっているが、
@@ -724,10 +732,10 @@ CREATE TABLE album (
 );
 ```
 
-### インデックスのデメリットと、それを無視する理由
+## インデックスのデメリット
 
-* インデックスを張ると、更新・削除時にオーバーヘッドがあるが…
-* 一般的なアプリケーションでは 参照処理 ＞ 更新処理
+* インデックスを張ると、更新・削除時にオーバーヘッドがある
+* 一般的なアプリケーションでは 参照処理 ＞＞＞ 更新処理 なのであまり問題にならない
 
 ## 語られなかったこと
 
@@ -749,17 +757,16 @@ CREATE TABLE album (
 
 ## Perl から RDBMS を使う: DBI
 
-* Perl からデータベース管理システムに接続するモジュール
+* Perl からデータベース管理システムに接続する最も基本的なモジュール
 * [DBI](http://search.cpan.org/~timb/DBI/DBI.pm)
   * DriverですべてのRDBMSの差を吸収して統一的なインターフェイスを提供する
   * (DBD::*) MySQL、PostgreSQL、SQLite、…
-* はてなではMySQLを採用
 
 ## DBI を用いる
 
-* PerlでRDBMSとやり取りする最も素朴な方法 (最も高速)
-* プレースホルダ機能
-* プリペアードステートメント機能
+* PerlでRDBMSとやり取りする最も素朴な方法
+  * プレースホルダ機能
+  * プリペアードステートメント機能
 
 ``` perl
 use DBI;
@@ -793,26 +800,16 @@ my $artists = $dbh->fetchall_arrayref(+{});
 #    ]
 ```
 
-* Slice に `{}` を指定すると各レコードがハッシュリファレンスで返る
-* メソッド名がわかりづらい
+* インターフェースがちょっとむずい
 
-``` perl
-# ↓も等価
-my $artists = $dbh->selectall_arrayref(q[
-    SELECT * FROM artist
-    WHERE birthday < ?
-    ORDER BY birthday ASC
-], { Slice => {} }, '2008-01-01');
-```
+## より便利なモジュール
 
-## DBIと組み合わせて使うモジュール
+以下のようなモジュールを使います
 
 * [DBIx::Sunny](http://search.cpan.org/~kazeburo/DBIx-Sunny/lib/DBIx/Sunny.pm)
-  * DBIよりわかりやすいインターフェイスを提供する
+  * DBIを少し拡張し、よりわかりやすいインターフェイスを提供する
 * [SQL::NamedPlaceholder](http://search.cpan.org/~satoh/SQL-NamedPlaceholder/lib/SQL/NamedPlaceholder.pm)
   * プレースホルダに名前をつけることができる
-* はてなでは以下のようなことを自動で行なうクラスを作って使っています
-  * 覚える必要はありません
 
 ```perl
 my $dbh = DBI->connect($dsn, $user, $password, {
@@ -828,164 +825,28 @@ my ($sql, $bind) = SQL::NamedPlaceholder::bind_named(q[
 });
 
 my $rows = $dbh->select_all($sql, @$bind);
+```
 
+## Q:PerlにはActiveRecordっぽいものはないの???
+
+* A: あるけどつかってない
+  * ORMはSQLを抽象化し、どんなSQLが、どこでいくつ発行されるかがわかりにくい。
+  * 思っても見ないところで大量のSQLを発行してしまい、パフォーマンスを劣化させた経験から
+  * 「コストがかかることを抽象化して簡単にしてはならない」
+
+
+## 得られたデータをオブジェクトに変換する
+
+* 対応するレコードを表すオブジェクト( = Model)に変換すると便利
+  * 得られたハッシュはそのままでは区別がない
+* 例:
+  * artistテーブルに対応するArticstクラス
+  * albumテーブルに対応するAlbumクラス
+
+```perl
+my $rows = $dbh->select_all($sql, @$bind);
 $rows = [ map { Vocaloid::Model::Artist->new($_) } @$rows ];
 ```
-
-## DBIx::Sunnyを使った独自拡張
-
-* はてなではDBIx::Sunnyを使ってさらにメソッドを増やしたものを使っています
-* DBIx::Sunny + Modelオブジェクト化
-
-<!--
-ここに出てくる *_as 系のメソッドはDBIx::Sunnyにはありません。
-しかし、2011年以降のはてなのプロダクトではこのような拡張がされています。
-今日の課題 (Intern-Diary) でも同じ拡張を使います。
--->
-
-### 条件に合う一行を取得 `select_row_as`
-
-``` perl
-my $artist = $dbh->select_row_as(q[
-    SELECT * FROM artist
-    WHERE name = :name
-    LIMIT 1
-], +{
-    name => '初音ミク',
-}, 'Vocaloid::Model::Artist');
-
-print $artist->id, "\\n";
-print $artist->name, "\\n";
-print $artist->birthday, "\\n";
-```
-
-``` sql
-SELECT * FROM artist WHERE name = '初音ミク' LIMIT 1;
-```
-
-<table>
-  <tr><th>id</th><th>name</th><th>birthday</th></tr>
-  <tr><td>1</td><td>初音ミク</td><td>2007-08-31</td></tr>
-</table>
-
-### 条件に合う行を複数取得 `select_all_as`
-
-``` perl
-my $artists = $dbh->select_all_as(q[
-    SELECT * FROM artist
-      WHERE
-        name LIKE :name
-      ORDER BY id ASC
-      LIMIT :limit
-      OFFSET :offset
-], +{
-    name   => '鏡音%',
-    limit  => 10,
-    offset => 0,
-}, 'Vocaloid::Model::Artist');
-
-for my $artist (@$artists) {
-    print $artist->name, "\\n";
-}
-```
-
-``` sql
-SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10 OFFSET 0;
-```
-
-<table>
-  <tr><th>id</th><th>name</th><th>birthday</th></tr>
-  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
-  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
-</table>
-
-### 行の挿入 `query`
-
-``` perl
-$dbh->query(q[
-    INSERT INTO artist
-      SET
-        id       = :id,
-        name     = :name,
-        birthday = :birthday
-], +{
-    id       => 5,
-    name     => '重音テト',
-    birthday => '2008-04-02',
-});
-```
-
-
-``` sql
-INSERT INTO artist (id, name, birthday)
-    VALUES (5, '重音テト', '2008-04-01');
-```
-
-<table>
-  <tr><th>id</th><th>name</th><th>birthday</th></tr>
-  <tr><td>1</td><td>初音ミク</td><td>2007-08-31</td></tr>
-  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
-  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
-  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
-  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
-</table>
-
-### 行の更新
-
-``` perl
-$dbh->query(q[
-    UPDATE artist
-      SET
-        name = :name
-      WHERE
-        id = :id
-], +{
-    name => '弱音ハク',
-    id   => 1,
-});
-```
-
-
-``` sql
-UPDATE artist SET name = '弱音ハク' WHERE id = 1;
-```
-
-<table>
-  <tr><th>id</th><th>name</th><th>birthday</th></tr>
-  <tr><td>1</td><td><del>初音ミク</del>弱音ハク</td><td>2007-08-31</td></tr>
-  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
-  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
-  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
-  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
-</table>
-
-### 行の削除
-
-``` perl
-$dbh->query(q[
-    DELETE FROM artist
-      WHERE
-        id = :id
-], +{
-    id => 1,
-});
-```
-
-``` sql
-DELETE FROM artist WHERE id = 1;
-```
-<table>
-  <tr><th>id</th><th>name</th><th>birthday</th></tr>
-  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
-  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
-  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
-</table>
-
-## Model クラスの役割
-
-* データをクラスに紐付ける
-* 内部情報で完結するメソッドを持たせる
-* **ここからデータベースへアクセスするべきではない**
 
 ``` perl
 package Vocaloid::Model::Artist;
@@ -1020,13 +881,168 @@ sub birthday {
 1;
 ```
 
+## DBIx::Sunny+独自拡張
+
+* 毎回Modelを作るコードを書くのはだるい
+* はてなではDBIx::Sunnyを拡張してだるさ軽減
+  * DBIx::Sunny + Modelオブジェクト化
+* DRY
+
+<!--
+ここに出てくる *_as 系のメソッドはDBIx::Sunnyにはありません。
+しかし、2011年以降のはてなのプロダクトではこのような拡張がされています。
+今日の課題 (Intern-Diary) でも同じ拡張を使います。
+-->
+
+## DBIx::Sunny によるSQL発行
+
+* ここから説明する方法を使ってクエリを発行しよう
+
+## 条件に合う一行を取得 `select_row_as`
+
+``` perl
+my $artist = $dbh->select_row_as(q[
+    SELECT * FROM artist
+    WHERE name = :name
+    LIMIT 1
+], +{
+    name => '初音ミク',
+}, 'Vocaloid::Model::Artist');
+
+print $artist->id, "\\n";
+print $artist->name, "\\n";
+print $artist->birthday, "\\n";
+```
+
+``` sql
+SELECT * FROM artist WHERE name = '初音ミク' LIMIT 1;
+```
+
+<table>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>1</td><td>初音ミク</td><td>2007-08-31</td></tr>
+</table>
+
+## 条件に合う行を複数取得 `select_all_as`
+
+``` perl
+my $artists = $dbh->select_all_as(q[
+    SELECT * FROM artist
+      WHERE
+        name LIKE :name
+      ORDER BY id ASC
+      LIMIT :limit
+      OFFSET :offset
+], +{
+    name   => '鏡音%',
+    limit  => 10,
+    offset => 0,
+}, 'Vocaloid::Model::Artist');
+
+for my $artist (@$artists) {
+    print $artist->name, "\\n";
+}
+```
+
+``` sql
+SELECT * FROM artist WHERE name LIKE '鏡音%' ORDER BY id ASC LIMIT 10 OFFSET 0;
+```
+
+<table>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
+</table>
+
+## 行の挿入 `query`
+
+``` perl
+$dbh->query(q[
+    INSERT INTO artist
+      SET
+        id       = :id,
+        name     = :name,
+        birthday = :birthday
+], +{
+    id       => 5,
+    name     => '重音テト',
+    birthday => '2008-04-02',
+});
+```
+
+
+``` sql
+INSERT INTO artist (id, name, birthday)
+    VALUES (5, '重音テト', '2008-04-01');
+```
+
+<table>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>1</td><td>初音ミク</td><td>2007-08-31</td></tr>
+  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
+  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
+  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
+</table>
+
+## 行の更新
+
+``` perl
+$dbh->query(q[
+    UPDATE artist
+      SET
+        name = :name
+      WHERE
+        id = :id
+], +{
+    name => '弱音ハク',
+    id   => 1,
+});
+```
+
+
+``` sql
+UPDATE artist SET name = '弱音ハク' WHERE id = 1;
+```
+
+<table>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>1</td><td><del>初音ミク</del>弱音ハク</td><td>2007-08-31</td></tr>
+  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
+  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
+  <tr><td>5</td><td>重音テト</td><td>2008-04-01</td></tr>
+</table>
+
+## 行の削除
+
+``` perl
+$dbh->query(q[
+    DELETE FROM artist
+      WHERE
+        id = :id
+], +{
+    id => 1,
+});
+```
+
+``` sql
+DELETE FROM artist WHERE id = 1;
+```
+<table>
+  <tr><th>id</th><th>name</th><th>birthday</th></tr>
+  <tr><td>2</td><td>鏡音リン</td><td>2007-12-27</td></tr>
+  <tr><td>3</td><td>鏡音レン</td><td>2007-12-27</td></tr>
+  <tr><td>4</td><td>巡音ルカ</td><td>2009-01-30</td></tr>
+</table>
+
 ## セキュリティ
 
 * データベースの脆弱性は致命的
 * データの漏洩、損失
 * 気をつけましょう
 
-### 悪い例
+## 悪い例
 
 ``` perl
 my $name = "..."; # ユーザの入力
@@ -1041,7 +1057,7 @@ my $artists = $dbh->select_all_as(
 SELECT * FROM artist WHERE name = '初音ミク';
 ```
 
-### 気をつけるべきこと
+## 気をつけるべきこと
 
 * **ユーザの入力は安全ではない！**
 * 名前に "`''; DROP TABLE artist`" と入力されると…？
@@ -1057,15 +1073,13 @@ SELECT * FROM artist WHERE name = ''; DROP TABLE artist;
 * 実践編です
 * 小さなブックマークアプリを書いていく過程を見ていきます
 
-### 大まかな機能
+## 大まかな機能
 
 * ユーザは URL (エントリ) を個人のブックマークに追加し、コメントを残せる
 * エントリはユーザに共通の情報を持つ (ページタイトルなど)
 * とりあえず一人用で (マルチユーザも視野にいれつつ)
 
-### add, list, delete
-
-3 操作くらいできるようにしてみたい
+## add, list, delete
 
 * bookmark.pl add &lt;<var>url</var>&gt; [コメント]
   * ブックマークを追加
@@ -1105,31 +1119,41 @@ $ ./bookmark.pl delete http://www.google.com/
 Deleted
 ```
 
-## …という bookmark.pl を作ってみよう
+## では作ってみましょう
 
-コードを手元に
+コードを手元にもってきて試してみましょう
 
 ``` text
-$ git clone https://github.com/hatena/Intern-Bookmark-2013.git
-$ cd Intern-Bookmark-2013
+$ git clone https://github.com/hatena/Intern-Bookmark-2014.git
+$ cd Intern-Bookmark-2014
 $ git submodule update --init
 $ script/setup.sh
 ```
 
-以降こんな感じでいきます
+## データのモデリング
 
-1. スキーマの設計
-1. Service層とModelの設計
-1. bookmark.pl
-1. アプリケーションのロジックを書く
+データベーススキーマを考える前にどのようなデータが登場するか整理してみよう。
+
+## 登場する概念(モデル)
+
+* `User` ブックマークをするユーザ
+* `Entry` ブックマークされた記事(URL)
+* `Bookmark` ユーザが行ったブックマーク
+
+###  概念動詞の関係(クラス図)
+
+<div style="text-align: center; background: #fff"><img src="http://f.st-hatena.com/images/fotolife/h/hakobe932/20140725/20140725163235.png"></div>
+
+- 1つのEntryには複数のBookmarkが属する (一対多)
+- 1つのUserには複数のBookmarkが属する (一対多)
+
+はじめに図を書くと整理できる & モデリングをレビューしてもらえる。
 
 ## スキーマの設計
+クラス図で分析したデータ構造をSQLのテーブルに対応付ける。
 
-* どんな概念が登場するか？
-  * `user`
-  * `entry`
-  * `bookmark`
-* 何が一意であるべきか
+- モデル同士の関係
+- 何によってデータを一意に特定できるか
 
 ### user
 
@@ -1155,7 +1179,7 @@ $ script/setup.sh
 
 *  UNIQUE KEY (url)
 
-###  bookmark
+### bookmark
 
 ユーザが URL をブックマークした情報 (ユーザ×エントリ)
 <table>
@@ -1169,61 +1193,42 @@ $ script/setup.sh
 
 *  UNIQUE KEY (user_id, entry_id)
 
-## Service層とModelの設計
+## プログラムの設計
 
-###  コードの設計
+* データの定義はできた
+* どこにどのようなプログラムを書けばよいか??
+  * DBにアクセス
+  * 得られたデータを集めてくる
+  * データを表示する部分
+* 綺麗に分割することで品質の高いソフトウェアになる
 
-* データをモデルに紐付ける
-* データ操作をServiceとして集約
-  * DBへのアクセスが散らばらない
-  * テストを書きやすい
-    * Modelが独立しているためデータと関係なくインスタンス化できる
+## レイヤ化アーキテクチャ
 
-### 重要
+* プログラムを責務ごとのレイヤに分けて設計する。
+* より上位の層が下位の層を利用するという形でプログラムを実装することで、見通しがよくなる
 
-* Service層: データベースとのやり取り
-* Model層: データを利用しやすい形に
+| 名前 | 説明 |
+| ---- | ---- |
+| インターフェース層 | ユーザや外部プログラムとインタラクションする層 |
+| アプリケーション層 | ドメイン層の機能を同士を組み合わせる層  |
+| ドメイン層 | インフラ層の機能を使いプログラムの役立つ機能を実装する層 |
+| インフラ層 | DBやネットワークなどプログラムの外部機能とやりとりする層 |
 
-## どんなクエリが必要ですか
+## ServiceとModel
+はてなでよく使われている、ドメイン層を整理するための設計方法の一つ。
 
-* ユーザのブックマーク一覧を取得
-  * `SELECT * FROM bookmark WHERE user_id = ...`
-* ブックマークを追加する
-  * `INSERT INTO bookmark ...`
-* ブックマークを削除する
-  * `DELETE FROM bookmark WHERE id = ...`
-* それぞれメソッドを作る
+* Service: データベースなどのインフラ層とのやり取りを実装するモジュール
+* Model: モデルを抽象化した単純なオブジェクト
 
-``` perl
-# ブックマーク一覧
-my $bookmarks = Intern::Bookmark::Service::Bookmark->find_bookmarks_by_user($db, +{
-    user => $user,
-});
+Modelを単純なオブジェクトにすることで、ドメイン層以上から
+インフラ層への依存が起こらないようにしている。
 
-# ブックマーク追加
-Intern::Bookmark::Service::Bookmark->add_bookmark($db, +{
-    user    => $user,
-    url     => $url,
-    comment => $comment,
-});
-
-# ブックマーク削除
-Intern::Bookmark::Service::Bookmark->delete_bookmark_by_url($db, +{
-    user => $user,
-    url  => $url,
-});
-```
-
-* いきなり実装を書くのは難しい？
-  * 案1: とりあえずテストを書いてみる
-  * 案2: とりあえず一番外側のスクリプトを書いてみる
-* 試しながら少しずつ実装する
-
-## bookmark.plからの利用
+## bookmark.plの構造
 
 * **bookmark.pl は最小限の処理に**
-* アプリケーションのロジックはModelクラスとServiceクラスに集約
-* コマンドライン周りの処理だけ記述
+  * ドメインロジックはドメイン層であるModelとServiceに集約
+  * `add_bookmark` や `list_bookmarks`などのコマンドはModelとServiceを組み合わせるだけ = アプリケーション層
+  * 引数からコマンドを受け付ける部分 = インターフェース層
 
 ```perl
 #!/usr/bin/env perl
@@ -1302,12 +1307,12 @@ sub bookmark_to_string {
 }
 ```
 
-## 各Modelクラス
+## Modelの実装
 
-* `select_row_as` などで指定するためのクラス
-* 各テーブルに一つModelクラスを作る
-* **ここからデータベースへアクセスするべきではない**
-* 作成日時 (`created`) をDateTimeオブジェクトに変換したり
+* モデルを抽象化した単純なオブジェクト。
+  * テーブルの1レコードがModelの1オブジェクト
+* **ここからデータベースへアクセスしない** ように注意
+  * 思っても見ないところからDBアクセスが行われないように
 
 ``` perl
 package Intern::Bookmark::Model::User;
@@ -1342,9 +1347,12 @@ sub created {
 
 * その他 Model::Entry, Model::Bookmark も同じように
 
-## Serviceにロジックを実装
+## Serviceの実装
+データベースなどのインフラ層とのやり取りを実装するモジュール。
 
-* ここが一番楽しいところですね！
+* SQLを実行するのはServiceからのみ
+* Serviceのメソッドは、必要に応じてModelのオブジェクトを返す
+
 
 ```perl
 package Intern::Bookmark::Service::Bookmark;
@@ -1394,11 +1402,49 @@ sub add_bookmark {
 }
 ```
 
+どんなSQLが使えるか考えてみよう。
+
+``` perl
+# ブックマーク一覧
+# SELECT * FROM bookmark WHERE user_id = ... のようなSQLを使って実装
+my $bookmarks = Intern::Bookmark::Service::Bookmark->find_bookmarks_by_user($db, +{
+    user => $user,
+});
+
+# ブックマーク追加
+# INSERT INTO bookmark ... のようなSQLを使って実装
+Intern::Bookmark::Service::Bookmark->add_bookmark($db, +{
+    user    => $user,
+    url     => $url,
+    comment => $comment,
+});
+
+# ブックマーク削除
+# DELETE FROM bookmark WHERE id = ... のようなSQLを使って実装
+Intern::Bookmark::Service::Bookmark->delete_bookmark_by_url($db, +{
+    user => $user,
+    url  => $url,
+});
+```
+
+* いきなり実装を書くのは難しい？
+  * 案1: とりあえずテストを書いてみる
+  * 案2: とりあえず一番外側のスクリプトを書いてみる
+* 試しながら少しずつ実装する
 * croak
   * use [Carp](http://search.cpan.org/~zefram/Carp/lib/Carp.pm) すると使えます
   * die と似てるけど呼び出し元で死ぬ
 
-## テスト
+## プログラムの設計のまとめ
+
+* レイヤ化アーキテクチャを意識
+* ServiceにはDBへのアクセスを書く
+  * **ModelからDBにアクセスしない**
+* Modelはテーブルのレコードを表現する
+* bookmark.pl ではServiceのメソッドを呼び出し、Modelを表示する
+* Intern-Bookmark-2014をよく読もう
+
+## テスト(again)
 
 * 書いたプログラムが正しく動くことをどう確かめるか？
   * 小規模なら実際に動かしてみるのでもやっていける
@@ -1550,50 +1596,107 @@ sub import {
 
 ``` text
 .
+├── README.md
+├── bookmark-file.pl
 ├── bookmark.pl
+├── cpanfile
 ├── db
 │   └── schema.sql
 ├── lib
-│   └── Intern
-│       ├── Bookmark
-│       │   ├── Config.pm
-│       │   ├── DBI
-│       │   │   └── Factory.pm
-│       │   ├── DBI.pm
-│       │   └── Error.pm
-│       └── Bookmark.pm
-└── t
-    ├── lib
-    │   └── Test
-    │       └── Intern
-    │           └── Bookmark.pm
-    ├── model
-    │   ├── bookmark.t
-    │   ├── entry.t
-    │   └── user.t
-    ├── object
-    │   ├── config.t
-    │   ├── dbi-factory.t
-    │   ├── dbi.t
-    │   └── util.t
-    └── service
-        ├── bookmark.t
-        ├── entry.t
-        └── user.t
+│   ├── Intern
+│   │   ├── Bookmark
+│   │   │   ├── Config
+│   │   │   │   └── Route.pm # WAFの講義で使います
+│   │   │   ├── Config.pm
+│   │   │   ├── Context.pm
+│   │   │   ├── DBI
+│   │   │   │   └── Factory.pm
+│   │   │   ├── DBI.pm
+│   │   │   ├── Engine # WAFの講義で使います
+│   │   │   │   ├── API.pm
+│   │   │   │   ├── Bookmark.pm
+│   │   │   │   └── Index.pm
+│   │   │   ├── Error.pm
+│   │   │   ├── Logger.pm
+│   │   │   ├── Model
+│   │   │   │   ├── Bookmark.pm
+│   │   │   │   ├── Entry.pm
+│   │   │   │   └── User.pm
+│   │   │   ├── Request.pm
+│   │   │   ├── Service
+│   │   │   │   ├── Bookmark.pm
+│   │   │   │   ├── Entry.pm
+│   │   │   │   └── User.pm
+│   │   │   ├── Util.pm
+│   │   │   └── View
+│   │   │       └── Xslate.pm
+│   │   └── Bookmark.pm
+│   └── Plack # WAFの講義で使います
+└── Middleware
+│           └── HatenaOAuth.pm
+├── script
+│   ├── app.psgi # WAFの講義で使います
+│   ├── appup # WAFの講義で使います
+│   └── setup.sh
+├── static # WAFの講義で使います
+│   └── css
+│       └── style.css
+├── t
+│   ├── engine # WAFの講義で使います
+│   │   ├── api.t
+│   │   ├── bookmark.t
+│   │   └── index.t
+│   ├── lib
+│   │   └── Test
+│   │       └── Intern
+│   │           ├── Bookmark
+│   │           │   ├── Factory.pm
+│   │           │   └── Mechanize.pm # WAFの講義で使います
+│   │           └── Bookmark.pm
+│   ├── model
+│   │   ├── bookmark.t
+│   │   ├── entry.t
+│   │   └── user.t
+│   ├── object
+│   │   ├── config.t
+│   │   ├── dbi-factory.t
+│   │   ├── dbi.t
+│   │   └── util.t
+│   └── service
+│       ├── bookmark.t
+│       ├── entry.t
+│       └── user.t
+└── templates # WAFの講義で使います
+    ├── _wrapper.tt
+    ├── bookmark
+    │   ├── add.html
+    │   └── delete.html
+    ├── bookmark.html
+    └── index.html
 ```
 
 ## 以上
 
-*  試行錯誤しつつ、わからないところは早めに人に聞きましょう
+* 試行錯誤しつつ、わからないところは早めに人に聞きましょう
+* 聞いたら3秒でわかることもあるからどんどんメンターに話しかけましょう
+  * ハマってる時間はそんなにないです
 
-## 課題: diary.pl
+## 課題: diary.plのデータベースバージョン
 
-<a href="http://d.hatena.ne.jp/keyword/%C6%FC%CB%DC%BF%CD%A4%CB%A4%CF%A5%D6%A5%ED%A5%B0%A4%E8%A4%EA%C6%FC%B5%AD" target="_blank">日本人にはブログより日記 - はてなキーワード</a>
+Perlの講義で作ったdiary-file.plはファイルにデータを記録していましたが、DBにデータを記録するように変更しましょう
 
-* コマンドラインインターフェースで日記を書けるツール diary.pl を作成してください (必須)
-* diary.pl に機能を追加してください (記事のカテゴリ機能など)
+* 1 . データモデリングをして簡単なクラス図を書き、その図を元にデータベースのテーブルスキーマをSQLで記述してください(必須)
+  * SQLはdb/schema.sql というファイルに書いてください
+  * できたら先に進む前にメンターに見てもらってください
+  * 図はメンターにチェックを受ければ十分で、提出の必要はありません
+* 2 . テーブルに対応するModelクラスを実装しよう(必須)
+  * まだ作ってない or 1の結果設計が変わったら
+  * 昨日の課題を壊さないように気をつけよう
+* 3 . 日記を書けるツール diary-file.pl を改良したdiary.plを作り、DBに日記を記録するようにしてください (必須)
+  * diary-file.plを編集せずに新しくファイルを作ってください
+  * Intern-Bookmarkのbookmark.plのように、diary.plからは直接DB操作をせず、DB操作を行うServiceを経由するような設計にしてください
 
-### 基本機能
+## 基本機能
 
 *  記事の追加
 *  記事の一覧表示
@@ -1601,44 +1704,79 @@ sub import {
 *  記事の削除
 *  マルチユーザー (ただし今回はシングルユーザーでしか利用しない)
 
-### 実行例
+## 実行例
 
 ``` text
-$ ./diary.pl add タイトル  # 記事追加
-$ ./diary.pl list         # 記事を一覧
-$ ./diary.pl edit 記事ID   # 記事を編集
-$ ./diary.pl delete 記事ID # 記事を削除
+$ export INTERN_DIARY_ENV=local
+$ perl ./diary.pl add タイトル  # 記事追加
+$ perl ./diary.pl list          # 記事を一覧
+$ perl ./diary.pl edit 記事ID   # 記事を編集
+$ perl ./diary.pl delete 記事ID # 記事を削除
 ```
 
-### スキーマ設計
+* `INTERN_DIARY_ENV`環境変数は`Intern::Diary::Config`内のlocal設定を使うために設定
+* default設定にdbの設定を書いてもよい
 
-<!--
-編集者ノート: テーブルのヒントを与えるとスキーマ設計の創造性を奪うので敢えて明記しないようにしました。 by nitro_idiot
--->
+## オプション課題
 
-* 望むように独自のスキーマを設計してよいです
-* データベース名は `intern_diary` としてください
-  * テスト用のDBは `intern_diary_test`
-  * いずれも `script/setup.sh` で作られるはずです
-
-## オプション課題 独自機能
-
-* アプリケーションに独自の機能を追加してみてください
+* 1 . ModelとServiceのテストを書いてください(できるだけがんばろう)
+* 2 . diary.plのテストを書いてください
+  * diary.plを引数を処理する部分(インターフェース層)と実際に処理を実行する部分(アプリケーション層)の２つに分割する必要があるでしょう
+* 3 . アプリケーションに独自の機能を追加してみてください
   * 記事のカテゴリ分け機能
     * ヒント: 多対多リレーションの活用
   * 検索
     * ヒント: `LIKE`演算子
   * などなど
 
-## 評価基準
+### データモデリングについて
 
-* 基本機能 5点 (必須)
-  * 記事の追加・一覧 3点
-  * 記事の編集・削除 2点
-* スキーマ設計 2点
-  * パフォーマンス・セキュリティに留意しているか
-* 追加機能 2点
-* テスト 1点
+<!--
+編集者ノート: テーブルのヒントを与えるとスキーマ設計の創造性を奪うので敢えて明記しないようにしました。 by nitro_idiot
+-->
+
+* diary.plの機能を実現するためのデータについて、あらためて考えてみましょう
+  * どのようなデータがあるか
+  * データ同士の関係がどうなっているか
+  * 何によってデータを一意に特定できるか
+* Perlの講義で作ったクラス同士の関係を図に書いてみましょう
+  * 必要であれば、クラスを増やしたり変更したり変更してしまってりして構いません
+* できた図を参照しながらデータベースのテーブルスキーマを考えてSQLを書きましょう
+
+
+## データベースの作成について
+
+* `script/setup.sh`を実行することで自動的にデータベースが作成されるので、まず実行してください
+* データベース名は `intern_diary_$USER` になります ($USERは自分のユーザ名)
+  * テスト用のDBは `intern_diary_$USER_test`
+  * いずれも `script/setup.sh` で自動的に作られるので
+
+## mysqlコマンドの使い方
+
+## インタラクティブシェルを使う
+
+データベースに対して直接SQLを実行したい場合は以下のようmysqlコマンドのインタラクティブシェルを使うと便利です。
+
+```sh
+$ mysql -unobody -pnobody intern_diary_$USER # mysqlのインタラクティブシェルに入る
+mysql> show tables; # 定義されているテーブル一覧をみる
+mysql> describe users; # usersテーブルの定義を調べる
+mysql> show create table users; # usersテーブルを定義しているSQLを表示する
+mysql> SELECT * FROM users LIMIT 10; # SQLを実行する(SELECT)
+mysql> INSERT INTO users (id, name) VALUES (0, "tarou"); # SQLを実行する(INSERT)
+mysql> CREATE TABLE user ( # 複数行のSQLをペーストしてまとめて実行することもできます
+    ->   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    ->   name VARCHAR(32) NOT NULL
+    -> );
+```
+
+## ファイルに書かれたSQLを読み込んで実行する
+
+`db/schema.sql`に書かれたSQLを一度に読み込みたいときに利用すると便利です。
+
+```sh
+$ cat db/schema.sql | mysql -unobody -pnobody intern_diary_$USER
+```
 
 ## mysqldump お願い
 
@@ -1648,7 +1786,7 @@ $ ./diary.pl delete 記事ID # 記事を削除
 
 ``` text
 $ mkdir mysqldump
-$ mysqldump -uroot -Q intern_diary > mysqldump/intern_diary.sql
+$ mysqldump -uroot -Q intern_diary_$USER > mysqldump/intern_diary_$USER.sql
 ```
 
 これも commit, push してください。
@@ -1658,10 +1796,23 @@ $ mysqldump -uroot -Q intern_diary > mysqldump/intern_diary.sql
 *  CLI 以外の利用も見据えた設計を
 *  アプリケーションに必要な機能は Model および Service クラス内に書きましょう
 
+## 関係ないファイルに注意
+
+* Intern-Diary-2014のなかにはいくつか明日の講義でつかわれるクラスが含まれます
+* 今日関係あるところは以下らへん
+  * Intern::Diary::Config
+  * Intern::Diary::DBI
+  * Intern::Diary::DBI::Factory
+  * Intern::Diary::Logger
+  * Intern::Diary::Model::* (自分でつくる)
+  * Intern::Diary::Service::* (自分でつくる)
+
 ## 講義はここまでです
 
 * 分からないことはメンターか隣りのインターンに尋ねましょう
+  * わいわいにぎやかにやりましょう
 * 人気の質問に関してはあとでまとめて補足をするかもしれないのでどんどん訊いてください
+* 資料の最後に補足編もあるからみてね
 
 ##  補足編
 

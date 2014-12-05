@@ -12,6 +12,20 @@ Web アプリケーションとスマートフォンアプリ開発の両方を�
 
 ---
 
+## Swift 言語
+
+Swift は Apple が開発した Objective-C に代わる新しい言語です。2014年6月に開催された WWDC 2014 において発表されました。iOS や OS X のアプリケーションの開発を目的として開発されています。このため Cocoa あるいは Cocoa Touch といった既存のフレームワークを利用できるように設計されています。また Swift は LLVM によってコンパイルされることを前提として開発され、このため LLVM の強力な最適化の恩恵を受けることができます。
+
+動的な特徴を持っていた Objective-C と較べ、Swift は多分に静的な言語になりました。このことでプログラムが安全になるほか、LLVM による最適化が行われやすくなります。静的型付けであることに加えて Swift ではモダンな言語仕様を広く取り入れ、名前空間のサポートや型推論、ジェネリクスといった言語仕様を導入しました。これらの結果としてコンパイラの強力なチェック機構が効果的に利用できるようになりました。
+
+これらの大きな改善の反面、これまでの Objective-C の動的な特性を利用していたパラダイムの多くは Swift のオブジェクトでは利用できません。オブジェクトが Objective-C の `NSObject` を基底クラスとしているか、あるいは純粋な Swift のオブジェクトなのかによって挙動が違います。また Swift が C 言語との互換性を持たないことで、C++ 言語との相互的なやり取りができなくなりました。これは Objective-C において Objective-C++ として利用できていたものです。
+
+現在 (2014年8月時点) の Swift は開発途上のものであり、今後どのように Swift の言語仕様が拡充され、あるいは Swift の影響でこれまでのパラダイムにどういった変化が起きるのかまだ分かりません。Cocoa や Cocoa Touch の Objective-C で書かれてきたフレームワークがどうなっていくのかも定かではありません。サードパーティーのライブラリもほとんどが Objective-C で書かれています。今後一定の期間をかけて、Swift らしいパラダイムを利用したものに置き換わっていくのかもしれませんが、おそらくそれにはもう少し時間がかかるでしょう。
+
+以上のことから本テキストではこの後、専ら Objective-C について記載します。Swift が発表されたいまもなお、Objective-C に関する十分な知識は役に立ちます。しかしエンジニアであれば当然新しい言語である Swift に興味を持つでしょう。今日現在において Swift を学びたければ、Apple のドキュメントが最も役立つことでしょう。
+
+[Swift – Overview – Apple Developer](https://developer.apple.com/swift/)
+
 ## Objective-C 言語
 
 C 言語にオブジェクト指向の機能を取り入れるため Smalltalk 由来のいろいろを合体した言語ですが、とはいえ基本は C 言語です。まずは C 言語の部分を確認します。
@@ -490,7 +504,7 @@ iOS の場合、おおよそ画面ひとつに対してひとつの `ViewControl
 
 `BookmarkViewController` は個々のブックマークの内容を表示すると共に、今回は新しくブックマークする機能もここに用意します。
 
-このような設計で作ったものを [Intern::Bookmark アプリ](https://github.com/hatena/ios-Intern-Bookmark-2013) として用意してあります。参考にしてください。
+このような設計で作ったものを [Intern::Bookmark アプリ](https://github.com/hatena/ios-Intern-Bookmark-Simple-2014) として用意してあります。参考にしてください。
 
 ## チュートリアル『Intern::Bookmark』アプリを作ろう
 
@@ -528,9 +542,9 @@ $ pod setup
 次に Intern::Bookmark アプリのプロジェクトのディレクトリを開き、`Podfile` という名前のファイルを作成します。
 
 ```ruby
-platform :ios, '6.0'
+platform :ios, '7.0'
 
-pod 'AFNetworking', '~> 1.0'
+pod 'AFNetworking', '~> 2.0'
 ```
 
 ファイルの内容はこのようにします。ここでは `AFNetworking` という、ネットワーク通信を簡単にするためのライブラリを使います。ファイルを保存したらそのディレクトリで `pod install` してください。以下のようになるはずです。
@@ -539,7 +553,7 @@ pod 'AFNetworking', '~> 1.0'
 $ pod install
 # Analyzing dependencies
 # Downloading dependencies
-# Installing AFNetworking (1.3.1)
+# Installing AFNetworking 2.3.1
 # Generating Pods project
 # Integrating client project
 #
@@ -550,7 +564,7 @@ $ pod install
 
 ### ビルド
 
-この段階で一度ビルドしてみましょう。Xcode 左上の `Run` を押します。このとき少し右の `Scheme` というところで、正しいスキームとターゲットデバイスが設定されていることを確認します。スキームというのはビルドする設定のことで、必要に応じて切り替えることができますが、いまはプロジェクト名のスキームを使います。ターゲットデバイスはとりあえず `iPhone 6.1 Simurator` を選びます。
+この段階で一度ビルドしてみましょう。Xcode 左上の `Run` を押します。このとき少し右の `Scheme` というところで、正しいスキームとターゲットデバイスが設定されていることを確認します。スキームというのはビルドする設定のことで、必要に応じて切り替えることができますが、いまはプロジェクト名のスキームを使います。ターゲットデバイスはとりあえず `iPhone Retinal (4-inch)` を選びます。
 
 ![iPhone Simulator](https://www.evernote.com/shard/s2/sh/6274a688-7c9d-4ccd-a752-34a8c775f023/e9e4013657342f049f3740469c4d7cab/deep/0/iphone-simulator.png)
 
@@ -604,26 +618,31 @@ Storyboard にははじめからふたつのビューコントローラーが置
 
 ここでは AFNetworking という非常によく使われているサードパーティーのライブラリを使って、このネットワーク通信部分をさらに抽象化し、簡単に行います。
 
-はじめに `AFHTTPClient` のサブクラス、`IBKMInternBookmarkAPIClient` を作ります。このシングルトンオブジェクトが API との通信全てを仲介します。
+はじめに `AFHTTPSessionManager` を管理する`IBKMInternBookmarkAPIClient` を作ります。このシングルトンオブジェクトが API との通信全てを仲介します。
 
 ```objc
-#import "AFHTTPClient.h"
+#import "AFHTTPSessionManager.h"
 
-@interface IBKMInternBookmarkAPIClient : AFHTTPClient
+@interface IBKMInternBookmarkAPIClient : NSObject
 
 + (instancetype)sharedClient;
 
 - (void)getBookmarksWithCompletion:(void (^)(NSDictionary *results, NSError *error))block;
 
 @end
+
 ```
 
 ```objc
 #import "IBKMInternBookmarkAPIClient.h"
 
-#import "AFJSONRequestOperation.h"
-
 static NSString * const kIBKMInternBookmarkAPIBaseURLString = @"http://localhost:3000/";
+
+@interface IBKMInternBookmarkAPIClient()
+
+@property (nonatomic) AFHTTPSessionManager *sessionManager;
+
+@end
 
 @implementation IBKMInternBookmarkAPIClient
 
@@ -632,35 +651,37 @@ static NSString * const kIBKMInternBookmarkAPIBaseURLString = @"http://localhost
     static IBKMInternBookmarkAPIClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[IBKMInternBookmarkAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kIBKMInternBookmarkAPIBaseURLString]];
+        _sharedClient = [[self alloc] init];
     });
 
     return _sharedClient;
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)url
+- (id)init
 {
-    self = [super initWithBaseURL:url];
-    if (!self) {
-        return nil;
+    self = [super init];
+    if (self) {
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.HTTPAdditionalHeaders = @{
+            @"Accept" : @"application/json",
+        };
+
+        self.sessionManager = [[AFHTTPSessionManager alloc]
+                         initWithBaseURL:[NSURL URLWithString:kIBKMInternBookmarkAPIBaseURLString]
+                         sessionConfiguration:configuration];
     }
-
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-
-    // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
-    [self setDefaultHeader:@"Accept" value:@"application/json"];
 
     return self;
 }
 
 - (void)getBookmarksWithCompletion:(void (^)(NSDictionary *results, NSError *error))block
 {
-    [self getPath:@"/api/bookmarks"
+    [self.sessionManager GET:@"/api/bookmarks"
        parameters:@{}
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(NSURLSessionDataTask *task, id responseObject) {
               if (block) block(responseObject, nil);
           }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          failure:^(NSURLSessionDataTask *task, NSError *error) {
               if (block) block(nil, error);
           }];
 }
@@ -668,9 +689,9 @@ static NSString * const kIBKMInternBookmarkAPIBaseURLString = @"http://localhost
 @end
 ```
 
-`sharedClient:` クラスメソッドが、シングルトンの `IBKMInternBookmarkAPIClient` オブジェクトを得るためのメソッドです。これは典型的なシングルトンの実装になっています。`initWithBaseURL:` という初期化メソッドの中で `[self registerHTTPOperationClass:[AFJSONRequestOperation class]];` としています。こうしておくと、`AFHTTPClient` はレスポンスのボディを JSON として扱い、自動的にパースして `NSDictionary` にしてくれます。パース自体は Foundation.framework の `NSJSONSerialization` が行います。
+`sharedClient:` クラスメソッドが、シングルトンの `IBKMInternBookmarkAPIClient` オブジェクトを得るためのメソッドです。これは典型的なシングルトンの実装になっています。`AFHTTPSessionManager` はレスポンスのボディを JSON として扱い、自動的にパースして `NSDictionary` にしてくれます。パース自体は Foundation.framework の `NSJSONSerialization` が行います。
 
-`getBookmarksWithCompletion:` メソッドは、`AFHTTPClient` の `getPath:parameters:success:failure:` メソッドを使って実際に通信を行い、レスポンスをコールバック用の block に渡します。`parameters` に `NSDictionary` を与えてパラメーターを付加することもできます。このようにすることで、このメソッドを呼ぶだけで簡単に JSON をパースした辞書を得ることができ、またエラーが起きたときにもハンドリングしやすくなります。
+`getBookmarksWithCompletion:` メソッドは、`AFHTTPSessionManager` の `GET:parameters:success:failure:` メソッドを使って実際に通信を行い、レスポンスをコールバック用の block に渡します。`parameters` に `NSDictionary` を与えてパラメーターを付加することもできます。このメソッドを呼ぶだけで簡単に JSON をパースした辞書を得ることができ、またエラーが起きたときにもハンドリングしやすくなります。
 
 これを用いる `IBKMBookmarkManager` を実装します。このオブジェクトもシングルトンにしておきます。
 
@@ -706,15 +727,13 @@ static NSString * const kIBKMInternBookmarkAPIBaseURLString = @"http://localhost
 
 + (IBKMBookmarkManager *)sharedManager
 {
-    static IBKMBookmarkManager *_instance = nil;
+    static IBKMBookmarkManager *_sharedManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedManager = [[self alloc] init];
+    });
 
-    @synchronized (self) {
-        if (_instance == nil) {
-            _instance = [[self alloc] init];
-        }
-    }
-
-    return _instance;
+    return _sharedManager;
 }
 
 - (id)init
@@ -772,7 +791,7 @@ static NSString * const kIBKMInternBookmarkAPIBaseURLString = @"http://localhost
 )
 ```
 
-より詳細は [AFNetworking のドキュメント](http://cocoadocs.org/docsets/AFNetworking/) やサンプルアプリを参照してください。
+より詳細は [AFNetworking のドキュメント](http://cocoadocs.org/docsets/AFNetworking/2.0.0/) やサンプルアプリを参照してください。
 
 ### `UITableView`
 
@@ -889,7 +908,7 @@ Storyboard の設定などはこの説明から省略しています。ここま
 
 ## 課題
 
-課題では、これまで作ってきた `Intern::Blog` の iPhone アプリを作ってもらいます。JavaScript の課題で作っているはずの JSON API をなるべく使い回して構いません。一からアプリを作成し、できれば実機で動作させましょう。
+課題では、これまで作ってきた `Intern::Diary` の iPhone アプリを作ってもらいます。JavaScript の課題で作っているはずの JSON API をなるべく使い回して構いません。一からアプリを作成し、できれば実機で動作させましょう。
 
 ### 課題
 
@@ -911,6 +930,12 @@ iPhone アプリから記事を投稿できるようにしましょう。必要�
 - より使いやすい UI にする
 - おもしろい機能を追加する
 - など
+
+## 課題に取り組む前に
+
+* [hatena/ios-Intern-Diary-2014](https://github.com/hatena/ios-Intern-Diary-2014) を fork する
+* 空の Pull Request を作る
+  * これまでの講義と同様にこの Pull Request で課題を提出する
 
 ---
 
@@ -1055,6 +1080,8 @@ webView.delegate = obj;
 
 受け取るときは、上記のように `addObserver:selector:name:object:` メソッドで、自分を通知の監視者として登録します。この `@selector(notificationHandler:)` という書き方で、メソッドの `selector` を指定することで、通知を受けたときにこのメソッドが呼ばれるようになります。
 
+不要になったら`removeObserver:`メソッドを呼び出して必ず通知を解除するようにしましょう。
+
 この仕組みは様々な場面で活用されています。
 
 ##### KVO ([Key Value Observation](https://developer.apple.com/library/ios/#documentation/Cocoa/Reference/Foundation/Protocols/NSKeyValueObserving_Protocol/Reference/Reference.html))
@@ -1087,6 +1114,8 @@ Human *human = [[Human alloc] init];
 ```
 
 変更を受け取りたい側はこのように `observeValueForKayPath:ofObject:change:context:` メソッドを実装します。詳細はドキュメントを参照してください。
+
+不要になったら`removeObserver:forKeyPath:`メソッドを呼び出して必ず通知を解除するようにしましょう。
 
 KVO を効果的に利用することで、モデルの変更をビュー、またはコントローラーが一方的に監視することが可能になります。これによってモデルと他のオブジェクトの結合を弱くでき、モデルが自分の仕事に集中できます。
 
@@ -1147,7 +1176,7 @@ Xcode に付属する Instruments を使うと、さらに高度な解析が簡�
 
 #### 書籍
 
-- [絶対に挫折しない iPhoneアプリ開発「超」入門【iOS6対応版】](http://www.amazon.co.jp/%E7%B5%B6%E5%AF%BE%E3%81%AB%E6%8C%AB%E6%8A%98%E3%81%97%E3%81%AA%E3%81%84-iPhone%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA%E3%80%8C%E8%B6%85%E3%80%8D%E5%85%A5%E9%96%80%E3%80%90iOS6%E5%AF%BE%E5%BF%9C%E7%89%88%E3%80%91-%E9%AB%98%E6%A9%8B-%E4%BA%AC%E4%BB%8B/dp/4797369434/)
+- [絶対に挫折しない iPhoneアプリ開発「超」入門【iOS7対応】増補改訂版](http://www.amazon.co.jp/%E7%B5%B6%E5%AF%BE%E3%81%AB%E6%8C%AB%E6%8A%98%E3%81%97%E3%81%AA%E3%81%84-iPhone%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA%E3%80%8C%E8%B6%85%E3%80%8D%E5%85%A5%E9%96%80%E3%80%90iOS7%E5%AF%BE%E5%BF%9C%E3%80%91%E5%A2%97%E8%A3%9C%E6%94%B9%E8%A8%82%E7%89%88-%E9%AB%98%E6%A9%8B-%E4%BA%AC%E4%BB%8B/dp/4797375450/ref=dp_ob_title_bk)
   - iOS アプリ開発の入門書です。チュートリアル形式でいろいろ書いてあるので取っつきやすいと思います
 - [詳解 Objective-C 2.0 第3版](http://www.amazon.co.jp/%E8%A9%B3%E8%A7%A3-Objective-C-2-0-%E7%AC%AC3%E7%89%88-%E8%8D%BB%E5%8E%9F/dp/4797368276)
   - Objective-C の言語について知りたかったらこれがいちばんよいと思います
