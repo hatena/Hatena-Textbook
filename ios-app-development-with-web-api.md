@@ -505,6 +505,7 @@ iOS の場合、おおよそ画面ひとつに対してひとつの `ViewControl
 `BookmarkViewController` は個々のブックマークの内容を表示すると共に、今回は新しくブックマークする機能もここに用意します。
 
 このような設計で作ったものを [Intern::Bookmark アプリ](https://github.com/hatena/ios-Intern-Bookmark-Simple-2014) として用意してあります。参考にしてください。
+またSwift版の[Intern::Bookmark アプリ](https://github.com/hatena/ios-Intern-Bookmark-Simple-Swift-2014) も用意しましたので、興味がある方はお試しください。
 
 ## チュートリアル『Intern::Bookmark』アプリを作ろう
 
