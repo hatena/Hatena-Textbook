@@ -34,7 +34,7 @@
 * 表現力が高い
   * TMTOWTDI (やりかたはいくつもあるよ！)
 * 実際に使われてる
-  * はてな/DeNA/NHN/mixi
+  * はてな/DeNA/LINE/mixi
 * 良い開発文化がある
   * http://b.hatena.ne.jp/t/perl
 
