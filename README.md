@@ -2,7 +2,7 @@
 
 ## 環境構築
 
-* 開発環境導入
+* [開発環境導入](https://github.com/hatena/Hatena-Textbook/blob/master/ios-app-development-setup.md)
 
 ## 研修用資料
 
