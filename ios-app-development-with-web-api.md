@@ -465,7 +465,7 @@ for (id obj in array) {
 >
 > ```objc
 > NSArray *array = @[@"a", @"b", @"c"];
-> for (id obj in [array reverseEnumerator]) {
+> for (id obj in [array reverseObjectEnumerator]) {
 >     NSLog(@"%@", obj);
 > }
 ```
