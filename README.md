@@ -10,8 +10,11 @@
 * [Perlでのデータベース操作(DBI を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/db-control-by-dbi.md)
 * [MVC によるウェブアプリケーション開発 (Plack を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/mvc-web-application-with-plack.md)
 * [JavaScript によるイベントドリブン](https://github.com/hatena/Hatena-Textbook/blob/master/javascript-event-driven.md)
-* [iOS アプリ開発環境のセットアップ](https://github.com/hatena/Hatena-Textbook/blob/master/ios-app-development-setup.md)
-* [Web API を利用する iOS アプリ作成](https://github.com/hatena/Hatena-Textbook/blob/master/ios-app-development-with-web-api.md)
+
+### iOS アプリ
+
+* [プログラミング言語 Swift](https://github.com/hatena/Hatena-Textbook/blob/master/swift-programming-language.md)
+* [Swift での iOS アプリ開発](https://github.com/hatena/Hatena-Textbook/blob/master/swift-development-apps.md)
 
 ## 参考資料
 
