@@ -100,7 +100,7 @@ gem 'cocoapods'
 ```ruby
 platform :ios, '9.0'
 
-use_framework!
+use_frameworks!
 
 pod 'AFNetworking'
 ```
