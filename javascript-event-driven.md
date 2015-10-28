@@ -102,11 +102,7 @@
 
 ひとつずつ説明していきます
 
-## コメントとソースコード中の文字のエスケープシーケンスでの表現
-
-* Unicode エスケープシーケンスに注目: `\uXXXX`
-  * UTF-16
-  * そういえばそもそも Unicode って知ってる?
+## コメント
 
 ```javascript
 // 一行コメント
@@ -114,7 +110,15 @@
 /*
  * 複数行コメント
  */
+```
 
+## ソースコード中の文字のエスケープシーケンスでの表現
+
+* Unicode エスケープシーケンスに注目: `\uXXXX`
+  * UTF-16
+  * そういえばそもそも Unicode って知ってる?
+
+```javascript
 // `\uXXXX` 形式でソースコード中の文字を表せる
 // 普通は変数名に使うことはしないが、文字列リテラル内に書くことはよくある
 var \u0041 = "`\u0041` という変数名";
@@ -149,7 +153,7 @@ Ruby のように 「すべての値はオブジェクト」 ではない。 Jav
 * String 型
 * Object 型
 
-Object 型以外の型に属する値は <a href="http://www2u.biglobe.ne.jp/~oz-07ams/prog/ecma262r3/9_Type_Conversion.html">プリミティブ値</a>
+Object 型以外の型に属する値は <a href="http://www2u.biglobe.ne.jp/~oz-07ams/2002/ecma262r3/9_Type_Conversion.html">プリミティブ値</a>
 
 ## String 型の値と `String` オブジェクトの違いに注意
 
@@ -500,9 +504,13 @@ fun(function () {
 
 Perlで言うと
 ```perl
-BIx::MoCo::List->new([1, 2, 3])->each(sub {
+List::RubyLike->new([1, 2, 3])->each(sub {
     say $_ * 2;
 })
+```
+Scalaで言うと
+```scala
+List(1, 2, 3).foreach { i => println(i * 2) }
 ```
 
 コールバックで柔軟な挙動(便利)
@@ -565,6 +573,21 @@ my $foo = sub {
 };
 ```
 
+Scalaで言うと
+
+呼べる
+```scala
+hoge
+def hoge = println(1)
+```
+
+呼べない(コンパイルできない)
+```scala
+hoge
+val hoge = () => println(1)
+```
+
+
 ## 引数の受け取り
 
 * かっこの中に書く
@@ -582,6 +605,11 @@ sub add {
     my ($v1, $v2) = @_;
     $v1 + $v2;
 }
+```
+
+Scalaで言うと
+```scala
+def add(v1:Int, v2:Int):Int = v1 + v2
 ```
 
 ## 関数: <code>arguments</code>
@@ -655,17 +683,17 @@ for (var i=0; i<drinks.length; i++) {
     (function(text, emoticon) {
         // ここでの this は drinks[i]
         console.log(this.name + 'は' + this.price + '円なり！');
-        // textは第二引数配列の 'やった〜' で、emoticonは '(╹◡╹)'
+        // textは第二引数配列の 'やった〜' で、emoticonは '✌(◔౪◔ )✌'
         console.log(text + emoticon);
-    }).apply(drinks[i], ['やった〜', '(╹◡╹)']);
+    }).apply(drinks[i], ['やった〜', '✌(◔౪◔ )✌']);
 }
 
 // colaは500円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 // ciderは300円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 // waterは100円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 ```
 
 * callの使い方
@@ -684,15 +712,15 @@ for (var i=0; i<drinks.length; i++) {
         // ここでの this は
         console.log(this.name + 'は' + this.price + '円なり！');
         console.log(text + emoticon);
-    }).call(drinks[i], 'やった〜〜', '(╹◡╹)'); // applyでは [] で指定してたけど、callでは複数の値入れてる
+    }).call(drinks[i], 'やった〜〜', '✌(◔౪◔ )✌'); // applyでは [] で指定してたけど、callでは複数の値入れてる
 }
 
 // colaは500円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 // ciderは300円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 // waterは100円なり！
-// やった〜〜(╹◡╹)
+// やった〜〜✌(◔౪◔ )✌
 ```
 
 ## 変数のスコープ
@@ -875,7 +903,7 @@ console.log(price); //=> 100
 * プロトタイプ継承
 * Perl との違い
 
-# Web と JavaScript
+# Web ブラウザと JavaScript
 
 * JavaScript だけではウェブアプリケーション書けない
 * HTML、CSS、JavaScript それぞれの役割
@@ -1036,23 +1064,29 @@ while(true) { print(); }
 -  待てないのでイベントを設定する (方法としてはコールバック)
 -  待たないので他の処理を実行できる
 
-*  非同期プログラミングの例
+### 非同期プログラミングの例
+
 GETリクエストを送信して結果を表示
-Perlでは
+
+#### Perlでは
+
 ```perl
 my $ua = LWP::UserAgent->new;
 my $res = $ua->request(GET $url); # ここでブロック(待たされる)
 print($res);
 ```
-- 通信中ブロックする
+
+* 通信中ブロックする
 
 
-JSでは(jQuery)
+#### JSでは(jQuery)
+
 ```javascript
 $.get($url).done(function(res) {
   console.log(res);
 });
 ```
+
 - 通信中ブロックしない
 - ブロックするとその間ブラウザ操作できない
 - 通信が終わったらコールバックが呼び出される
@@ -1302,7 +1336,7 @@ xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 xhr.send(data);
 ```
 
-みたいなのが普通。<a href="http://www.studyinghttp.net/cgi-bin/rfc.cgi?1867">multipart</a>も送れるけどまず使わない
+みたいなのが普通。<a href="http://www.eonet.ne.jp/~h-hash/body.html#Multipart">multipart</a>も送れるけどまず使わない
 
 ## JSON をリモートから読みこむ
 
@@ -1524,10 +1558,10 @@ $(document).on('click', '.foo', function (event) { ... });
 もちろんclickじゃなくても良い
 
 
-マウス動かしたらalert(うざい)
+スクロールしたらalert(うざい)
 ```javascript
 $(document).on('mousemove', function (event) {
-  alert('マウス、動きました');
+  alert('スクロールしました');
 });
 ```
 
@@ -1728,24 +1762,31 @@ $('.articles').append($(template({article: article}));
 - サーバーサイドでHTMLを組み立ててから返してもよい
 -- Template Toolkitを使う
 
-# 課題
+# 課題4
 
-## 課題 1 (API の作成と XHR の使用)
+## 課題 4.1
 
-* エントリ一覧の情報を JSON で返す API を作成せよ
+エントリー一覧を JavaScript によって動的に描画せよ
+
+### 課題の目的
+
+* JavaScript によるサーバーとの通信ができるようになる
+ * JSON API の作成と XMLHttpRequest の使用
+ * 設計
+ * UI
+
+ライブラリは、jQuery, underscorejsを使用しても良いことにします (ライブラリの挙動は理解しておくこと)
+
+### 仕様
+
+* エントリ一覧の情報を JSON で返す API を作成する
   * エントリ一覧の情報にはエントリの本文も含めること
   * API はエントリ全件を一気に返すのではなく、一定件数ごとでページングするように (ページングの件数は指定しない)
   * URI やパラメータは自由
-* 作成した API を JS の XHR で叩いて、エントリ一覧を表示するページを作成せよ
+* 作成した API を JS の XMLHttpRequest で叩いて、エントリ一覧を表示するページを作成する (XHR を内部的に使用しているライブラリを使用して良い)
   * HTML 中にはエントリの情報を含んでないページを作って、JS で動的にエントリを表示する
   * JS では最低限 (API が返す) 最初のページが表示するように
-  * Intern-Bookmark-2014 の js ブランチのような感じ
   * ページの URI は自由
-* [応用] JS で表示するエントリ一覧をページングできるようにする
-  * ページングの仕組みは自由 (古いエントリ一覧を残したままどんどん追加してもいいし、エントリ一覧全体を入れ替えても良い)
-  * ページ遷移はしないように (同じ HTML 文書の中で表示を変更)
-* API の作成と XHR の使用が課題の目的
-  * ライブラリは、jQuery, underscorejsを使用しても良いことにします (ライブラリの挙動は理解しておくこと)
 
 ### ヒント
 
@@ -1756,27 +1797,26 @@ jQuery用キーワード
 - append
 - html
 
-<!--
-スクリプトファイル置き場
+JSON API についてのヒントは後述
 
-- Ridgeでは
--  <code>static/js/diary.js</code> などに JS ファイルを設置すると、
--  HTML からは <code>&lt;script type="text/javsacript" src="/js/diary.js"&gt;&lt;/script&gt;</code> でその JS ファイルを参照できます
--->
+## 課題 4.2
 
-### 観点
-
-- 動くこと
-- 設計
-- UI
-
-## 課題2
 日本の伝統的アプリケーション「マウスストーカー」を作れ
 
+### 課題の目的
+
+* ユーザーによる入力のハンドリングができるようになる
+ * 設計
+* ユーザー体験を考慮した実装ができるようになる
+ * 動きの良さ
+ * ガタガタしないとか
+ * 少し遅れてついてくるとか
+ * 使っていて楽しいこと
 
 ### マウスストーカーとは
 - ホームページに配置してホームページを楽しくするアプリケーション
 - マウスストーカーで検索
+  - http://mojitagu.prizebox.net/modules/contents/TextStoker.html
   - http://www.fsfield.info/develop/javascript/010/sample/
   - http://ameblo.jp/maman44/entry-11134501119.html
   - http://plusone.jpn.org/javascript/sample/mouse/kuma/mskuma.html
@@ -1784,7 +1824,7 @@ jQuery用キーワード
 
 ### 仕様
 - マウスカーソルを動かすとマウスカーソルの動きに対応して小さい画像などがマウスカーソルを置いかける
-- `Intern-Diary-2014/mouseStalker`というディレクトリを作って、その中に`main.html`と`main.js`を作ってください
+- `$(LANG)-Intern-Diary-2015-private/mouseStalker`というディレクトリを作って、その中に`main.html`と`main.js`を作ってください
 - jQuery, underscorejsを使用しても良いことにします (ライブラリの挙動は理解しておくこと)
 
 ### ヒント
@@ -1793,30 +1833,226 @@ jQuery用キーワード
 + 小さい画像などを表示
 + CSSで小さい画像などの位置を指定
 
-### 観点
-
-- 小さい画像などがマウスを置いかけること
-- 設計
-- ユーザー体験への配慮
-  - 動きの良さ
-  - ガタガタしないとか
-  - 少し遅れてついてくるとか
-  - 使っていて楽しいこと
-
-## 課題3(オプション課題)
+## 課題 4.3(オプション課題)
 
 * ブログに機能を追加せよ
 * 課題 1 で作ったものに手を加えてもいいし、別のページに手を加えても良い
   * JS を使った機能であること (サーバーサイドに手を入れるのは良いが、サーバーサイドだけに手を入れた機能はだめ)
 
+### 課題の目的
+
+* サービスに必要だと思う機能を自分で考え、実現することが出来る
+* 新しいコードを追加するさいに、既存のコードとの調和をとることができる
+ * 適切な場所にコードを書くことが出来る
+ * 必要に応じてコードを抽象化することができる
+ * など
+
 ### たとえば
 
-* ページ遷移せずに続きを読む機能 (auto pagerize)
+* JS で表示するエントリ一覧をページングできるようにする
+  * ページングの仕組みは自由 (古いエントリ一覧を残したままどんどん追加してもいいし、エントリ一覧全体を入れ替えても良い)
+  * ページ遷移はしないように (同じ HTML 文書の中で表示を変更)
 * ページを遷移せずに新しい記事の投稿をしたり編集したりする機能
 * コメントをその場で投稿する機能
 * マウスストーカーが表示される機能
 * 記事を英語に飜訳する機能
 * 記事をローマ時に変換する機能
 * など
+
+## 課題 4-1 のヒント
+
+### Perl
+
+#### JavaScriptの配置と読み込み
+
+`static/js`というディレクトリを作ってファイルを置いてください。例えば、`main.js`というファイルをつくったとすると、以下のように参照できます。
+
+
+```html
+<script src="/js/main.js"></script>
+```
+
+#### JSONへのエンコード
+
+JSON形式のデータを構築するためのライブラリはいくつかありますが、ここでは[`JSON::XS`](https://metacpan.org/module/JSON::XS)を使います。
+
+```perl
+require JSON::XS;
+my $user = { user_id => 42, name => 'example-user' };
+my $json_string = JSON::XS::encode_json($user);
+```
+
+`JSON::XS`はそのままでは`bless`されたオブジェクトをJSON形式に変換できません。たとえばモデルクラスのインスタンスをJSON形式でシリアライズしたい場合は、モデルクラスに`json_hash`のようなメソッドを設けておいて、プレーンな値を返すようにしましょう。
+
+```perl
+package Inter::Diary::Model::User;
+use strict;
+use warnings;
+
+use JSON::Types ();
+use Class::Accessor::Lite (
+    ro => [qw(user_id name)],
+    new => 1,
+);
+
+sub json_hash {
+    my ($self) = @_;
+    return +{
+        user_id => JSON::Types::number $self->user_id,
+        name    => JSON::Types::string $self->name,
+    };
+}
+```
+
+```perl
+require JSON::XS;
+my $user = Intern::Diary::Model::User->new(
+    user_id => 42,
+    name => 'example-user',
+);
+my $json_string = JSON::XS::encode_json($user->json_hash);
+```
+
+#### JSONからのデコード
+
+エンコードの場合と同じく[`JSON::XS`](https://metacpan.org/module/JSON::XS)でデコードできます。
+
+```perl
+require JSON::XS;
+my $json_string = '{"user_id": 42, "name":"example-user"}';
+my $user_hash = JSON::XS::decode_json($json_string);    # プレーンなハッシュリファレンスが返る
+my $user = Intern::Diary::Model::User->new($user_hash); # ハッシュリファレンスからモデルのインスタンスを作る
+```
+
+#### コントローラの実装
+
+コントローラに渡されるHaten::Newbieのコンテキストオブジェクト`$c`を使うと簡単にJSON形式のレスポンスを返せます(内部で`JSON::XS`を使っています)。HTMLをレスポンスとするときに`$c->html()`を呼んでいた代わりに、次のように`$c->json()`を呼びます。ここでもやはり渡せるのは`bless`されていない値です。
+
+```perl
+package Intern::Diary::Engine::API;
+use strict;
+use warnings;
+
+sub user {
+    my ($class, $c) = @_;
+    my $user = { user_id => 42, name => 'example-user' };
+    $c->json($user);
+}
+```
+
+### Scala
+
+#### JavaScriptの配置と読み込み
+`src/main/webapp/javascripts`というディレクトリを作ってファイルを置いてください。例えば、`main.js`というファイルをつくったとすると、以下のように参照できます。
+
+
+```scala
+<script src="/javascripts/main.js"></script>
+```
+
+#### JSONへのエンコード
+
+JSON形式のデータを構築するためのライブラリがいくつかありますが、Intern-Bookmarkでは[json4s](http://json4s.org/)を使っています。
+json4sでは以下のようなコードで`case class`のインスタンスをJSON形式にエンコードすることができます。
+
+```scala
+scala> case class User(id: Long, name: String)
+defined class User
+
+scala> implicit val formats = org.json4s.DefaultFormats
+formats: org.json4s.DefaultFormats.type = org.json4s.DefaultFormats$@1d4a4f9e
+
+scala> org.json4s.jackson.Serialization.write(User(id = 42L, name = "example-user"))
+res0: String = {"id":42,"name":"example-user"}
+```
+
+`implicit`宣言されている`formats`オブジェクトに基づいてシリアライズが行われます。多くの場合、json4sに付属の`DefaultsFormats`オブジェクトをそのまま利用するだけで十分ですが、`DefaultsFormats`が対応していない型のオブジェクトをシリアライズする場合はカスタマイズすることもできます。
+
+以下はIntern-Bookmarkの`internbookmark.service.Json`オブジェクトの定義です。`LocalDateTime`型や`Long`型の値のシリアライズ方式を独自に設定しています。Intern-Diaryの実装でも、このオブジェクトと同じ実装が利用できるでしょう。
+
+```scala
+package internbookmark.service
+
+import org.joda.time.LocalDateTime
+import org.json4s._
+
+object Json {
+  val Formats = DefaultFormats + LocalDateTimeSerializer + LongIdSerializer
+}
+
+class object LongIdSerializer extends CustomSerializer[Long](format => (
+  { case JString(s) => s.toLong         },
+  { case x: Long => JString(x.toString) }
+))
+
+case object LocalDateTimeSerializer extends CustomSerializer[LocalDateTime](format => (
+  {
+    case JInt(s) => new LocalDateTime(s.toLong)
+    case JNull => null
+  },
+  {
+    case d: LocalDateTime => JInt(BigInt(d.toDateTime().getMillis))
+  }
+))
+```
+
+#### JSONからのデコード
+
+JSONからのデコードについても同じく[json4s](http://json4s.org/)を利用します。
+以下のように、`parse`メソッドでJSONを解析して読み込んだあと、`extractOpt`メソッドなどを用いてデータを読み込むと良いでしょう。
+
+```scala
+scala> val json = org.json4s.jackson.JsonMethods.parse("""{"id":42,"name":"example-user"}""")
+json: org.json4s.JValue = JObject(List((id,JInt(42)), (name,JString(example-user))))
+
+scala> (json \ "id").extractOpt[Int]
+res1: Option[Int] = Some(42)
+
+scala> (json \ "name").extractOpt[String]
+res2: Option[String] = Some(example-user)
+
+scala> (json \ "no-such-key").extractOpt[String] // キーが存在しない場合
+res3: Option[String] = None
+
+```
+
+#### コントローラの実装
+
+Scalatraでは、json4sが組込まれているので、リクエストからJSONを読み込んで、レスポンスとしてJSONを返すようなコントローラを簡単に実装できます。自分で`parse`したり`write`したりする必要はありません。
+以下のコードはInttern-Bookmark の`internbookmark.web.BookmarkAPIWeb` trait (`internbookmark.web.BookmarkWeb`にmixinして利用されています)から抜粋したものです。
+[Scalatraのドキュメント](http://www.scalatra.org/2.4/guides/formats/json.html)もあわせて参考にしてください。
+
+```scala
+
+// ...
+
+// JacksonJsonSupport を継承する必要がある
+trait BookmarkAPIWeb extends JacksonJsonSupport { self: BookmarkWeb with AppContextSupport =>
+  protected implicit val jsonFormats: Formats =
+    internbookmark.service.Json.Formats // json4sが使うFormatsをoverrideして設定しておく
+
+  // ...
+
+  post("/api/bookmark") {
+    contentType = formats("json") // Content-Typeヘッダを application/json に設定
+    val json = parsedBody // リクエストボディをパースしてjson4s.JValueオブジェクトを取得
+
+    val app = createApp()
+
+    // extractOpt を利用してリクエストからデータを取得
+    val req = for {
+      url <- (json \ "url").extractOpt[String].toRight(BadRequest()).right
+      comment <- Right((json \ "comment").extractOrElse("")).right
+      bookmark <- app.add(url, comment).left.map(_ => InternalServerError()).right
+    } yield bookmark
+
+    req match {
+      case Right(bookmark)   => bookmark // jsonFormatsが変換できる値であれば、そのまま返すことでJSONに変換される
+      case Left(errorResult) => errorResult.copy( // 明示的にJValue型の値を返してもよい
+        body = JObject("error" -> JString(errorResult.status.message)))
+    }
+  }
+}
+```
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.1/jp/88x31.png" /></a><br />この 作品 は <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">クリエイティブ・コモンズ 表示 - 非営利 - 継承 2.1 日本 ライセンスの下に提供されています。</a>

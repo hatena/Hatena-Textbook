@@ -1,36 +1,57 @@
-# はてな教科書目次
+Hatena-Textbook
+===============
 
-## 環境構築
+はてな教科書は、はてなのエンジニアとして最低限必要とされる技術を身につけるための教科書です。
 
-* 開発環境導入
+Web開発における重要なトピックを順番に学びながら、課題をといていくことで、Webアプリケーションをひととおり構築できるようになります。
 
-## 研修用資料
+実装言語としてPerlとScalaのどちらを選ぶことができます。
+トピックごとに学びたい言語の方の教科書を読み進めてください。
 
-* [Perl によるオブジェクト指向プログラミング](https://github.com/hatena/Hatena-Textbook/blob/master/oop-for-perl.md)
-* [Perlでのデータベース操作(DBI を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/db-control-by-dbi.md)
-* [MVC によるウェブアプリケーション開発 (Plack を使った開発)](https://github.com/hatena/Hatena-Textbook/blob/master/mvc-web-application-with-plack.md)
-* [JavaScript によるイベントドリブン](https://github.com/hatena/Hatena-Textbook/blob/master/javascript-event-driven.md)
+## 目次
+- プログラミングの基礎
+  - [Perlによるプログラミングの基礎](foundation-of-programming-perl.md)
+  - [Scalaによるプログラミングの基礎](foundation-of-programming-scala.md)
+- [データベースの基礎](database-programming.md)
+  - [Perlによるデータベースプログラミング](database-programming-perl.md)
+  - [Scalaによるデータベースプログラミング](database-programming-scala.md)
+- [Web開発の基礎](web-application-development.md)
+  - [PerlによるWebアプリケーション開発](web-application-development-perl.md)
+  - [ScalaによるWebアプリケーション開発](web-application-development-scala.md)
+- [JavaScriptによるイベント・ドリブンプログラミング](javascript-event-driven.md)
 
 ### iOS アプリ
+- [プログラミング言語 Swift](swift-programming-language.md)
+- [Swift での iOS アプリ開発](swift-development-apps.md)
 
-* [プログラミング言語 Swift](https://github.com/hatena/Hatena-Textbook/blob/master/swift-programming-language.md)
-* [Swift での iOS アプリ開発](https://github.com/hatena/Hatena-Textbook/blob/master/swift-development-apps.md)
 
-## 参考資料
+## 課題について
+トピックごとに学んだことを確認するための課題があります。
 
-### Git
+課題では、簡単なブログシステムであるIntern-Diaryを構築します。
 
-* [デザイナのためのGit](https://github.com/hatena/Git-for-Designers)
-* WEB+DB PRESS vol.50 はじめてのGit
+はじめは、コマンドライン上で動作する簡単なプログラムですが、課題を最後まで取り組むとWeb上で動くインタラクティブなブログシステムが完成します。課題は以下の様になります。
 
-### テスト
+- 課題1: 素朴な日記のオブジェクトを定義して練習する
+- 課題2: データベースに日記を記録するCLI版 Intern-Diaryを作る
+- 課題3: Webアプリケーション版のIntern-Dairyを作る
+- 課題4: Webアプリケーション版のIntern-Dairyをインタラクティブに拡張する
 
-* [Perlを使ったテストの書き方](https://github.com/hatena/Hatena-Textbook/blob/master/test-for-perl.md)
+### 課題ひな形 & サンプルアプリケーション
+Webアプリケーション課題を実装するためのひな形と、課題と同じ構成で実装されたサンプルアプリケーションIntern-Bookmarkを参考に課題を解いてください。
+
+- Perl
+  - [perl-Intern-Diary](https://github.com/hatena/perl-Intern-Diary) (ひな形)
+  - [perl-Intern-Bookmark](https://github.com/hatena/perl-Intern-Bookmark) (サンプル)
+- Scala
+  - [scala-Intern-Diary](https://github.com/hatena/scala-Intern-Diary) (ひな形)
+  - [scala-Intern-Bookmark](https://github.com/hatena/scala-Intern-Bookmark) (サンプル)
+
 
 ## ライセンス
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.1/jp/88x31.png" /></a><br />この 作品 は <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">クリエイティブ・コモンズ 表示 - 非営利 - 継承 2.1 日本 ライセンスの下に提供されています。</a>
 
 クレジット表記例
 ```
-Copyright 2013 <a href="https://github.com/hatena/Hatena-Textbook">はてな教科書</a> by <a href="http://www.hatena.ne.jp/">はてな</a>
+Copyright 2015 <a href="https://github.com/hatena/Hatena-Textbook">はてな教科書</a> by <a href="http://www.hatena.ne.jp/">はてな</a>
 ```
