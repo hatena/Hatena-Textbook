@@ -107,7 +107,7 @@ Hi!
 $ sbt
 > console
 scala> 1 + 1
-res0: Int = 3
+res0: Int = 2
 
 scala>
 ```
@@ -159,7 +159,7 @@ if (i % 3 == 0 && i % 5 == 0) {
   result = "FizzBuzz"
 } else if (i % 3 == 0) {
   result = "Fizz"
-} else if (i % 5 = 0) {
+} else if (i % 5 == 0) {
   result = "Buzz"
 } else {
   result = i.toString
@@ -176,7 +176,7 @@ val result = if (i % 3 == 0 && i % 5 == 0) {
   "FizzBuzz"
 } else if (i % 3 == 0) {
   "Fizz"
-} else if (i % 5 = 0) {
+} else if (i % 5 == 0) {
   "Buzz"
 } else {
   i.toString
@@ -291,8 +291,8 @@ val urls = Map(
   "b"    -> "http://b.hatena.ne.jp",
   "blog" -> "http://hatenablog.com"
 )
-m.get("b") // → Some("http://b.hatena.ne.jp")
-m.get("v") // → None
+urls.get("b") // → Some("http://b.hatena.ne.jp")
+urls.get("v") // → None
 ```
 
 ---
