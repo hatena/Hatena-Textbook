@@ -100,7 +100,7 @@ gem 'cocoapods'
 ```ruby
 platform :ios, '9.0'
 
-use_framework!
+use_frameworks!
 
 pod 'AFNetworking'
 ```
@@ -352,7 +352,7 @@ class SearchRepositoriesManager {
                     self.results.removeAll()
                     self.page = 1
                 }
-                self.results.extend(response.items)
+                self.results.appendContentsOf(response.items)
                 self.completed = response.totalCount <= self.results.count
                 self.page++
             }
