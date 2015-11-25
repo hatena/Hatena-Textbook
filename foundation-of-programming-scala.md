@@ -477,6 +477,7 @@ for ( i <- (0 until 10) ) {
 
 - foreach メソッドが実装されてるとforのイテレーション対象にできる
   - 以下とほぼ一緒
+  - ※ 実際には withFilter メソッドが呼びだされる(参考: [Faq - How does yield work? - Scala Documentation](http://docs.scala-lang.org/tutorials/FAQ/yield.html#about-withfilter-and-strictness) )
 
 ```scala
 (1 to 9).foreach { i =>
@@ -513,6 +514,7 @@ for ( i <- (1 to 9) if i % 2 == 0 ) {
 
 - filter メソッドが実装されてるとifでfilterできる
   - 以下とほぼ一緒
+  - ※ 実際には withFilter メソッドが呼びだされる(参考: [Faq - How does yield work? - Scala Documentation](http://docs.scala-lang.org/tutorials/FAQ/yield.html#about-withfilter-and-strictness) )
 
 ```scala
 (1 to 9).filter { i =>
