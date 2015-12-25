@@ -874,7 +874,7 @@ Swift には値型として enum と struct がある。
 ```swift
 enum ArithmeticOperation {
     case Add
-    case Substract
+    case Subtract
     case Multiply
     case Divide
 }
