@@ -576,7 +576,7 @@ let condition = true
 let aNumber: Int? = 3
 let anotherNumber: Int? = 7
 if condition, let a = aNumber, let b = anotherNumber where a < b {
-    println(a + b)
+    print(a + b)
 }
 ```
 
