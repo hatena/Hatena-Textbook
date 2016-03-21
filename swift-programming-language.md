@@ -332,9 +332,10 @@ Swift にはいくつもの演算子がある。
 
 `%` は剰余演算子で、剰余を求める。剰余演算子は浮動小数点数の計算にも用いることができる。
 
-`++` や `--` といった単項のインクリメント/デクリメントの演算子は、前置でも後置でも使うことができる。前置した場合は返り値が演算後の値となり、後置した場合は返り値が演算前の値となる。
-
 単項の `-` 演算子は数の正負を反転させる。この演算子と後に続く数との間に空白を入れてはならない。対称性のために単項の `+` 演算子も用意されている。
+
+`++` や `--` といった単項のインクリメント/デクリメントの演算子は、Swift 3.0 で削除されることが決まっており、Swift 2.2 からは非推奨の警告が表示されるようになった。
+複合代入演算子を用いて同様の結果を得ることできる。
 
 #### 複合代入演算子
 
@@ -504,7 +505,7 @@ Swift 2.1 までは C 言語などでも見られるような `for init; compari
 var i = 0
 while i < 3 {
     print(i)
-    ++i
+    i += 1
 }
 ```
 
@@ -529,7 +530,7 @@ while case let i? = integer {
 var i = 0
 repeat {
     print(i)
-    ++i
+    i += 1
 } while i < 3
 ```
 
@@ -622,7 +623,8 @@ multiply(number: 3, by: 5)
 
 ```swift
 func increment(var number: Int) -> Int {
-    return ++number
+    number += 1
+    return number
 }
 increment(6)
 ```
@@ -631,7 +633,7 @@ increment(6)
 
 ```swift
 func increment(inout number: Int) {
-    ++number
+    number += 1
 }
 var number = 7
 increment(&number) // => 8
@@ -643,7 +645,7 @@ increment(&number) // => 8
 
 ```swift
 func increment(var number: Int) {
-    ++number
+    number += 1
 }
 var number = 7
 increment(number) // => 7
@@ -819,8 +821,9 @@ values.map { 2 * $0 }
 ```swift
 func counter() -> () -> Int {
     var count = 0
-    let closure = {
-        return ++count
+    let closure: () -> Int = {
+        count += 1
+        return count
     }
     return closure
 }
@@ -1178,7 +1181,7 @@ struct StepCounter {
     var count: Int = 0
 
     mutating func step() {
-        count++
+        count += 1
     }
 }
 
