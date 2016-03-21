@@ -621,15 +621,7 @@ multiply(number: 3, by: 5)
 
 #### 引数
 
-```swift
-func increment(var number: Int) -> Int {
-    number += 1
-    return number
-}
-increment(6)
-```
-
-関数の引数は `let` と同様に変更できないが、明示的に `var` とすることで変更可能になる。
+関数の引数は `let` と同様に通常は変更できないが、`inout` キーワードを使うことで受け取った変数の参照に対して変更を行える。
 
 ```swift
 func increment(inout number: Int) {
@@ -639,17 +631,9 @@ var number = 7
 increment(&number) // => 8
 ```
 
-`inout` キーワードを使うことで受け取った変数の参照に対して変更を行える。関数の中で書き換えられる変数は、そのことを示すために `&` を前置して渡す必要がある。
+関数の中で書き換えられる変数は、そのことを示すために `&` を前置して渡す必要がある。
 
-この例において `inout` としなかった場合には、関数に渡された値はコピーされたものとみなせるので、変更を加えても関数の外側には影響しない。
-
-```swift
-func increment(var number: Int) {
-    number += 1
-}
-var number = 7
-increment(number) // => 7
-```
+変更可能な引数を `var` を前置することで指定する方法は、Swift 3.0 で削除されることが決まっており、Swift 2.2 からは非推奨の警告が表示される。
 
 #### 引数のデフォルト値
 
