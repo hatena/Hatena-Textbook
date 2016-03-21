@@ -1443,7 +1443,7 @@ protocol は `protocol` で宣言できる。protocol ではプロパティや�
 
 メソッドは実装のない宣言だけの状態で記述する。例のように `Self` キーワードを使うことで、型をその protocol を実装した型に限定できる。また `mutating` 修飾をつけることもできる。
 
-イニシャライザや subscript もおおよそメソッドと同様である。
+イニシャライザや subscript もおおよそメソッドと同様である。クラスのイニシャライザを実装する場合は `required` 修飾子が必須になる点だけ注意が必要である。
 
 protocol は継承することができ、`protocol SomeProtocol: AnotherProtocol` という形で書ける。また protocol に準拠できる型を class に限定することができ、`protocol SomeProtocol: class` と宣言する。
 
