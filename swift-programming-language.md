@@ -1687,11 +1687,11 @@ Swift では Array や Dictionary や Set といったコレクション型や�
 
 #### Associated types and type constraints
 
-protocol には関連する型を定義する機能がある。以下の例のように `typealias ItemType` などとしてこれを宣言し、これに準拠する側では `typealias ItemType = Item` として型を指定する。
+protocol には関連する型を定義する機能がある。以下の例のように `associatedtype ItemType` などとしてこれを宣言し、これに準拠する側では `typealias ItemType = Item` として具体的な型を指定する。
 
 ```swift
 protocol LotType {
-    typealias ItemType
+    associatedtype ItemType
     var remains: [ItemType] { get }
     init(_ items: ItemType...)
     func choose() -> ItemType?
