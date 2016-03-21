@@ -668,6 +668,8 @@ sum(1, 4, 7)
 
 関数も型を持つ。関数が `func multiply(number first: Int, by second: Int) -> Int` という定義であれば、その型は `(Int, Int) -> Int` である。
 
+従って関数を指し示す変数を作ることもできる。
+
 ```swift
 func multiply(number first: Int, by second: Int) -> Int {
     return first * second
@@ -676,13 +678,14 @@ func multiply(number first: Int, by second: Int) -> Int {
 var calculation: (Int, Int) -> Int
 
 calculation = multiply
+// もしくは calculation = multiply(number:by:)
 
 let twentyOne = calculation(3, 7)
 ```
 
-従って関数を指し示す変数を作ることもできる。
+引数ラベル以外のシグネチャが同じ関数があり、関数名だけで一意に特定できない場合は、引数ラベルを明示することで曖昧さを回避することができる。
 
-ここで、関数を返す関数を定義できることがわかる。
+これらのことから、関数を返す関数を定義できることがわかる。
 
 ```swift
 func multiply(number: Int, by: Int) -> Int { return number * by }
