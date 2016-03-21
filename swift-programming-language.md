@@ -496,17 +496,7 @@ for case let i? in numbers {
 
 `continue` を用いて次のループの実行に移ることができる。また `break` を用いてループの実行をすべて終えることができる。
 
-#### For
-
-```swift
-for var i = 0; i < 3; ++i {
-    print(i)
-}
-```
-
-同様のループは C 言語などでも見られるようなカウンタを用いた `for` 文でも記述できる。
-
-`continue` を用いて次のループの実行に移ることができる。また `break` を用いてループの実行をすべて終えることができる。
+Swift 2.1 までは C 言語などでも見られるような `for init; comparison; increment {}` 形式の `for` 文でも記述できたが、Swift 3.0 で削除されることが決まったため、Swift 2.2 からは非推奨の警告が表示されるようになった。
 
 #### While
 
