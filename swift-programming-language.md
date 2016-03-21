@@ -1134,6 +1134,8 @@ dam.waterLevel = 120
 
 `let` や `var` の前に `static` を付けることでタイププロパティとなり、そのプロパティは同じ型の値の間で共有される。
 
+また、クラスの場合は `static` の代わりに `class` を付けることで継承可能なタイププロパティを定義することもできる。
+
 > #### Ref.
 >
 > - [The Swift Programming Language — Language Guide — The Basics — Properties](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID254)
@@ -1201,6 +1203,8 @@ electricSwitch.toggle()
 ##### Type Methods
 
 `static` を付けることでタイプメソッドとなる。タイプメソッドの実装では `self` はその型そのものを指す。
+
+タイププロパティと同様に `class` 修飾子を使うことで継承可能なタイプメソッドを定義できる。
 
 > #### Ref.
 >
