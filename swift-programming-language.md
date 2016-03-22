@@ -1397,7 +1397,7 @@ protocol FileSystemItem {
 
 struct File: FileSystemItem {
     var name: String {
-        return split(path.characters){ (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
+        return path.characters.split { (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
     }
     let path: String
 
@@ -1416,7 +1416,7 @@ struct File: FileSystemItem {
 
 struct Directory: FileSystemItem {
     var name: String {
-        return split(path.characters){ (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
+        return path.characters.split { (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
     }
     let path: String
 
