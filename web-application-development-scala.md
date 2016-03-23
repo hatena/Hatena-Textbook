@@ -3,7 +3,7 @@
 WAFの実例を通じて実際の雰囲気を掴みましょう。
 
 ## 目次
-- 4.1 Scaratraとは
+- 4.1 Scalatraとは
 - 4.2 scala-Intern-Bookmarkとは
 - 4.3 ブックマーク一覧を作ってみよう
     - 4.3.1 URI設計
@@ -540,7 +540,7 @@ get("/bookmarks/:id") {
 
 ## この章のまとめ
 
-- Scaratraによる開発の流れは
+- Scalatraによる開発の流れは
   - URIを決める
   - URIとControllerを紐付ける
   - それに対応するControllerを書いて、Viewにデータを渡す
