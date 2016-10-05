@@ -19,7 +19,7 @@
 
 ## はじめに
 * 事前課題
-  * https://github.com/hatena/Hatena-Intern-Exercise2015
+  * https://github.com/hatena/Hatena-Intern-Exercise2016
 
 * 前提
   * はじめてのPerl、続はじめてのPerlに目を通している
@@ -27,8 +27,8 @@
     * 事前課題でやっているはず
 
 ## Perlの良いところ
-* CPAN
-  * やりたいことはすでにモジュール化されてる
+* [CPAN](http://www.cpan.org/)
+  * やりたいことがすでにモジュール化されていることが多い
   * それCPANでできるよ
 * 表現力が高い
   * TMTOWTDI (やりかたはいくつもあるよ！)
@@ -116,13 +116,13 @@ $ perl hoge.pl
 6
 ```
 
-あかんやん(´･ω･｀)
+あかんやん
 
 ## なぜか
 
 * 'ほげ' はマルチバイト文字
 * 何もしないと Perl は 'ほげ' をバイト列とみなす
-* utf8 の 'ほげ' は 6 バイトなので length 'ほげ' は 6 になる
+* UTF-8 の 'ほげ' は 6 バイトなので length 'ほげ' は 6 になる
 * 文字数数えるのに困る
 
 ## そこで use utf8;
@@ -141,8 +141,8 @@ $ perl hoge.pl
 
 ## なにをしたの
 
-* utf8 プラグマをつけると、 Perl はコード内のマルチバイト文字を UTF8 の文字列として解釈し、Perl 内部表現の文字列に変換する
-* UTF8 で記述された 'ほげ' を UTF8 として解釈すると当然 2 文字なので、length 'ほげ' は 2 になる
+* utf8 プラグマをつけると、 Perl はコード内のマルチバイト文字を UTF-8 の文字列として解釈し、Perl 内部表現の文字列に変換する
+* UTF-8 で記述された 'ほげ' を UTF-8 として解釈すると当然 2 文字なので、length 'ほげ' は 2 になる
 
 めでたしめでたし!!
 
@@ -159,9 +159,9 @@ Wide character in print at hoge2.pl line 2.
 ほげ
 ```
 
-なんか出た・・・
+なんか出た…
 
-'ほげ' は Perl 内部表現に変換されているので、そのまま Perl の世界の外には出そうとすると怒られる
+'ほげ' は Perl 内部表現に変換されているので、そのまま Perl の世界の外に出そうとすると怒られる
 再びバイト列に変換してあげる必要がある
 
 ``` perl
@@ -170,7 +170,7 @@ use Encode;
 print encode_utf8 'ほげ';
 ```
 
-これでおk!
+これでOK
 
 ## use utf8;
 
@@ -193,7 +193,7 @@ print encode_utf8 'ほげ';
 * $calar と覚えましょう
 
 ``` perl
-my $scalar1 = "test";
+my $scalar1 = 'test';
 my $scalar2 = 1000;
 my $scalar3 = \@array; # リファレンス(後述)
 ```
@@ -205,7 +205,7 @@ my $scalar3 = \@array; # リファレンス(後述)
 my @array = ('a', 'b', 'c');
 ```
 
-* Q:@arrayの二番目の要素を取得するには?
+* Q: @array の二番目の要素を取得するには?
 
 ## 配列の操作
 ``` perl
@@ -220,28 +220,31 @@ print $array[1]; # 'b'
 ``` perl
 $array[0]; # get
 $array[1] = 'hoge'; # set
-my $length = scalar(@array); # 長さ
+my $length = scalar @array; # 長さ
 my $last_ids = $#array; # 最後の添字
 my @slice = @array[1..4]; # スライス
 for my $e (@array) { # 全要素ループ
-  print $e;
+    print $e;
 }
 ```
 *  チェックしておこう！
   * 関数: push/pop/shift/unshift/map/grep/join/sort/splice
+    * `perldoc -f push`
   * モジュール: List::Util/List::MoreUtils/List::UtilsBy
+    * インストールしているなら `perldoc List::Util`
+    * していなかったら [metacpan で検索](https://metacpan.org/search?q=List%3A%3AUtil)
 
 ## ハッシュ
 * %ash とおぼえましょう
 
 ``` perl
 my %hash = (
-  perl  => 'larry',
-  ruby => 'matz',
+    perl => 'larry',
+    ruby => 'matz',
 );
 ```
 
-* Q:hashのkey:perlに対応する値を取得するには?
+* Q: hash の key `perl` に対応する値を取得するには?
 
 ## ハッシュの操作
 ``` perl
@@ -251,21 +254,22 @@ print $hash{ruby}; # matz
 
 * スカラを取得するので$
 * $hash と %hash は別の変数
-* {} の中は裸の文字列(= '"がない)が許される
+* {} の中は裸の文字列( = `'`, `"`がない)が許される
 
 ## ハッシュの操作
 ``` perl
 $hash{perl}; # get
 $hash{perl} = 'larry'; # set
-for my $key (keys %hash) { # 全要素
-  my $value = $hash{$key};
+for my $key (keys %hash) { # 全要素のキー
+    my $value = $hash{$key}; # キーで各要素を get
 }
 ```
 * チェックしておこう！
   * 関数: keys/values/delete/exists
+    * `perldoc -f keys`
 
 ## データ型まとめ
-* スカラ-$ /配列-@ /ハッシュ-%
+* スカラ $ / 配列 @ / ハッシュ %
 * $val と @val と %val は別の変数
 
 ``` zsh
@@ -278,7 +282,7 @@ $ perldoc perldata
 * 式が評価される場所( = コンテキスト)によって結果が変わる
 
 ``` perl
-my @x = (0,1,2);
+my @x = (0, 1, 2);
 my ($ans1) = @x;
 my $ans2 = @x;
 ```
@@ -286,13 +290,13 @@ my $ans2 = @x;
 
 ## コンテキスト
 ``` perl
-my @x = (0,1,2);
+my @x = (0, 1, 2);
 my ($ans1) = @x; # => 0
 my $ans2 = @x; # => 3
 
 ```
 * 配列への代入の右辺はリストコンテキスト
-  * 0が代入される。1,2 は捨てられる
+  * 0 が代入される。1,2 は捨てられる
 * スカラへの代入の右辺はスカラコンテキスト
   * 配列はスカラコンテキストで評価すると長さが返る
 
@@ -309,8 +313,8 @@ my $x = <ここ>;
 my ($x) = <ここ>;
 my @y = <ここ>;
 my %hash = (
-  key0 => 'hoge',
-  key1 => <ここ>,
+    key0 => 'hoge',
+    key1 => <ここ>,
 );
 scalar(<ここ>);
 <ここ>;
@@ -319,13 +323,13 @@ scalar(<ここ>);
 ## コンテキストまとめ
 * 式/値が評価される場所によって結果がかわる
 * コンテキストの決まり方は基本的に覚えるしかない
-  * 組み込み関数に注意 (length など)
-  * 組み込み関数以外もprototypeという機能で実現可能なので注意
-  * 関数の側からはwantarrayで今呼ばれているコンテキストを知ることができます
+  * 組み込み関数に注意(length など)
+  * 組み込み関数以外も prototype という機能で実現可能なので注意
+  * 関数の側からは wantarray で今呼ばれているコンテキストを知ることができます
 
 ``` zsh
 $ perldoc perldata
-$ perldoc perlsub # Prototype の章
+$ perldoc perlsub # Prototypes の章
 $ perldoc -f wantarray
 ```
 
@@ -340,8 +344,8 @@ $ perldoc -f wantarray
 
 ``` perl
 my @matrix = (
-  (0, 1, 2, 3),
-  (4, 5, 6, 7),
+    (0, 1, 2, 3),
+    (4, 5, 6, 7),
 );
 ```
 
@@ -351,15 +355,15 @@ my @matrix = (
 ## こうなります
 ``` perl
 my @matrix =
-  (0, 1, 2, 3, 4, 5, 6, 7);
+    (0, 1, 2, 3, 4, 5, 6, 7);
 ```
 * ひー
 
 ## データ構造はまりポイント2
 ``` perl
 my %entry = (
-  body => 'hello!',
-  comments => ('good!', 'bad!', 'soso'),
+    body => 'hello!',
+    comments => ('good!', 'bad!', 'soso'),
 )
 ```
 * どうなるでしょうか…
@@ -367,9 +371,9 @@ my %entry = (
 ## こうなります
 ``` perl
 my %entry = (
-  'body' => 'hello!',
-  'comments' => 'good',
-  'bad!' => 'soso',
+    'body' => 'hello!',
+    'comments' => 'good',
+    'bad!' => 'soso',
 );
 ```
 * ひー
@@ -380,18 +384,18 @@ my %entry = (
 
 ``` perl
 my @matrix = (
-  (0, 1, 2, 3),
-  (4, 5, 6, 7),
+    (0, 1, 2, 3),
+    (4, 5, 6, 7),
 );
 ```
 
 ## リファレンスの取得/作成 (配列)
 ``` perl
-my @x = (1,2,3);
+my @x = (1, 2, 3);
 my $ref_x1 = \@x;
 
 # 略記法
-$ref_x2 = [1,2,3];
+$ref_x2 = [1, 2, 3];
 
 # 組み合わせ
 $ref_x3 = [@x];
@@ -399,7 +403,7 @@ $ref_x3 = [@x];
 
 ## デリファレンス (配列)
 ``` perl
-my $ref_x = [1,2,3];
+my $ref_x = [1, 2, 3];
 
 my @x = map { $_ * 2 } @$ref_x;
 
@@ -412,23 +416,23 @@ print $new_x[0]; # 1
 ## リファレンスの取得/作成 (ハッシュ)
 ``` perl
 my %y = (
-  perl => 'larry',
-  ruby  => 'matz',
+    perl => 'larry',
+    ruby => 'matz',
 );
 my $ref_y1 = \%y;
 
 # 略記法
 $ref_a2 = {
-  perl => 'larry',
-  ruby => 'matz',
-}
+    perl => 'larry',
+    ruby => 'matz',
+};
 ```
 
 ## デリファレンス (ハッシュ)
 ``` perl
 my $ref_y = {
-  perl => 'larry',
-  ruby => 'matz',
+    perl => 'larry',
+    ruby => 'matz',
 };
 
 my @keys = keys %$ref_y;
@@ -444,15 +448,15 @@ print $new_f{perl}; # larry
 
 ``` perl
 my $matrix = [
-  [0, 1, 2, 3],
-  [4, 5, 6, 6],
+    [0, 1, 2, 3],
+    [4, 5, 6, 6],
 ];
 ```
 
 ``` perl
 my $entry = {
-  body => 'hello!',
-  comments => ['good!', 'bad!', 'soso'],
+    body => 'hello!',
+    comments => ['good!', 'bad!', 'soso'],
 };
 ```
 
@@ -466,7 +470,7 @@ my $result = [
         $_->{bar};
     }
     @{ $foo->return_array_ref }
-     # ↑ ブレースを使う
+    # ↑ レースを使う
 ];
 ```
 
@@ -476,14 +480,14 @@ my $result = [
 
 ``` perl
 my @foo = (1, 2, 3);
-my %foo = ( a => 1, b => 2, c => 3);
+my %foo = (a => 1, b => 2, c => 3);
 $foo[1], $foo{a}
 # ↑ 同じ変数を参照しているように見える……
 # が実際は違う変数
 ```
 ``` perl
 my $foo = [1, 2, 3];
-my $foo = { a => 1, b => 2, c => 3};
+my $foo = {a => 1, b => 2, c => 3};
 # ↑ 同じ変数なので warning がでる
 ```
 
@@ -496,16 +500,16 @@ push @$list, 4;
 ```
 
 ## リファレンスでないリスト/ハッシュを使うと便利
-* サブルーチンの引数の処理
+* サブルーチンの引数の処理(後述)
 * 多値を返すとき
 
 ``` perl
 sub hello {
-  my ($arg1, $arg2, %other_args) = @_;
-  return ($arg1, $arg2);
+    my ($arg1, $arg2, %other_args) = @_;
+    return ($arg1, $arg2);
 }
 my ($res1, $res2)
-  = hello('hey', 'hoy', opt1 => 1, opt2 =>2);
+    = hello('hey', 'hoy', opt1 => 1, opt2 =>2);
 ```
 
 ## リファレンスまとめ
@@ -551,10 +555,10 @@ $ perl -Ipath/to/your/lib;
 
 ## サブルーチン
 ``` perl
-hello() # 定義前に括弧なしで呼ぶにはは&がいる
+hello() # 定義前に括弧なしで呼ぶにはは & がいる
 sub hello {
-  my ($name) = @_; # @_内の自分で処理
-  return "Hello, $name";
+    my ($name) = @_;
+    return "Hello, $name";
 }
 hello();
 hello; # 定義後であれば括弧は省略可能
@@ -563,9 +567,9 @@ hello; # 定義後であれば括弧は省略可能
 ## 引数処理イディオム1
 ``` perl
 sub func1 {
-  my ($arg1, $arg2, %args) = @_;
-  my $opt1 = $args{opt1};
-  my $opt2 = $args{opt2};
+    my ($arg1, $arg2, %args) = @_;
+    my $opt1 = $args{opt1};
+    my $opt2 = $args{opt2};
 }
 func1('hoge', 'fuga', opt1 => 1, opt2 => 2);
 ```
@@ -573,11 +577,11 @@ func1('hoge', 'fuga', opt1 => 1, opt2 => 2);
 ## 引数処理イディオム2
 ``` perl
 sub func2 {
-  my $arg1 = shift; # 暗黙的に@_を処理(破壊的)
-  my $arg2 = shift;
-  my $args = shift;
-  my $opt1 = $args->{opt1};
-  my $opt2 = $args->{opt2};
+    my $arg1 = shift; # 暗黙的に@_を処理(破壊的)
+    my $arg2 = shift;
+    my $args = shift;
+    my $opt1 = $args->{opt1};
+    my $opt2 = $args->{opt2};
 }
 ```
 
@@ -606,9 +610,9 @@ sub hello { }
 ``` perl
 package Greetings;
 sub hello {
-  sub make_msg { }
-  sub print {}
-  print (make_msg() );
+    sub make_msg { }
+    sub print {}
+    print (make_msg() );
 }
 1;
 
@@ -617,15 +621,13 @@ sub hello {
 # Greeting::print();
 ```
 
-
-## Perlでデバッグ
-* use Data::Dumper; を良く使います
+* package が無いときは main パッケージ
 
 ``` perl
-use Data::Dumper;
-warn Dumper($value); # スカラ値がよい
+sub hello { }
+
+# main::hello()
 ```
-* エディタのマクロに登録しておこう！
 
 ## 質問 => 休憩
 
@@ -735,7 +737,7 @@ fizzbuzz();
 ``` perl
 open my $fh, '<', $filename;
 while (my $line = readline($fh)) {
-  print $line;
+    print $line;
 }
 close $fh;
 ```
@@ -765,7 +767,7 @@ close $fh;
 use IO::File;
 my $file = IO::File->new($filename, 'r');
 while (my $line = $file->getline) {
-  print $line;
+    print $line;
 }
 $flie->close;
 ```
@@ -814,7 +816,7 @@ use warnings;
 # Parser->new; のように呼び出す
 sub new {
     my ($class, %args) = @_; # クラス名が入る
-    return bless \%args, __PACKAGE__;
+    return bless \%args, $class;
 }
 ```
 
@@ -846,7 +848,7 @@ $parser->parse(filename => 'hoge.log');
 * blessはデータと手続きを結びつける操作
 
 ``` perl
-  my $self = bless { filename => 'hoge.log' }, "Parser";
+  my $self = bless { filename => 'hoge.log' }, 'Parser';
 ```
 
 ## クラスメソッドとインスタンスメソッド
@@ -857,7 +859,7 @@ $parser->parse(filename => 'hoge.log');
 ``` perl
 # この二つが等価
 Class->method($arg1, $arg2);
-Class::method("Class", $arg1, $arg2);
+Class::method('Class', $arg1, $arg2);
 
 # この二つが等価
 $object->method($arg1, $arg2);
@@ -883,11 +885,11 @@ my $self = bless {
 
 ``` perl
 sub public_method {
-  my $self = shift;
+    my $self = shift;
 }
 
 sub _private_method {
-  my $self = shift;
+    my $self = shift;
 }
 ```
 * 完全に隠蔽する方法もある(クロージャを使う)
@@ -897,7 +899,7 @@ sub _private_method {
 
 ``` perl
 package Me;
-use parent "Father";
+use parent 'Father';
 1;
 ```
 * 親クラスのメソッド
@@ -905,9 +907,9 @@ use parent "Father";
 
 ``` perl
 sub new {
-  my ($class) = @_;
-  my $self = $class->SUPER::new();
-  return $self;
+    my ($class) = @_;
+    my $self = $class->SUPER::new();
+    return $self;
 }
 ```
 
@@ -922,7 +924,7 @@ use parent qw(Father Mother); # 左 => 右の順
 ```
 * メソッドの検索アルゴリズム
   * Class::C3
-  * Next
+  * NEXT
 
 ## オブジェクト指向のまとめ
 * 手作り感あふれるオブジェクト指向
@@ -939,7 +941,7 @@ use parent qw(Father Mother); # 左 => 右の順
 * isa()
 
 ``` perl
-my $dog = Dog->new();
+my $dog = Dog->new;
 $dog->isa('Dog');    # true
 $dog->isa('Animal'); # true
 $dog->isa('Man');    # false
@@ -973,16 +975,18 @@ sub new { bless {}, shift }
 
 our $AUTOLOAD;
 sub AUTOLOAD {
-    my $method = $AUTOLOAD;
+    my $method = $AUTOLOAD; # 呼び出そうとしていたメソッド名
     return if $method =~ /DESTROY$/;
     $method =~ s/.*:://;
     {
+        # 定義してやる
         no strict 'refs';
         *{$AUTOLOAD} = sub {
             my $self = shift;
             sprintf "%s method was called!", $method;
         };
     }
+    # 呼び出す
     goto &$AUTOLOAD;
 }
 
@@ -1006,7 +1010,7 @@ print "URI is $uri"; # 'URI is http://exapmle.com/hoge'
 $new_dt = $dt + $duration_obj;
 $new_dt = $dt - $duration_obj;
 $duration_obj = $dt - $new_dt;
-for my $dt (sort @dts) {          # sort内で使われる<=>がoverloadされている
+for my $dt (sort @dts) { # sort内で使われる<=>がoverloadされている
     ...
 }
 ```
@@ -1081,19 +1085,19 @@ sub baz{
 * プロジェクトの複雑性をあげるのであまりつかわない
 
 ### Mouse
-* Mooseの軽量版
-  * Mooseはモジュール読み込み時のコストが高い
+* Moose の軽量版
+  * Moose はモジュール読み込み時のコストが高い
   * 機能は一部制限
 
 ## オブジェクト指向でプログラムを書くコツ
 
 * 登場人物を考える = オブジェクト
-* 登場人物がそれぞれどのような責務を持つべきかを考える。
-* 責務にあわせてスコープを限定するように書く。
+* 登場人物がそれぞれどのような責務を持つべきかを考える
+* 責務にあわせてスコープを限定するように書く
   * 「カプセル化で継承でポリモーフィズムが……」とか考えても意味ない
   * よりよい、わかりやすく問題をモデリングするための手段
 
-## 責務とは？
+## 責務とは?
 
 * オブジェクトの利用者、メソッドの呼び出し元との約束
   * 責任のないことはやらなくていい
@@ -1104,7 +1108,7 @@ sub baz{
 ## Perl のオブジェクト指向のまとめ
 * 手作り感あふれるオブジェクト指向
   * package に手続きを定義
-  * blessでデータ(リファレンス)と結びつける
+  * bless でデータ(リファレンス)と結びつける
   * コンストラクタは自分でつくる
   * オブジェクト志向風によびだせるような糖衣
 
@@ -1120,11 +1124,11 @@ sub baz{
 * テストがないと、プログラムが正しく動いているかどうかを証明できない
 * 大規模プロジェクトでは致命的
   * 昔書いたコードは今もうごいているのか?
-  * 新しくコードと古いコードの整合性はとれているのか?
+  * 新しいコードと古いコードの整合性はとれているのか?
   * 正しい仕様/意図が何だったのかわからなくなっていないか?
 * Perlのような型のない動的言語では特に重要
 
-* 祈らずテストを書こう！
+* 祈らずテストを書こう!
 
 ## 何をテストするのか
 
@@ -1216,7 +1220,7 @@ Result: PASS
 * まず、こういう振る舞いで有るべきというテストを書く
 
 ``` perl
-is_deeply( [numsort(2,3,4,0,1)], [0,1,2,3,4], 'ランダムな数列をsortすると昇順に並ぶ' );
+is_deeply( [numsort(2, 3, 4, 0, 1)], [0, 1, 2, 3, 4], 'ランダムな数列をsortすると昇順に並ぶ' );
 ```
 * 次に境界条件での振る舞いを検証するテストを書く
 
@@ -1232,12 +1236,12 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 
 ## リファクタリング
 
-* リファクタリングとは？
+* リファクタリングとは?
   * プログラムの振舞を変えずに実装を変更すること
-* テストがなければ、外部機能の変更がないことを証明できない。
+* テストがなければ、外部機能の変更がないことを証明できない
   * テストがなければリファクタリングではない
-* レガシーなコードに対してはどうする？
-  * まずは、テストを書ける状態にしよう。
+* レガシーなコードに対してはどうする?
+  * まずは、テストを書ける状態にしよう
 
 * テストを書いてリファクタリングし、常に綺麗で保守しやすいコードを書きましょう
 
@@ -1245,13 +1249,13 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
 
 ## ドキュメントを引きましょう
 * perldoc perltoc 便利！
-  * 定義済み変数　$_ @_ $@
+  * 定義済み変数 $_ @_ $@
     * perldoc perlvars を見るべし
 * 正規表現
   * perldoc perlre
 * 関数
   * perldoc -f open
-  * http://perldoc.jp/ : perldocの日本語訳
+  * http://perldoc.jp/ : perldocの日本語訳(バージョンに注意)
 * CPANモジュール
   * perldoc LWP::UserAgent
   * https://metacpan.org/
@@ -1264,15 +1268,32 @@ ok( exception { [numsort('hoge')] },'文字をわたすと例外発生' );
   * Perl::Critic
 * モダンPerl入門
 
+## モジュールを使う
+* App::cpanminus
+  * CPAN モジュールをインストールする
+    * Ruby における gem コマンドのようなもの
+  * cpanm Some::Useful::Module
+  * global な Perl にインストールされる
+* Carton
+  * プロジェクト毎の依存モジュール管理
+    * Ruby における Bundler のようなもの
+  * cpanm Carton すると carton コマンドが入る
+  * cpanfile にモジュール一覧を書いて carton install
+  * carton exec -- perl foo.pl と実行するとプロジェクトローカルにインストールしたモジュールが使える
+  * perldoc cpanfile
+
 ## インタラクティブシェル
 
-- perl -de0
-- Eval::WithLexicals
-    - tinyreplというスクリプトが入る
-    - rlwrap と一緒に使うと楽です
-- Devel::REPL
-    - re.plというスクリプトが入る
-    - Carp::REPL
+* perl -de0
+* Reply
+  * reply というスクリプトが入る
+  * プラグイン機構があり .replyrc に色々書いてカスタマイズできる
+* Eval::WithLexicals
+  * tinyreplというスクリプトが入る
+  * rlwrap と一緒に使うと楽です
+* Devel::REPL
+  * re.plというスクリプトが入る
+  * Carp::REPL
 
 ## データの中身を見る
 
@@ -1320,13 +1341,13 @@ print Dumper $foo;
 コードを書き始める前にこれから作成するソフトウェアの対象について分析し、設計を考えてみましょう。
 
 ### 要件をおさらいする
-Intern-Diaryでどういうことを実現したいかを改めて考えて箇条書きにしてみましょう。
+Intern-Diary でどういうことを実現したいかを改めて考えて箇条書きにしてみましょう。
 
 ### データモデリング
 
 構築するソフトウェアにはどのような概念が登場するのか考えて分析してみましょう。
 
-以下ではIntern-Bookmarkを例に考えてみます。
+以下では Intern-Bookmark を例に考えてみます。
 
 #### 登場する概念(モデル)
 
@@ -1337,27 +1358,29 @@ Intern-Diaryでどういうことを実現したいかを改めて考えて箇�
 #### 概念が持つ特性
 各クラスがどのような特性を持っているか考えてみましょう。
 
-- User
-  - ユーザの名前
-- Entry
-  - ブックマークされたURL
-  - Webサイトのタイトル
-- Bookmark
-  - ブックマークしたUser
-  - ブックマークしたEntry
-  - コメント
+* User
+  * ユーザの名前
+* Entry
+  * ブックマークされたURL
+  * Webサイトのタイトル
+* Bookmark
+  * ブックマークしたUser
+  * ブックマークしたEntry
+  * コメント
 
 #### 概念間の関係
 
-<div style="text-align: center; background: #fff"><img src="http://f.st-hatena.com/images/fotolife/h/hakobe932/20140725/20140725163235.png"></div>
+![Inter-Bookmark](https://cdn-ak.f.st-hatena.com/images/fotolife/h/hakobe932/20140725/20140725163235.png)
 
-- 1つのEntryには複数のBookmarkが属する (一対多)
-- 1つのUserには複数のBookmarkが属する (一対多)
+* 1つのEntryには複数のBookmarkが属する (一対多)
+* 1つのUserには複数のBookmarkが属する (一対多)
 
 ## 課題1
 
 初日である今日は以下の課題に取り組んでもらいます。
 各項目の説明を確認して取り組んでください。
+
+### Intern-Diary を作ろう
 
 1. データモデリング
 2. モデリングに対応するオブジェクトの実装
@@ -1366,13 +1389,13 @@ Intern-Diaryでどういうことを実現したいかを改めて考えて箇�
 
 ### データモデリング
 
-Intern-Bookmarkのモデリングの講義を参考に簡単な日記システムを考えて、登場する概念(モデル)とその関係を考えてみましょう。
+Intern-Bookmark のモデリングの講義を参考に簡単な日記システムを考えて、登場する概念(モデル)とその関係を考えてみましょう。
 世の中の日記サービス・ブログサービスには様々な機能がありますが、ここでは基本的な機能に絞って考えてもらって構いません。
 
-- 日記を書く人(=ユーザ)は存在しそうですね
-- 普通の日記サービスであれば、ユーザごとに個別の日記がありますね
-  - [はてな匿名ダイアリー](http://anond.hatelabo.jp) のようにユーザ個別の日記が存在しない日記サービスもあるにはありますね
-- 日記には記事がありますね
+* 日記を書く人(=ユーザ)は存在しそうですね
+* 普通の日記サービスであれば、ユーザごとに個別の日記がありますね
+  * [はてな匿名ダイアリー](http://anond.hatelabo.jp) のようにユーザ個別の日記が存在しない日記サービスもあるにはありますね
+* 日記には記事がありますね
 
 講義で説明した「登場する概念(モデル)」と「概念が持つ特性」、「概念間の関係」についてテキストにまとめてください。
 また、「概念間の関係」については図も描いてみてください。図については提出する必要はありませんが(含めてもらっても構いません)、メンターにチェックを受けて下さい。
@@ -1382,8 +1405,8 @@ Intern-Bookmarkのモデリングの講義を参考に簡単な日記システ�
 先の課題で考えたデータモデリングに基づくオブジェクトを実装してください。
 どのようなデータモデリングを行ったかによって各モデルのできることは微妙に異なりますが、以下のようなことができるようにしてください。
 
-- ユーザーは日記に記事を書くことができる
-- 日記は記事の集合を返すことができる
+* ユーザーは日記に記事を書くことができる
+* 日記は記事の集合を返すことができる
 
 プログラムのインターフェースは自由です。以下に Diary クラスと Entry クラス、 User クラスを用いたサンプルを記しますが、必ずしもこの通りになっている必要はありません。
 
@@ -1429,11 +1452,11 @@ print $recent_entries->[0]->body; # やっぱり日記の本文だよ
 機能を追加する場合は、追加する機能に対応するテストも実装してください。
 
 追加機能の例を下記にあげます（ここにない機能でもOKです)
-- コメント
-- ページング
-- 購読
-- トラックバック
-- リブログ
+* コメント
+* ページング
+* 購読
+* トラックバック
+* リブログ
 
 ### 注意点
 
@@ -1442,7 +1465,7 @@ print $recent_entries->[0]->body; # やっぱり日記の本文だよ
   * 課題の本質的なところさえ実装すれば、外部モジュールで楽をするのはアリ
   * 何が本質なのかを見極めるのも課題のうち
 * 余裕があったら機能追加してみましょう
-* 講義および教科書絡まなんだことを課題に反映させる
+* 講義および教科書から学んだことを課題に反映させよう
 * きれいな設計・コードを心がけよう
   * 今日のコードは翌日以降の課程では使いませんが、翌日以降は自分の書いたコードに手を入れていくことになります
 

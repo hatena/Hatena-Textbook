@@ -480,9 +480,11 @@ my $command = shift @ARGV;
 my $db      = do {
     my $config = config->param('db')->{intern_bookmark};
     DBIx::Sunny->connect(map { $config->{$_} } qw(dsn user password));
-};uusuesru e=s Intern::Bookmark::Service::User->find_user_by_name($db, +{ name => $name });
+};
+
+my $user = Intern::Bookmark::Service::User->find_user_by_name($db, +{ name => $name });
 unless ($user) {
-    $user = Intern::Bookmark::Service::User->create($db, +{ name => $name }) unless $user;
+    $user = Intern::Bookmark::Service::User->create($db, +{ name => $name });
 }
 
 my $handler = $HANDLERS{ $command } or pod2usage;

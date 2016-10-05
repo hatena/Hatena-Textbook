@@ -18,12 +18,15 @@ Web開発における重要なトピックを順番に学びながら、課題�
 - [Web開発の基礎](web-application-development.md)
   - [PerlによるWebアプリケーション開発](web-application-development-perl.md)
   - [ScalaによるWebアプリケーション開発](web-application-development-scala.md)
-- [JavaScriptによるイベント・ドリブンプログラミング](javascript-event-driven.md)
-
-### iOS アプリ
-- [プログラミング言語 Swift](swift-programming-language.md)
-- [Swift での iOS アプリ開発](swift-development-apps.md)
-
+- Webフロントエンド開発
+  - [はてな教科書JavaScript編](https://hatena.github.io/Hatena-Textbook-JavaScript)
+  - [hatena/Hatena-Textbook-JavaScript](https://github.com/hatena/Hatena-Textbook-JavaScript)
+- スマートフォンアプリ開発
+  - [プログラミング言語 Swift](swift-programming-language.md)
+  - [Swift での iOS アプリ開発](swift-development-apps.md)
+- Web開発におけるコンピュータサイエンス
+  - [機械学習編1](http://developer.hatenastaff.com/entry/hatena-textbook-machine-learning-01-2016)
+  - [機械学習編2](http://developer.hatenastaff.com/entry/hatena-textbook-machine-learning-02-2016)
 
 ## 課題について
 トピックごとに学んだことを確認するための課題があります。
@@ -53,5 +56,5 @@ Webアプリケーション課題を実装するためのひな形と、課題�
 
 クレジット表記例
 ```
-Copyright 2015 <a href="https://github.com/hatena/Hatena-Textbook">はてな教科書</a> by <a href="http://www.hatena.ne.jp/">はてな</a>
+Copyright 2016 <a href="https://github.com/hatena/Hatena-Textbook">はてな教科書</a> by <a href="http://www.hatena.ne.jp/">はてな</a>
 ```

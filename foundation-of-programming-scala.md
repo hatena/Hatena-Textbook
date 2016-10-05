@@ -30,17 +30,13 @@
 
 ### 開発環境
 - ライブラリはどうやっていれるの?
-  - cpanfile/Gemfileみたいなのあるの?
 - 自分で書いたコードのビルドはどうやるの?
 - コンソールで軽く動かしてみたい
+- Scalaや依存ライブラリーのバージョンの固定はどうやるの?
 
 ---
 
-### 全部sbtでできる(まじか)
-
----
-
-### インストール
+### sbtのインストール
 - がんばってJDKをインストールしよう!
 - そしてsbtをインストールしよう!
 
@@ -48,25 +44,25 @@
 $ brew install sbt
 ```
 
-- [sbtのチュートリアル](http://www.scala-sbt.org/0.13/tutorial/index.html)
+- [sbtのチュートリアル](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
 
 ---
 
-### Hello, World
+### Hello, World!
 
 #### build.sbt
 
 ```sbt
 name := "hello"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 ```
 
 #### Hello.scala
 
 ```scala
 object Hello {
-  def main(args: Array[String]) = println("Hi!")
+  def main(args: Array[String]) = println("Hello, World!")
 }
 ```
 
@@ -77,31 +73,26 @@ object Hello {
 ```sh
 $ sbt
 > run
-[info] Compiling 1 Scala source to ...
+[info] Compiling 1 Scala source to target/scala-2.11/classes...
 [info] Running Hello
-Hi!
-[success] Total time: 27 s, completed 2014/09/13 11:37:35
+Hello, World!
+[success] Total time: 1 s, completed Jun 28, 2016 4:06:08 PM
 >
 ```
 
-- Scalaの処理系(jarファイル)がインストールされる
+- Scalaの処理系 (jarファイル) がインストールされる
 
----
-
-### jarファイル!! Javaだ！！
-
----
-
-### jarファイル
-- クラスファイルやリソースファイル(画像とか)が入ってるzipアーカイブ
+#### jarファイル
+- クラスファイルやリソースファイル (画像とか) が入ってるzipアーカイブ
 - META情報も入っていて、どのクラスが実行できるとか書ける
 
 ---
 
-### これで君もScalaが書ける!!
-- sbt でconsoleを実行するとScalaのreplに入れる
+### これで君もScalaを書ける！
+- sbtでconsoleコマンドを実行するとScalaのreplに入れる
 - いろいろ試せて便利
 - 電卓にも使えるぞ! (ただしJVMが起動するのが遅い)
+  - scalaコマンドもreplとして使えるが、プロジェクトのパッケージは使えない
 
 ```sh
 $ sbt
@@ -133,22 +124,19 @@ x = 5 // valだとエラーになる
 y = 6 // varだと再代入できる
 ```
 
-- 再代入できない変数を明示的に宣言できる!
-- Perlでも変数を使いまわすと理解し難いコードができるので、やらない
+- 再代入できない変数を明示的に宣言できる
+- Perlでも、変数を使いまわすと理解しにくいコードができるのでやらない
   - ブログチームのコーディング規約でやめようって書いてある
 - valって書いとくと再代入されてないことが確実なので安心
-- var使うとレビューでめっちゃ怒られる
+- 正当な理由がなければvarは使うべきではない
 
-val はimmutableな変数定義
-var mutableな変数定義
-みたいな言い方をしたりする。
+valはimmutableな変数定義
+
+varはmutableな変数定義
+
+---
 
 ### if式
-
-Scalaではvarを使うとレビューで怒られる（どうしても使わざるを得ない部分は除く）。
-だいたいの変数はvalだけで事足りる。
-
-Scalaは関数型言語のエッセンスを持つ言語のため、副作用を極力起こさないコードが書きやすくなっている。
 
 条件に応じて変数の中身を決めたい場合
 
@@ -169,7 +157,7 @@ if (i % 3 == 0 && i % 5 == 0) {
 このように事前に変数を定義しておき、条件によって変数に値を再代入するのがよくあるパターン。
 このパターンでも、Scalaだったらvalを使いたい。
 
-Scalaのifは"if式"と呼ばれ、それ自体が結果を返す。
+Scalaのifは文ではなく式であり、結果を返す。
 
 ```scala
 val result = if (i % 3 == 0 && i % 5 == 0) {
@@ -198,12 +186,10 @@ val result = if (i % 3 == 0 && i % 5 == 0) {
 - めっちゃ便利なswitch文みたいなの
 - 最近の言語だとだいたい入ってる
 
----
-
 ### 定数でマッチ
 
 - match式を使う
-- 式なので値を返すよ
+- 式なので値を返す
 
 ```scala
 val msg = x match {
@@ -226,8 +212,6 @@ val msg = x match {
 }
 println(msg)
 ```
-
----
 
 ### パターンマッチの力はこの程度ではない
 
@@ -274,14 +258,24 @@ list.groupBy { n => if (n % 2 == 0) "even" else "odd" }
 
 ```scala
 list.reduce { (x, y) => // 引数リスト
-  x * y  // 最後の式が返値
+  10 * x + y  // 最後の式が返値
 }
+```
+
+```scala
+list.reduce { (x, y) => 10 * x + y }
+```
+
+```scala
+List("apple", "banana", "grape").map(_.length)
+
+list.reduce { 10 * _ + _ }
 ```
 
 ---
 
 ### Map
-- Mapもだいたい他の言語でよくある普通な感じ
+- Mapはキーに対して値を保持するコレクション
 - 便利メソッドはいろいろ使える
 - とりあえず紹介だけ
 
@@ -297,19 +291,13 @@ urls.get("v") // → None
 
 ---
 
-### 突然の Some(x)! None!!
-
----
-
 ## Scala 紹介 その4
 
 ---
 
-### Option型が便利!
-
 ### Option型とは
 
-- あるかないかわからない値を表現できる型
+- 値があるかないか表現できる型
 - undefチェックするの忘れてた! というのがなくなるすぐれもの
 - Option[+A]型
   - Some(x)という値
@@ -346,7 +334,7 @@ val bUrl = urls.get("b") // Some("http://b.hatena.ne.jp")
 val vUrl = urls.get("v") // None
 
 // 方法1 (bad)
-bUrl.get // SomeかNoneか無視してとりだす/使ってたら怒られる
+bUrl.get // SomeかNoneか無視してとりだす/基本的に使わない
 vUrl.get // ランタイムエラー!!
 
 // 方法2
@@ -413,8 +401,8 @@ bUrl.exists { url => isHatenaUrl(url) } // Someなら条件式の結果, Noneな
 bUrl.map { url => getContent(url) }     // Someなら値を変換, Noneならそのまま
 ```
 
-- 実はListに使えたメソッドは割りと使える
-  - 要素数が0か1しか無いListだとみなせる
+- Listが持つ多くのメソッドが使える
+  - 要素数が0か1しかないListだとみなせる
 
 ---
 
@@ -459,24 +447,22 @@ findEntryBy(entryId).flatMap { entry =>
 
 ---
 
-### for 式が便利!
+### for式
+for文ではなくfor式であり、値を返す
+
+foreach, map, flatMap, filter, withFilterなどの糖衣構文
 
 ---
 
 ### シンプルなfor
 
 ```scala
-for ( i <- (1 to 9) ) {
-  println(i.toString)
-}
-
-for ( i <- (0 until 10) ) {
-  println(i.toString)
+for (i <- (1 to 9)) {
+  println(i)
 }
 ```
 
-- foreach メソッドが実装されてるとforのイテレーション対象にできる
-  - 以下とほぼ一緒
+- foreachを用いた以下のコードと等価
 
 ```scala
 (1 to 9).foreach { i =>
@@ -489,16 +475,13 @@ for ( i <- (0 until 10) ) {
 ### 値を返すfor
 
 ```scala
-val pows = for ( i <- (1 to 9) ) yield i * i
+val pows = for (i <- (1 to 9)) yield i * i
 ```
 
-- map メソッドが実装されてるとyieldを使って値を生成できる
-  - 以下とほぼ一緒
+- mapを用いた以下のコードと等価
 
 ```scala
-val pows = (1 to 9).map { i =>
-  i * i
-}
+val pows = (1 to 9).map { i => i * i }
 ```
 
 ---
@@ -506,37 +489,37 @@ val pows = (1 to 9).map { i =>
 ### ガードつきのfor
 
 ```scala
-for ( i <- (1 to 9) if i % 2 == 0 ) {
-  println(i.toString)
+for (i <- (1 to 9) if i % 2 == 0) {
+  println(i)
 }
 ```
 
-- filter メソッドが実装されてるとifでfilterできる
-  - 以下とほぼ一緒
-  - ※ 実際には withFilter メソッドが呼びだされる(参考: [Faq - How does yield work? - Scala Documentation](http://docs.scala-lang.org/tutorials/FAQ/yield.html#about-withfilter-and-strictness) )
+- withFilterを用いた以下のコードと等価
 
 ```scala
-(1 to 9).filter { i =>
+(1 to 9).withFilter { i =>
   i % 2 == 0
 }.foreach { i =>
-  println(i.toString)
+  println(i)
 }
 ```
+
+withFilterが実装されていない時はfilterにfallbackする。
 
 ---
 
 ### 入れ子のfor
 
 ```scala
-for (
-  i <- (1 to 9);
+for {
+  i <- (1 to 9)
   j <- (1 to 9)
-) {
+} {
   print((i*j).toString + " ")
 }
 ```
 
-- foreachメソッドが実装されているとこうかける
+- foreachを用いた以下のコードと等価
 
 ```scala
 (1 to 9).foreach { i =>
@@ -551,13 +534,13 @@ for (
 ### 値を生成する入れ子のfor
 
 ```scala
-val kuku = for (
-  i <- (1 to 9);
+val kuku = for {
+  i <- (1 to 9)
   j <- (1 to 9)
-) yield i * j
+} yield i * j
 ```
 
-- flatMapとmapが実装されているとこうかける
+- flatMapとmapを用いて以下のようにも書ける
 
 ```scala
 val kuku = (1 to 9).flatMap { i =>
@@ -570,11 +553,11 @@ val kuku = (1 to 9).flatMap { i =>
 - ならべるとflatMapをネストしてるのと一緒
 
 ```scala
-val kukuku = for (
-  i <- (1 to 9);
-  j <- (1 to 9);
-  k <- (1 to 9);
-) yield i * j * k
+val kukuku = for {
+  i <- (1 to 9)
+  j <- (1 to 9)
+  k <- (1 to 9)
+} yield i * j * k
 ```
 
 ```scala
@@ -611,12 +594,12 @@ val result = findEntryBy(entryId).flatMap { entry =>
 - つまりforを使うとこうかける!!
 
 ```scala
-val result = for (
-  entry      <- findEntryBy(entryId);
-  user       <- findUserBy(entry.authorId);
-  userOption <- findUserOptionBy(user.id);
+val result = for {
+  entry <- findEntryBy(entryId)
+  user <- findUserBy(entry.authorId)
+  userOption <- findUserOptionBy(user.id)
   userStatus <- findUserStatusBy(user.id)
-) yield makeResult(entry, user, userOption, userStatus)
+} yield makeResult(entry, user, userOption, userStatus)
 ```
 
 - 読みやすい!
@@ -625,7 +608,7 @@ val result = for (
 
 - for式を使うとある型の値のつなげて処理していくコードを綺麗に書ける
   - どうつなげられるかはflatMapの実装による
-  - Option ならSomeのときは処理がつながるけどNoneならとまる
+  - OptionならSomeのときは処理がつながるけどNoneならとまる
 
 ---
 
@@ -633,10 +616,10 @@ val result = for (
 - OptionやListはモナド
 - モナドが要求する関数
   - return
-      - 値をOptionやListに包む関数 => Some("hoge"), List(1,2,3)
+      - 値をOptionやListに包む関数 => Some(10), List(10)
   - bind
       - OptionやListを返す関数を組み合せる関数 => flatMap
-  - これらがモナド則を満たすことが必要
+  - これらがモナド則を満たす
 - for式はHaskellのdo式に相当する
 - OptionやList以外にも強力な抽象化メカニズムをモナドとして使えるぞ
 - 詳しくは、<a href="http://www.amazon.co.jp/gp/product/4274068854">すごいHaskellたのしく学ぼう!</a> を読もう!
@@ -649,11 +632,7 @@ val result = for (
 
 ---
 
-### クラス定義が便利!
-
----
-
-### classの定義
+### class
 
 ```scala
 class Cat(n: String) { // コンストラクタ
@@ -663,19 +642,19 @@ class Cat(n: String) { // コンストラクタ
     name + ": " + msg + "ですにゃ"
   }
 }
-println( new Cat("たま").say("こんにちは") )
+println(new Cat("たま").say("こんにちは"))
 
 class Tiger(n: String) extends Cat(n) { // 継承
   override def say(msg: String) : String = { // オーバーライド
     name + ": " + msg + "だがおー"
   }
 }
-println( new Tiger("とら").say("こんにちは") )
+println(new Tiger("とら").say("こんにちは"))
 ```
 
 ---
 
-### objectの定義
+### object
 - クラスの定義に対して1つしか存在しないオブジェクトを簡単に定義できる
 - classで定義したクラスと同名でobjectを定義するとコンパニオンオブジェクトになる
   - コンパニオンオブジェクト
@@ -691,8 +670,7 @@ val mike = CatService.createByName("みけ")
 mike.say("ねむい")
 
 object Tama extends Cat("たま") {
-  override def say(msg: String) : String =
-    "たまにゃー"
+  override def say(msg: String) : String = "たまにゃー"
 }
 
 object Cat { // すでにあるクラスと同じ名前だと
@@ -704,7 +682,7 @@ val hachi = Cat.create("はち")
 
 ---
 
-### case classの定義
+### case class
 - クラスに似てる
 - データ構造を定義しやすくカスタマイズされてる
 - いくつかのメソッドがいい感じに生える
@@ -724,7 +702,7 @@ buchi match {
 
 ---
 
-### trait の定義
+### trait
 - 実装を追加できるインターフェース
 - Scala では設計のベースになるクラスの構造を構築するのによく使われる
 - Rubyのモジュールっぽいやつ
@@ -749,6 +727,8 @@ class OrderedCat(name: String) extends Cat(name) with Ordered[Cat] {
 new OrderedCat("たま") > new OrderedCat("みけ")
 new OrderedCat("たま") < new OrderedCat("みけ")
 ```
+
+---
 
 #### sealed trait
 
@@ -780,6 +760,8 @@ It would fail on the following input: Mackerel(_)
 ```
 
 このように漏れているパターンを警告してくれる
+
+---
 
 #### traitの菱型継承について
 
@@ -871,15 +853,22 @@ implicit def stringToInt(s:String) : Int = { // implicit!!
 
 ```scala
 class GreatString(val s: String)  {
-  def bang :String = {
-    s + "!!!!"
-  }
+  def bang: String = s + "!!!!"
 }
-implicit def str2greatStr(s: String) : GreatString = {
+implicit def str2greatStr(s: String): GreatString = {
   new GreatString(s)
 }
 
 "hello".bang // まるでStringに新しいメソッドが生えたように見える
+```
+
+implicit case classを用いることもできる
+```scala
+implicit class GreatString(s: String)  {
+  def bang: String = s + "!!!!"
+}
+
+"hello".bang
 ```
 
 ---
@@ -1014,6 +1003,8 @@ example(2) { i =>
 
 このように`example`という新しいステートメントを定義したかのように書ける
 
+---
+
 ### 可変長引数
 
 Scalaで可変長引数を定義するときは
@@ -1069,7 +1060,7 @@ BB
 
 ---
 
-### 文字列補間
+### 文字列補間 (String interpolation)
 
 s"..."のように文字列リテラルの前にプレフィックスをつけることで、リテラル中に$nameの形で変数名を指定してその値を埋め込むことができる。
 
@@ -1082,15 +1073,16 @@ s"7 * 8 = ${7 * 8}" // このように式も書ける
 
 ---
 
-## オブジェクト指向とか関数型プログラミングとかの話
+## オブジェクト指向と関数型プログラミング言語の話
 
-Scalaはオブジェクト指向言語であり、関数型言語でもある。
+Scalaはオブジェクト指向言語であり、関数型プログラミング言語でもある。
 
 ### オブジェクト指向
-
-オブジェクト同士の相互作用としてシステムの振る舞いを捉える。
+Scalaはオブジェクト指向言語。
 
 オブジェクト指向言語の特徴
+
+- 「オブジェクト」があり、データを保持する場所 (フィールド) と、それらを操作したりデータを用いて行う処理 (メソッド) がある
 - 継承
 - カプセル化
 - ポリモーフィズム
@@ -1104,14 +1096,14 @@ Scalaはオブジェクト指向言語であり、関数型言語でもある。
 ```scala
 
 class Parent {
-  def helloWorld = println("hello world")
+  def helloWorld() = println("hello world")
 }
 
 class Child extends Parent {
-  def helloChile = println("hello child")
+  def helloChild() = println("hello child")
 }
 
-scala> (new Child).helloWorld
+scala> new Child().helloWorld()
 hello world
 ```
 
@@ -1126,17 +1118,17 @@ hello world
 
 ```scala
 class Capsule {
-  private def secretMethod = println("秘密")
+  private def secretMethod() = println("秘密")
 
-  def publicMethod = secretMethod
+  def publicMethod() = secretMethod()
 }
 
-scala> (new Capsule).secretMethod
+scala> new Capsule().secretMethod()
 <console>:9: error: method secretMethod in class Capsule cannot be accessed in Capsule
-              (new Capsule).secretMethod
+              new Capsule().secretMethod
                             ^
 
-scala> (new Capsule).publicMethod
+scala> new Capsule().publicMethod()
 秘密
 ```
 
@@ -1175,23 +1167,25 @@ scala> printHelloWorld(new Ja)
 
 ---
 
-### 関数型言語
+### 関数型プログラミング言語
 
-Scalaはしばしば関数型言語である、と言われる。
-関数型言語とは、「関数型プログラミングを推奨・支援するプログラミング言語」のこと。
+Scalaは関数型プログラミング言語でもある。
 
-ちなみに関数型プログラミングとは、できるだけ副作用を用いない参照透過な式や関数を組み合わせるプログラミングスタイルのことで、特に「これは関数型言語である!」と明確に言われていない言語であってもこのスタイルでプログラミングすることは可能。
+- 関数が第一級オブジェクト
+- 関数型プログラミングスタイルを推奨
+  - できるだけ副作用をもたない式や関数を組み合わせる
+  - 破壊的な代入は避ける
+  - ある変数が、状態を持ったり一部を変更していくようなことはしない
 
-言語として副作用を全く持たないものは純粋、副作用を持つものは非純粋と呼び分けられる(Scalaは副作用オッケーなので非純粋)。
+参照透過性が常に成り立つ言語を純粋関数型プログラミング言語、そうでない言語を非純粋関数型プログラミング言語という。Scalaは非純粋関数型プログラミング言語。
 
-Scalaには関数型プログラミングを支援する様々な仕組みがある。
+Scalaには関数型プログラミングスタイルを支援する様々な仕組みがある。
 
 ---
 
 #### 関数が第一級オブジェクトになっている
 
-関数を引数に取ったり、関数の結果として返したり、変数に入れたりできる。
-(関数を値として扱える)
+関数を引数に取ったり、関数の結果として返したり、変数に束縛したりできる。
 
 ```scala
 val l = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -1200,90 +1194,67 @@ val l = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 scala> l.filter(i => i % 2 == 0)
 res1: List[Int] = List(2, 4, 6, 8, 10)
 
-// isEvenは、"Intを引数に取り、その値を2で割って余りがあるかどうかを返す関数" を戻り値とする関数になる
+// isEvenは、"Intを引数に取り、その値を2で割って余りがあるかどうかを返す関数" である
 scala> val isEven = (i: Int) => i % 2 == 0
 isEven: Int => Boolean = <function1>
 
-// isEvenの戻り値(関数)をfilterの引数として渡してる
+// isEven (関数) をfilterの引数として渡すことができる
 scala> l.filter(isEven)
 res2: List[Int] = List(2, 4, 6, 8, 10)
 ```
 
 ---
 
-#### 副作用とは
+#### 副作用
+副作用をもたないコードが望ましい
 
-- 変数の値を変更する(varを使う)
-- オブジェクトのフィールドを変更する(JavaのsetterとかC# のプロパティとか)
-- ファイルやデータベースなどに対する入出力
+- 変数の値を変更しない (varよりもval)
+- 周りの変数の状態に動作が依存しない
+- ファイルやデータベースとの入出力がない
 
-副作用の無いコードとは、参照透過性が保たれているということ
+```scala
+scala> val fruits = List("apple", "banana", "orange")
+fruits: List[String] = List(apple, banana, orange)
+
+scala> val y = fruits.map(_.length)
+y: List[Int] = List(5, 6, 6)
+
+scala> val z = scala.collection.mutable.ListBuffer[Int]()
+z: scala.collection.mutable.ListBuffer[Int] = ListBuffer()
+
+scala> for (fruit <- fruits) { z += fruit.length }
+
+scala> z
+res1: scala.collection.mutable.ListBuffer[Int] = ListBuffer(5, 6, 6)
+
+scala> for (fruit <- fruits) { z += fruit.length }
+
+scala> z
+res2: scala.collection.mutable.ListBuffer[Int] = ListBuffer(5, 6, 6, 5, 6, 6)
+
+scala> val w = new Array[Int](3)
+w: Array[Int] = Array(0, 0, 0)
+
+scala> var i = 0; for (fruit <- x) { w(i) = fruit.length; i += 1 }; w
+i: Int = 3
+res3: Array[Int] = Array(5, 6, 6)
+```
+- `val`なのになぜよくないのでしょうか？
+
+参照透過なコードを書くことで、オブジェクト内部の状態をいちいち気にしなくてよくなる。
 
 ---
 
-#### 参照透過性
+#### なぜ副作用がない方がうれしいのか
 
-- 同じ条件を与えれば必ず同じ結果が得られる
-- 他のいかなる機能の結果にも影響を与えない
-
-###### 参照透過なコード
-```scala
-scala> val x = "hatena intern"
-x: String = hatena intern
-
-scala> val r1 = x.reverse
-r1: String = nretni anetah
-
-scala> val r2 = x.reverse
-r2: String = nretni anetah
-
-
-scala> val r1 = "hatena intern".reverse
-r1:String = nretni anetah
-
-scala> val r2 = "hatena intern".reverse
-r2:String = nretni anetah
-
-// 変数xを"nretni anetah"に置き換えても結果は同じ
-```
-
-###### 参照透過でないコード
-```scala
-scala> val x = new StringBuilder("hatena")
-x: StringBuilder = hatena
-
-scala> val xa = x.append("intern")
-xa: StringBuilder = hatena intern
-
-scala> val r1 = xa.toString
-r1: String = hatena intern
-
-scala> val r2 = xa.toString
-r2: String = hatena intern
-
-
-scala> val r1 = x.append("hatena intern").toString
-r1: String = hatena intern
-
-scala> val r2 = x.append("hatena intern").toString
-r2: String = hatena intern intern
-
-// 変数xaを x.append("hatena intern")に置き換えると結果が変わる
-```
-
-参照透過なコードを書くことで、プログラマがオブジェクト内部の状態をいちいち気にしなくてよくなる。
-(コードが参照透過でないと、オブジェクトの内部状態が今どうなっているか、など気にしないといけない)
-
-#### そもそもなぜ副作用がない方がうれしいのか
-
-- クラスなどの内部の状態を気にしないでよくなるので、見通しのよい、読みやすいコードになる
-- 状態に依存しないので、テスタビリティにすぐれている
-- 状態をあちこちで共有しないので、マルチスレッドにしたときに問題がおきない
+- クラスなどの内部の状態を気にしなくてよくなるので、見通しのよいコードになる
+- 状態や環境に依存しないので、テストしやすい
+- 状態や環境を共有しないので、マルチスレッドにしたときに問題がおきない
 
 #### Scalaにおける副作用
 
-Scalaは関数型言語とオブジェクト指向言語の特徴を兼ね備えたマルチパラダイムな言語なので、手続き的な実装を認めている。
-上の方で紹介したvarは、変数の再代入が可能だし、バリバリ副作用を起こせる。
+Scalaは関数型プログラミング言語とオブジェクト指向言語の特徴を兼ね備えたマルチパラダイムな言語なので、手続き的な実装を認めている。
+`var`で変数の再代入が可能だし、mutableなコレクションもある。
 
 ただ、せっかくだから関数プログラミングのメリットを活かしたいので、なるべく副作用の無い実装を心がけよう！
 
@@ -1301,14 +1272,17 @@ Scalaは関数型言語とオブジェクト指向言語の特徴を兼ね備え
 
 #### なぜテストを書くのか
 
-- テストがないと、プログラムが正しく動いているかどうかを証明できない
+- テストがないと、どういう動作をして欲しいプログラムなのかがよく分からない
+  - コーナーケースでどうなるのが意図した挙動なのか
 - 大規模プロジェクトでは致命的
   - 昔書いたコードは今もうごいているのか?
-  - 新しくコードと古いコードの整合性はとれているのか?
+  - 一部を書き換えた時に挙動が変わっていないか?
   - 正しい仕様 / 意図が何だったのかわからなくなっていないか?
 - 静的言語はコンパイラに守られているとはいえ、コードの振る舞いはテストを書かないと保証できない
 
 祈らずテストを書こう！
+
+---
 
 #### なにをテストするのか
 
@@ -1322,25 +1296,27 @@ Scalaは関数型言語とオブジェクト指向言語の特徴を兼ね備え
 - 必要 / 危険だと思われるところから書き、少しづつ充実する
 - バグ修正で不具合の再現手順が面倒な場合は、不具合が再現するテストを先に書いたりする
 
+---
+
 ### テストカバレッジ
 
 #### C0(命令網羅)
 
 ```scala
-  if(i >= 10) {
+  if (i >= 10) {
     println("true!");
   }
 ```
 
 すべてのステートメントを通ればOK。
-上の例だと、if文が真の場合しかテストされない（偽の場合のステートメントが無いので）
+上の例だと、if文が真の場合しかテストされない (偽の場合のステートメントが無いので)
 
 #### C1(分岐網羅)
 
 分岐をすべて通るかを確認するテスト。
 
 ```scala
-  if(i >= 10 || j == 0) {
+  if (i >= 10 || j == 0) {
     println("true!");
   } else {
     println("false!");
@@ -1354,7 +1330,7 @@ Scalaは関数型言語とオブジェクト指向言語の特徴を兼ね備え
 すべての条件の組み合わせがテストされる。
 
 ```scala
-  if(i >= 10 || j == 0) {
+  if (i >= 10 || j == 0) {
     println("true!");
   } else {
     println("false!");
@@ -1362,6 +1338,8 @@ Scalaは関数型言語とオブジェクト指向言語の特徴を兼ね備え
 ```
 
 C1ではiの値でのみテストが行われたが、ここではjの値も含めて、それぞれのすべての条件の真偽値の組み合わせがテストされないといけない。
+
+---
 
 ### テストを書くコツ
 
@@ -1382,10 +1360,12 @@ C1ではiの値でのみテストが行われたが、ここではjの値も含�
   an[IllegalArgumentException] should be thrownBy sort("hello")
 ```
 
+---
+
 ### リファクタリング
 
 - リファクタリングとは？
-  - プログラムの振舞を変えずに実装を変更すること
+  - プログラムの振る舞いを変えずに実装を変更すること
 - テストがなければ、外部機能の変更がないことを証明できない。
   - テストがなければリファクタリングではない
 - レガシーなコードに対してはどうする？
@@ -1393,15 +1373,18 @@ C1ではiの値でのみテストが行われたが、ここではjの値も含�
 
 テストを書いてリファクタリングし、常に綺麗で保守しやすいコードを書きましょう
 
+---
 
 ### プロジェクトのコードを書く心構え
 
 - コードが読まれるものであることを意識する
   - あとから誰が読んでもわかりやすく書く
   - 暗黙のルールを知る => コードを読みまくる
-  - 変数や関数の名前には充分こだわる（実装者の意図を名前で伝える）
+  - 変数や関数の名前には充分こだわる (実装者の意図を名前で伝える)
   - コードだけで意図を表現しづらければコメントも併用しよう
-- テストを書いて意図を伝える(テストは自分が書いた関数のリファレンス実装になっていると最高)
+- テストを書いて意図を伝える (テストは自分が書いた関数のリファレンス実装になっていると最高)
+
+---
 
 ## データモデリング
 
@@ -1409,10 +1392,12 @@ C1ではiの値でのみテストが行われたが、ここではjの値も含�
 
 以下ではIntern-Bookmarkを例に考えてみる。
 
-### 登場する概念(モデル)
+---
+
+### 登場する概念 (モデル)
 
 - `User` ブックマークをするユーザ
-- `Entry` ブックマークされた記事(URL)
+- `Entry` ブックマークされた記事 (URL)
 - `Bookmark` ユーザが行ったブックマーク
 
 ### 概念が持つ特性
@@ -1428,6 +1413,8 @@ C1ではiの値でのみテストが行われたが、ここではjの値も含�
   - ブックマークしたEntry
   - コメント
 
+---
+
 ### 概念間の関係
 
 <div style="text-align: center; background: #fff"><img src="http://f.st-hatena.com/images/fotolife/h/hakobe932/20140725/20140725163235.png"></div>
@@ -1435,17 +1422,21 @@ C1ではiの値でのみテストが行われたが、ここではjの値も含�
 - 1つのEntryには複数のBookmarkが属する (一対多)
 - 1つのUserには複数のBookmarkが属する (一対多)
 
+---
+
 ## 課題1-1
 
 ### データモデリング
 
-Intern-Bookmarkのモデリングの講義を参考に簡単な"ブログシステム"を考えて、登場する概念(モデル)とその関係を考えてみましょう。
+Intern-Bookmarkのモデリングの講義を参考に簡単な"ブログシステム"を考えて、登場する概念 (モデル) とその関係を考えてみましょう。
 世の中のブログサービスには様々な機能がありますが、ここでは基本的な機能に絞って考えてもらって構いません。
 
-- ブログを書く人(=ユーザ)は存在しそうですね
+- ブログを書く人 (=ユーザ) は存在しそうですね
 - 普通のブログサービスであれば、ユーザごとに個別のブログがありますね
   - [はてな匿名ダイアリー](http://anond.hatelabo.jp) のようにユーザ個別のブログが存在しないブログサービスもあるにはありますね
 - ブログには記事がありますね
+
+---
 
 ### モデリングに対応するオブジェクトの実装
 
@@ -1480,6 +1471,8 @@ entries.map(_.title).foreach(println) // "今日の日記", "一昨日の日記"
 
 上記の例であれば、 Blog クラスと Entry クラス、 User クラスのそれぞれについてのテストを書く、ということになります。
 
+---
+
 ### 注意点
 
 * できるだけテストスクリプトを書く
@@ -1491,13 +1484,15 @@ entries.map(_.title).foreach(println) // "今日の日記", "一昨日の日記"
 * きれいな設計・コードを心がけよう
   * 今日のコードは翌日以降の課程では使いませんが、翌日以降は自分の書いたコードに手を入れていくことになります
 
-## 課題1-2(オプション)
+---
+
+## 課題1-2 (オプション)
 
 課題1-1が終わって、時間や気持ちや心に余裕があったり、やる気が漲っている場合はオプション課題に取り組んでみてください。
 
 課題1-1で実装したブログもどきに、なにか機能を追加してそれに対するテストを書いてください。
 
-追加機能の例を下記にあげます（ここにない機能でもOKです)
+追加機能の例を下記にあげます (ここにない機能でもOKです)
 - コメント
 - ページング
 - 購読

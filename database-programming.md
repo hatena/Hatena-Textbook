@@ -91,7 +91,7 @@
 * カラム指向DBMS
   * BigTable / Apache Cassandra / Apache HBase
 * [ドキュメント指向DBMS](http://ja.wikipedia.org/wiki/Category:%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E6%8C%87%E5%90%91%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9)
-  * MongoDB / Apache CouchDB
+  * MongoDB / Apache CouchDB / Elasticsearch
 * グラフDBMS
   * Neo4j
 * キーバリューストア

@@ -185,7 +185,7 @@ val limit = 10
 val offset = 0
 val artists: Seq[Artist] = run(
   sql"""SELECT * FROM artist
-          WHERE name = LIKE ${name}
+          WHERE name LIKE ${name}
           ORDER BY id ASC
           LIMIT ${limit}
           OFFSET ${offset}""".as[Artist]
@@ -602,29 +602,35 @@ scala-Intern-Bookmark/
     │   │   ├── application.conf
     │   │   └── logback.xml
     │   ├── scala/
-    │   │   ├── HatenaOAuth.scala  # WAF の講義で使います
-    │   │   ├── ScalatraBootstrap.scala  # WAF の講義で使います
-    │   │   └── internbookmark/
-    │   │       ├── cli/
-    │   │       │   └── BookmarkCLI.scala
-    │   │       ├── model/
-    │   │       │   ├── Bookmark.scala
-    │   │       │   ├── Entry.scala
-    │   │       │   └── User.scala
-    │   │       ├── repository/
-    │   │       │   ├── Bookmarks.scala
-    │   │       │   ├── Entreis.scala
-    │   │       │   ├── Identifier.scala
-    │   │       │   ├── TitleExtractor.scala
-    │   │       │   ├── TitleExtractorDispatch.scala
-    │   │       │   ├── Users.scala
-    │   │       │   └── package.scala
-    │   │       ├── service/
-    │   │       │   ├── BookmarkApp.scala
-    │   │       │   ├── Error.scala
-    │   │       │   ├── Json.scala
-    │   │       │   └── package.scala
-    │   │       └── web/ # WAF の講義で使います
+    │   │   ├── HatenaOAuth.scala # WAF の講義で使います
+    │   │   ├── ScalatraBootstrap.scala # WAF の講義で使います
+    │   │   ├── internbookmark/
+    │   │   │   ├── cli/
+    │   │   │   │   └── BookmarkCLI.scala
+    │   │   │   ├── model/
+    │   │   │   │   ├── Bookmark.scala
+    │   │   │   │   ├── Entry.scala
+    │   │   │   │   └── User.scala
+    │   │   │   ├── repository/
+    │   │   │   │   ├── Bookmarks.scala
+    │   │   │   │   ├── Context.scala
+    │   │   │   │   ├── Entreis.scala
+    │   │   │   │   ├── Identifier.scala
+    │   │   │   │   ├── TitleExtractor.scala
+    │   │   │   │   ├── TitleExtractorDispatch.scala
+    │   │   │   │   ├── Users.scala
+    │   │   │   │   ├── db/
+    │   │   │   │   │   └── JdbcBackend.scala
+    │   │   │   │   └── package.scala
+    │   │   │   ├── service/
+    │   │   │   │   ├── BookmarkApp.scala
+    │   │   │   │   ├── Error.scala
+    │   │   │   │   ├── Json.scala
+    │   │   │   │   └── package.scala
+    │   │   │   └── web/ # WAF の講義で使います
+    │   │   └── slick/
+    │   │       └── jdbc/
+    │   │           └── TransactionalJdbcBackend.scala
     │   ├── twirl/ # WAF の講義で使います
     │   └── webapp/ # WAF の講義で使います
     └── test/
