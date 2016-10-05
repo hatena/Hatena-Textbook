@@ -28,13 +28,13 @@ View には view controller によって直接的に管理されるものと、�
 │ ┌─────────UIView───────────┴┐     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 │ │                           │     ┃                            ┃
 │ │                           │     ┃      UIViewController      ┃
-│ │                           ◀─────┃   (root view controlelr)   ┃──┐
+│ │                           ◀─────┃   (root view controller)   ┃──┐
 │ │                           │     ┃                            ┃  │
 │ │                           │     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛  │
 │ │ ┌─────────UIView──────────┴─┐   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓  │
 │ │ │                           │   ┃                            ┃  │
 │ │ │                           │   ┃      UIViewController      ┃  │
-│ │ │ ┌───UILabel───┐           ◀───┃  (child view controlelr)   ┃◀─┘
+│ │ │ ┌───UILabel───┐           ◀───┃  (child view controller)   ┃◀─┘
 │ │ │ └─────────────┘           │   ┃                            ┃
 │ │ │ ┌─UIImageView─┐           │   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 │ │ │ │             │           │
