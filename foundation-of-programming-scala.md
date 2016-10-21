@@ -2,7 +2,7 @@
 # Scalaによるプログラミングの基礎
 
 ## 事前課題
-[https://github.com/hatena/Hatena-Intern-Exercise2015/tree/master/scala](https://github.com/hatena/Hatena-Intern-Exercise2015/tree/master/scala)
+[https://github.com/hatena/Hatena-Intern-Exercise2016/tree/master/scala](https://github.com/hatena/Hatena-Intern-Exercise2016/tree/master/scala)
 
 ## Scala 参考文献
 ##### 書籍
