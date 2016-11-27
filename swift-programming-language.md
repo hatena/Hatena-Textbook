@@ -8,7 +8,7 @@ Swift は2010年に Apple の Chris Lattner によって開発が始められた
 
 Apple は WWDC において Swift をいくつかの言葉で特徴付けた。“Modern” で “Safety” かつ “Fast”、そして “Interactive” である。それまで Apple プラットフォームで主に利用されてきた Objective-C と比較すればこれらの特長は明らかである。C 言語に拡張を施してオブジェクト指向プログラミング言語とした Objective-C と較べ、Swift ではクロージャや型推論、ジェネリクスなどの近代的な機能が大きく盛り込まれた。強い静的型付けであり、静的解析は多くの問題を事前に検知する。言語仕様や標準ライブラリは LLVM による最適化の恩恵を最大限に得られるように設計されている。そして Xcode との緊密な連携や、Playground に REPL など、インタラクティブに実行できる環境が用意された。
 
-Swift はいまも開発が続けられている。2014年9月に1.0がリリースされてから、翌月に変更は少ないものの1.1となり、2015年4月には言語機能が拡張された1.2がリリースされている。同年9月にはエラーハンドリングなどの仕組みが導入された Swift 2.0 がリリース、12月にはオープンソースとして公開され、コミュニティを巻き込み精力的に開発が進められている。現在は 2016年3月にリリースされた Swift 2.2 が最新である。このように活発な開発によって、言語仕様はつぎつぎと更新されており、今日学んだ知識は将来のアップデートで古びてしまうかもしれない。しかしそれでも Swift の根底にある思想について理解を深めることは、将来においても色褪せることのない資産である。本教科書がそのような学習の一助となることを願ってやまない。
+Swift はいまも開発が続けられている。2014年9月に1.0がリリースされてから、翌月に変更は少ないものの1.1となり、2015年4月には言語機能が拡張された1.2がリリースされている。同年9月にはエラーハンドリングなどの仕組みが導入された Swift 2.0 がリリース、12月にはオープンソースとして公開され、コミュニティを巻き込み精力的に開発が進められている。オープンソース化後の最初のアップデートである2016年3月にリリースされた Swift 2.2 では様々な言語機能が追加された。現在は 2016年9月にリリースされた Swift 3.0 が最新である。このように活発な開発によって、言語仕様はつぎつぎと更新されている。Swift 3 は最後の大きな破壊的変更と言われているが、今日学んだ知識は将来のアップデートで古びてしまうかもしれない。しかしそれでも Swift の根底にある思想について理解を深めることは、将来においても色褪せることのない資産である。本教科書がそのような学習の一助となることを願ってやまない。
 
 ## Swift の言語仕様
 
@@ -334,7 +334,7 @@ Swift にはいくつもの演算子がある。
 
 単項の `-` 演算子は数の正負を反転させる。この演算子と後に続く数との間に空白を入れてはならない。対称性のために単項の `+` 演算子も用意されている。
 
-`++` や `--` といった単項のインクリメント/デクリメントの演算子は、Swift 3.0 で削除されることが決まっており、Swift 2.2 からは非推奨の警告が表示されるようになった。
+`++` や `--` といった単項のインクリメント/デクリメントの演算子は、Swift 3.0 で削除され、Swift 2.2 からは非推奨の警告が表示されるようになった。
 複合代入演算子を用いて同様の結果を得ることできる。
 
 #### 複合代入演算子
@@ -349,7 +349,7 @@ Swift にはいくつもの演算子がある。
 
 `===` や `!==` 演算子を用いると、参照型の値について同一のインスタンスを指し示しているか検査できる。参照型に関しても後述する。
 
-#### 三項条件演算子
+#### 三項演算子
 
 ```swift
 var anyBoolean: Bool!
@@ -391,7 +391,7 @@ let someValue = optionalInt ?? 0
 
 #### 範囲演算子
 
-`...` や `..<` は範囲演算子である。`0...3` は `0, 1, 2, 3` の値を含む範囲を作る。`0..<3` の場合は `0, 1, 2` の値の範囲となる。それぞれ `Range<Int>` 型となる。
+`...` や `..<` は範囲演算子である。`0...3` は 0から3の閉区間、つまり `0, 1, 2, 3` の値を含む範囲を作る。`0..<3` の場合は閉0から3の開区間、つまり `0, 1, 2` の値の範囲を作る。それぞれ `CountableClosedRange<Int>` 型と `CountableRange<Int>` となる。
 
 #### 論理演算子
 
@@ -566,7 +566,7 @@ if case 0..<3 = number {
 let condition = true
 let aNumber: Int? = 3
 let anotherNumber: Int? = 7
-if condition, let a = aNumber, let b = anotherNumber where a < b {
+if condition, let a = aNumber, let b = anotherNumber, a < b {
     print(a + b)
 }
 ```
@@ -594,26 +594,26 @@ print("Hello again \(name)")
 ### Functions
 
 ```swift
-func multiply(number: Int, by: Int) -> Int {
+func multiply(_ number: Int, by: Int) -> Int {
     return number * by
 }
 let fifteen = multiply(3, by: 5)
 ```
 
-Swift の関数定義は `func` キーワードを用いる。`func 関数名(引数名: 引数型, 引数名: 引数型) -> 返り値型 { 実装 }` が基本的なフォーマットである。呼び出し時には引数にラベルをつける。ただし第一引数にはラベルをつけない。
+Swift の関数定義は `func` キーワードを用いる。`func 関数名(引数名: 引数型, 引数名: 引数型) -> 返り値型 { 実装 }` が基本的なフォーマットである。呼び出し時には引数にラベルをつける。
 
 複数の値を返したい場合にはタプルにまとめるとよい。
 
 引数の名前は外部引数名と内部引数名にわけることができる。
 
-```swift
-func multiply(number first: Int, by second: Int) -> Int {
-    return first * second
-}
-multiply(number: 3, by: 5)
-```
+引数名の部分を空白で区切り、外部引数名・内部引数名の順に書く。外部引数名は呼び出し時のラベルになり、内部引数名は実装中で使う名前である。Swift 2.3 までは関数の第一引数のラベルは呼び出し時には省略されるため、呼び出し側で第一引数名を指定するには外部引数名を使用する必要があったが、Swift 3.0 からは、引数の順番によらず省略されなくなった。明示的にラベルを省略するには、外部引数名として `_` を使うことができる。
 
-引数名の部分を空白で区切り、外部引数名・内部引数名の順に書く。外部引数名は呼び出し時のラベルになり、内部引数名は実装中で使う名前である。外部引数名として `_` を使うと、呼び出し時のラベルがなくなる。
+```swift
+func multiply(_ number: Int, by: Int) -> Int {
+    return number * by
+}
+let fifteen = multiply(3, by: 5)
+```
 
 返り値がないときは返り値の型を `Void` とすることで示せる。省略してもよい。
 
@@ -624,16 +624,16 @@ multiply(number: 3, by: 5)
 関数の引数は `let` と同様に通常は変更できないが、`inout` キーワードを使うことで受け取った変数の参照に対して変更を行える。
 
 ```swift
-func increment(inout number: Int) {
+func increment(number: inout Int) {
     number += 1
 }
 var number = 7
-increment(&number) // => 8
+increment(number: &number) // => 8
 ```
 
 関数の中で書き換えられる変数は、そのことを示すために `&` を前置して渡す必要がある。
 
-変更可能な引数を `var` を前置することで指定する方法は、Swift 3.0 で削除されることが決まっており、Swift 2.2 からは非推奨の警告が表示される。
+変更可能な引数を `var` を前置することで指定する方法は、Swift 3.0 で削除された、Swift 2.2 からは非推奨の警告が表示される。
 
 #### 引数のデフォルト値
 
@@ -641,14 +641,14 @@ increment(&number) // => 8
 func refrain(string: String, count: UInt=1) -> String {
     var result: [String] = []
     for i in 0..<count {
-        result.append(i == 0 ? string : string.lowercaseString)
+        result.append(i == 0 ? string : string.lowercased())
     }
-    return result.joinWithSeparator(", ")
+    return result.joined(separator: ", ")
 }
 
-refrain("Let it be", count: 3)
+refrain(string: "Let it be", count: 3)
 
-refrain("Love")
+refrain(string: "Love")
 ```
 
 引数にはデフォルト値を設定することができ、デフォルト値の設定された引数は呼び出し時に省略できる。
@@ -656,8 +656,8 @@ refrain("Love")
 #### 可変長引数
 
 ```swift
-func sum(numbers: Int...) -> Int {
-    return numbers.reduce(0, combine: +)
+func sum(_ numbers: Int...) -> Int {
+    return numbers.reduce(0, +)
 }
 sum(1, 4, 7)
 ```
@@ -702,7 +702,7 @@ func calculation(kind: String) -> (Int, Int) -> Int {
     }
 }
 
-calculation("add")(1, 4)
+calculation(kind: "add")(1, 4)
 ```
 
 また関数はネストすることができるので、上記の例は下のようにも書ける。
@@ -711,7 +711,7 @@ calculation("add")(1, 4)
 func calculation(kind: String) -> (Int, Int) -> Int {
     func multiply(number: Int, by: Int) -> Int { return number * by }
     func add(number: Int, to: Int) -> Int { return number + to }
-
+    
     switch kind {
     case "add":
         return add
@@ -722,7 +722,7 @@ func calculation(kind: String) -> (Int, Int) -> Int {
     }
 }
 
-calculation("add")(1, 4)
+calculation(kind: "add")(1, 4)
 ```
 
 #### guard
@@ -743,7 +743,7 @@ func recipient(contact: [String: String]) -> String? {
 recipient(contact)
 ```
 
-`guard` に続けて `if` 文のように必要な条件を記述し、`else` 節でそれが充足されなかったときの処理を書く。`else` 節では必ず `return`, `break`, `continue`, `throw` のいずれかまたは `@noreturn` 関数の呼び出しを行う必要がある。
+`guard` に続けて `if` 文のように必要な条件を記述し、`else` 節でそれが充足されなかったときの処理を書く。`else` 節では必ず `return`, `break`, `continue`, `throw` のいずれかまたは 返り値が `Never` の関数の呼び出しを行う必要がある。
 
 `guard let` のように定数や変数を作ると、同じスコープのそれ以降で利用できる。
 
@@ -752,7 +752,9 @@ recipient(contact)
 > 関数には `@noreturn` 属性を付与することができる。この属性のついた関数を呼び出しても呼び出し元には戻らないことを表す。例えば C 標準ライブラリの `@noreturn func exit(_:)` がそうであるように、一般的にはプログラムの終了を引き起こすような関数に付与される。
 >
 > 実用的な事例としては、文字列を返す関数の実装中で、何らかの条件によっては何も返す値がないとき、`@noreturn` 属性のついている `fatalError` 関数を呼び出すことでコンパイルを通すことができる。単に返り値を Optional にするかまたは `throw` することもできるが、もしそれが存在し得ないような条件であれば（あるいはそのような状況がすでに回復不可能なエラーのとき）、このような方法で関数のインターフェースをシンプルに保てる。
-
+> 
+> 注) @noreturn 属性は廃止されて、代わりに列挙型のNeverを戻り値として指定するようになった。代わりに `func fatalError(msg: String) -> Never` のように `Never` を関数の返り値に指定することで`@noreturn` と同様に呼び出し元に制御を戻さないことができる。
+ 
 > #### Ref.
 >
 > - [The Swift Programming Language — Language Guide — The Basics — Functions](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158)
@@ -839,6 +841,7 @@ c2()
 >
 > `@autoclosure` はデフォルト状態では `@noescape` と同じように escape されない。もし escape が必要な、すなわち即時に評価しないような場合には `@autoclosure(escaping)` とアノテートする必要がある。
 
+> 注) Swift 3.0 からは クロージャは escape しないのがデフォルトになり、escape する必要のあるクロージャには `@escaping` とアノテートする必要がある。`@autoclosure(escaping)` は単に `@autoclosure @escaping` と書く。
 > #### Ref.
 >
 > - [The Swift Programming Language — Language Guide — The Basics — Closures](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94)
@@ -853,46 +856,49 @@ Swift には値型として enum と struct がある。
 
 ```swift
 enum ArithmeticOperation {
-    case Add
-    case Subtract
-    case Multiply
-    case Divide
+    case add
+    case subtract
+    case multiply
+    case divide
 }
 ```
 
-enum は associated value を持つことができる。
+enum は associated values を持つことができる。
 
 ```swift
 enum Diagram {
-    case Line(Double)
-    case Rectangle(Double, Double)
-    case Circle(Double)
+    case line(Double)
+    case rectangle(Double, Double)
+    case circle(Double)
 }
 
 func calculateArea(diagram: Diagram) -> Double {
     let area: Double
     switch diagram {
-    case .Line(_):
+    case .line(_):
         area = 0.0
-    case let .Rectangle(width, height):
+    case let .rectangle(width, height):
         area = width * height
-    case .Circle(let radius):
-        area = radius * radius * M_PI
+    case .circle(let radius):
+        area = radius * radius * Double.pi
     }
     return area
 }
 
-calculateArea(.Circle(3.0))
+calculateArea(diagram: .circle(3.0))
 ```
 
-パターンマッチで associated value を取得して処理できる。
+enum 型の要素を引数に与えるとき、enum の型名を省略することができる。
+
+パターンマッチで associated values を取得して処理できる。
 
 enum は raw value を持つこともできる。
 
 ```swift
 enum Month: Int {
-    case January = 1, February, March, April, May, June, July, August, September, October, November, December
+    case january = 1, february, march, april, may, june, july, august, september, october, november, december
 }
+
 
 if let april = Month(rawValue: 4) {
     print(april.rawValue)
@@ -901,14 +907,18 @@ if let april = Month(rawValue: 4) {
 
 `String`、`Character`、整数型、浮動小数点型が raw value になり得る。raw value が設定されている場合は raw value から初期化できる。
 
-`enum` や `case` に `indirect` を前置することで associated value が間接的に格納される。これにより再帰的なデータ構造を作ることができる。
+`enum` や `case` に `indirect` を前置することで associated values が間接的に格納される。これにより再帰的なデータ構造を作ることができる。
 
 ```swift
-enum List<T> {
-    case Nil
-    indirect case Cons(head: T, tail: List<T>)
+enum RecursiveList<T> {
+    case `nil`
+    indirect case cons(_ : T, _ : RecursiveList<T>)
 }
+
+let list: RecursiveList<Int> = .cons(1, .cons(2, .cons(3, .nil)))
 ```
+
+メンバの名前には、予約語を使用することはできないが、バッククォートで囲むことで一部(`self`, `dynamicType`, `Type`, `Protocol`)以外の予約語を宣言することができる。
 
 #### Structures
 
@@ -927,7 +937,7 @@ func calculateBodyMassIndex(body: Body) -> Double {
     return body.mass / (meterHeight * meterHeight)
 }
 
-calculateBodyMassIndex(myBody)
+calculateBodyMassIndex(body: myBody)
 ```
 
 `let` で宣言された変数の値は、その内部の property が `let` であっても `var` であっても変更できない。変更したい場合は `var` を用いる。
@@ -956,21 +966,21 @@ class は struct と似ているが、後述する継承などの機能を有す
 ```swift
 class Lot {
     var remains: [String]
-
+    
     init(_ elements: String...) {
         self.remains = elements
     }
-
+    
     func choose() -> String? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 
-func pickFromLot(lot: Lot, count: Int) -> [String] {
+func pickFromLot(_ lot: Lot, count: Int) -> [String] {
     var result: [String] = []
     for _ in (0..<count) {
         lot.choose().map { result.append($0) }
@@ -1075,13 +1085,13 @@ Computed プロパティでは他の情報から計算可能な値をプロパ�
 ```swift
 struct Circle {
     var radius: Double = 0.0
-
+    
     var area: Double {
         get {
-            return pow(radius, 2) * M_PI
+            return pow(radius, 2) * Double.pi
         }
         set (newArea) {
-            radius = sqrt(newArea / M_PI)
+            radius = sqrt(newArea / Double.pi)
         }
     }
 }
@@ -1149,7 +1159,7 @@ dam.waterLevel = 120
 ```swift
 class Printer {
     var numberOfCopies = 1
-
+    
     func put(string: String) {
         for _ in (0..<self.numberOfCopies) {
             print(string)
@@ -1158,7 +1168,7 @@ class Printer {
 }
 
 let printer = Printer()
-printer.put("Word")
+printer.put(string: "Word")
 ```
 
 ##### Mutating Methods
@@ -1183,15 +1193,15 @@ counter.count
 
 ```swift
 enum ToggleSwitch {
-    case On
-    case Off
+    case on
+    case off
 
     mutating func toggle() {
         switch self {
-        case .On:
-            self = .Off
+        case .on:
+            self = .off
         case .Off:
-            self = .On
+            self = .on
         }
     }
 }
@@ -1389,9 +1399,9 @@ protocol は、class や struct や enum が実装しなければならないイ
 protocol FileSystemItem {
     var name: String { get }
     var path: String { get }
-
+    
     init(directory: Directory, name: String)
-
+    
     func copy() -> Self
 }
 
@@ -1400,15 +1410,15 @@ struct File: FileSystemItem {
         return path.characters.split { (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
     }
     let path: String
-
+    
     init(path: String) {
         self.path = path
     }
-
+    
     init(directory: Directory, name: String) {
         self.init(path: directory.path + name)
     }
-
+    
     func copy() -> File {
         return File(path: path + " copy")
     }
@@ -1419,22 +1429,19 @@ struct Directory: FileSystemItem {
         return path.characters.split { (char) -> Bool in char == "/" }.last.map { String($0) } ?? ""
     }
     let path: String
-
+    
     init(path: String) {
         self.path = path
     }
-
+    
     init(directory: Directory, name: String) {
         self.init(path: directory.path + name + "/")
     }
-
+    
     func copy() -> Directory {
-        return Directory(path: path[path.startIndex..<(path.endIndex.predecessor())] + " copy/")
+        return Directory(path: path[path.startIndex..<(path.index(before: path.endIndex))] + " copy/")
     }
 }
-
-let bin = Directory(path: "/usr/bin/")
-let swift = File(directory: bin, name: "swift")
 ```
 
 protocol は `protocol` で宣言できる。protocol ではプロパティやメソッドのほか、イニシャライザや subscript を宣言できる。
@@ -1490,7 +1497,7 @@ extension String: Hiraganable {
     }
 }
 
-extension CollectionType where Generator.Element : Hiraganable {
+extension Collection where Iterator.Element : Hiraganable {
     var isHiragana: Bool {
         return reduce(!isEmpty) { (result, string) -> Bool in
             return result && string.isHiragana
@@ -1501,7 +1508,7 @@ extension CollectionType where Generator.Element : Hiraganable {
 ["あいうえお", "かきくけこ"].isHiragana
 ```
 
-上記の例では `protocol CollectionType` を拡張している。また `where` 節によって条件を指定することができ、この場合は `CollectionType` の個々の要素が protocol に適合しているか確認している。
+上記の例では `protocol Collection` を拡張している。また `where` 節によって条件を指定することができ、この場合は `Collection` の個々の要素が protocol に適合しているか確認している。
 
 > ### Ref.
 >
@@ -1512,21 +1519,21 @@ extension CollectionType where Generator.Element : Hiraganable {
 Swift にはエラー処理のための特別な機構が用意されている。
 
 ```swift
-enum NetworkError: ErrorType {
-    case Unreachable
-    case UnexpectedStatusCode(Int)
+enum NetworkError: Error {
+    case unreachable
+    case unexpectedStatusCode(Int)
 }
 
 func getResourceFromNetwork() throws -> String {
     let URL = "http://www.hatena.ne.jp/"
     if !checkConnection(URL) {
-        throw NetworkError.Unreachable
+        throw NetworkError.unreachable
     }
     let (statusCode, response) = connectHTTP(URL, method: "GET")
     if case (200..<300) = statusCode {
         return response
     } else {
-        throw NetworkError.UnexpectedStatusCode(statusCode)
+        throw NetworkError.unexpectedStatusCode(statusCode)
     }
 }
 
@@ -1542,7 +1549,7 @@ do {
 }
 ```
 
-エラーは `protocol ErrorType` に適合する型の値として表される。必要に応じて付加的な情報を与えることもできる。
+エラーは `protocol Error` に適合する型の値として表される。必要に応じて付加的な情報を与えることもできる。
 
 ハンドリングされるべき問題が起きた場合は定義されたエラーを `throw` する。エラーを `throw` する関数には、その宣言に `throws` キーワードを付加する必要がある。
 
@@ -1550,28 +1557,28 @@ do {
 
 実際にはエラーが発生しないことがわかっている場合には `try!` と書くことで、エラーをハンドリングしないことを明示できる。ただし `try!` としているにも関わらずエラーが発生した場合はランタイムエラーとなる。またエラーが起きたとしても単に無視したい場合には `try?` と書くことができ、返り値がある場合は Optional になる。エラーが起きてもなにも起こらず、返り値は nil になる。
 
-`try` した関数を `do` ブロックで囲い、`catch` 節を付けることでエラーをハンドリングできる。catch 節では `ErrorType` の型にマッチさせることで特定のエラーについて処理できる。このとき何も指定しないデフォルトの catch 節が存在しない場合には、網羅的にエラーがハンドリングされたとは見なされない。
+`try` した関数を `do` ブロックで囲い、`catch` 節を付けることでエラーをハンドリングできる。catch 節では `Error` の型にマッチさせることで特定のエラーについて処理できる。このとき何も指定しないデフォルトの catch 節が存在しない場合には、網羅的にエラーがハンドリングされたとは見なされない。
 
 網羅的にエラーがハンドリングされない場合はエラーは伝播する。すなわち、throws する関数を呼び出す関数は、網羅的にエラーをハンドリングできなければその関数自身にも throws キーワードが必要である。
 
 ```swift
-enum MyError: ErrorType {
-    case DangerousError
+enum MyError: Error {
+    case dangerousError
 }
 
-func modify(string: String, @noescape closure: (string: String) throws -> String) rethrows -> String {
-    return try closure(string: string)
+func modify(string: String, closure: (_ string: String) throws -> String) rethrows -> String {
+    return try closure(string)
 }
 
 do {
-    try modify("ABC") { str -> String in
-        throw MyError.DangerousError
+    try modify(string: "ABC") { str -> String in
+        throw MyError.dangerousError
     }
 } catch {
     print(error)
 }
 
-modify("ABC") { str -> String in
+let modified = modify(string: "ABC") { str -> String in
     str + str
 }
 ```
@@ -1605,35 +1612,36 @@ defer 文のブロックに実装された処理は、関数を `return` など�
 特定の型とは紐付かない一般的な API を提供したい場合に、ジェネリクスの機能が使える。
 
 ```swift
+
 class LotInt {
     var remains: [Int]
-
+    
     init(_ elements: Int...) {
         self.remains = elements
     }
-
+    
     func choose() -> Int? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 
 class LotString {
     var remains: [String]
-
+    
     init(_ elements: String...) {
         self.remains = elements
     }
-
+    
     func choose() -> String? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 ```
@@ -1645,17 +1653,17 @@ class LotString {
 ```swift
 class ConsumptionLot<Item> {
     var remains: [Item]
-
+    
     required init(_ items: Item...) {
         self.remains = items
     }
-
+    
     func choose() -> Item? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 
@@ -1683,31 +1691,31 @@ protocol LotType {
 
 class ConsumptionLot<Item>: LotType {
     typealias ItemType = Item
-
+    
     var remains: [Item]
-
+    
     required init(_ items: Item...) {
         self.remains = items
     }
-
+    
     func choose() -> Item? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 
 class ConsumptionlessLot<Item>: LotType {
     typealias ItemType = Item
-
+    
     var remains: [Item]
-
+    
     required init(_ items: Item...) {
         self.remains = items
     }
-
+    
     func choose() -> Item? {
         if remains.isEmpty {
             return nil
@@ -1726,7 +1734,7 @@ func pickItemsFrom<Lot: LotType>(lot: Lot, count: Int) -> [Lot.ItemType] {
 }
 
 let lot = ConsumptionlessLot("A", "B", "C", "D")
-pickItemsFrom(lot, count: 3)
+pickItemsFrom(lot: lot, count: 3)
 ```
 
 このようにすることで何らかの protocol を引数に取る関数などにおいてもその型を抽象化できる。
@@ -1741,7 +1749,7 @@ pickItemsFrom(lot, count: 3)
 
 ### Access control
 
-Swift にはアクセスコントロールのための3つのスコープがある。`public` は完全に公開され、どこからでもアクセスできる。`internal` はモジュール内部からだけアクセスできる。`private` はそのファイル内からだけアクセスできる。デフォルトは `internal` である。
+Swift にはアクセスコントロールのための5つのスコープがある。`open`は完全に公開され、モジュールの中からでも外からでもアクセスできる。`public` はモジュールの外からでもアクセスできるが、継承、オーバーライドはできない。`internal` はモジュール内部からだけアクセスできる。`fileprivate ` はそのファイル内からだけアクセスできる。`private` は定義されたスコープ内でのみアクセスできる。デフォルトは `internal` である。
 
 Swift によるアプリケーションは、モジュールという可視性の単位を持つ。Framework や アプリケーションそのものがモジュールを成す。Framework はライブラリを作成する際の単位となる。外部のモジュールの機能を利用する場合はモジュールの名前を使って `import SomeModule` と書く。
 
@@ -1750,17 +1758,17 @@ Swift によるもう一つの可視性の単位はファイルである。異�
 ```swift
 public class ConsumptionLot<Item> {
     public private(set) var remains: [Item]
-
+    
     public required init(_ items: Item...) {
         self.remains = items
     }
-
+    
     public func choose() -> Item? {
         if remains.isEmpty {
             return nil
         }
         let randomIndex = Int(arc4random_uniform(UInt32(remains.count)))
-        return remains.removeAtIndex(randomIndex)
+        return remains.remove(at: randomIndex)
     }
 }
 ```
@@ -1769,7 +1777,7 @@ public class ConsumptionLot<Item> {
 
 #### アクセスコントロールとテスト
 
-テストを書くとき、テストコードは別のモジュールになるため、テスト対象のモジュールの `public` の部分しか見えないことになる。公開されているインターフェースのみをテストするという発想からはこれで十分にも思われるが、実際的には内部状態を検証したり、あるいは内部で利用されているメソッドをオーバーライドしたモックオブジェクトを作りたいといった需要もある。
+テストを書くとき、テストコードは別のモジュールになるため、テスト対象のモジュールの `open` あるいは `public` の部分しか見えないことになる。公開されているインターフェースのみをテストするという発想からはこれで十分にも思われるが、実際的には内部状態を検証したり、あるいは内部で利用されているメソッドをオーバーライドしたモックオブジェクトを作りたいといった需要もある。
 
 import 時に `import SomeModule` を `@testable import SomeModule` と書けるようになり、`internal` にもアクセスできる。ただしビルド時の設定で `Enable Testability` を有効にする必要があり、また最適化などが行われないようにデバッグ設定にする必要がある。
 
