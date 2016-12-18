@@ -859,7 +859,7 @@ enum Diagram {
     case circle(Double)
 }
 
-func calculateArea(diagram: Diagram) -> Double {
+func calculateArea(of diagram: Diagram) -> Double {
     let area: Double
     switch diagram {
     case .line(_):
@@ -872,7 +872,7 @@ func calculateArea(diagram: Diagram) -> Double {
     return area
 }
 
-calculateArea(diagram: .circle(3.0))
+calculateArea(of: .circle(3.0))
 ```
 
 enum 型の要素を引数に与えるとき、enum の型名を省略することができる。
@@ -919,12 +919,12 @@ struct Body {
 
 let myBody = Body(height: 129.3, mass: 129.3)
 
-func calculateBodyMassIndex(body: Body) -> Double {
+func calculateBodyMassIndex(of body: Body) -> Double {
     let meterHeight = body.height / 100.0
     return body.mass / (meterHeight * meterHeight)
 }
 
-calculateBodyMassIndex(body: myBody)
+calculateBodyMassIndex(of: myBody)
 ```
 
 `let` で宣言された変数の値は、その内部の property が `let` であっても `var` であっても変更できない。変更したい場合は `var` を用いる。
@@ -967,7 +967,7 @@ class Lot {
     }
 }
 
-func pickFromLot(_ lot: Lot, count: Int) -> [String] {
+func pick(from lot: Lot, count: Int) -> [String] {
     var result: [String] = []
     for _ in (0..<count) {
         lot.choose().map { result.append($0) }
@@ -976,7 +976,7 @@ func pickFromLot(_ lot: Lot, count: Int) -> [String] {
 }
 
 let lot = Lot("Swift", "Objective-C", "Java", "Scala", "Perl", "Ruby")
-pickFromLot(lot, count: 3)
+pick(from: lot, count: 3)
 lot.remains
 ```
 
@@ -1712,7 +1712,7 @@ class ConsumptionlessLot<Item>: LotType {
     }
 }
 
-func pickItemsFrom<Lot: LotType>(lot: Lot, count: Int) -> [Lot.ItemType] {
+func pickItems<Lot: LotType>(from lot: Lot, count: Int) -> [Lot.ItemType] {
     var result: [Lot.ItemType] = []
     for _ in (0..<count) {
         lot.choose().map { result.append($0) }
@@ -1721,7 +1721,7 @@ func pickItemsFrom<Lot: LotType>(lot: Lot, count: Int) -> [Lot.ItemType] {
 }
 
 let lot = ConsumptionlessLot("A", "B", "C", "D")
-pickItemsFrom(lot: lot, count: 3)
+pickItems(from: lot, count: 3)
 ```
 
 このようにすることで何らかの protocol を引数に取る関数などにおいてもその型を抽象化できる。
