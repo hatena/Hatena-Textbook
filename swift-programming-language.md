@@ -1808,11 +1808,11 @@ Objective-C は C 言語にオブジェクト指向のパラダイムを取り�
 
 Objective-C の class は Swift からもそのまま利用できる。イニシャライザは Swift のイニシャライザとして呼び出せるようになり、またファクトリーメソッドもイニシャライザとして使えるようになる。プロパティやメソッドも基本的には Swift から利用できる。
 
-Objective-C では `id` 型という全てのオブジェクトを表す型があり、Swift では `AnyObject` 型がこれに対応する。Objective-C ではすべてのオブジェクトは `NSObject`（または `NSProxy`）を継承していなければならない。Swift にはこのような制約はなく、明示的に `class Some: NSObject` としない限りは継承しない。`NSObject` の持つ機能を利用したい場合は注意が必要である。
+Objective-C では `id` 型という全てのオブジェクトを表す型があり、Swift では `Any` 型がこれに対応する。Objective-C ではすべてのオブジェクトは `NSObject`（または `NSProxy`）を継承していなければならない。Swift にはこのような制約はなく、明示的に `class Some: NSObject` としない限りは継承しない。`NSObject` の持つ機能を利用したい場合は注意が必要である。
 
 `NSString` や `NSArray`、`NSDictionary`、`NSSet` といった基本的な class は、Swift においてはそれぞれ `String`、`Array`、`Dictionary`、`Set` といった対応する型に変換される。
 
-Objective-C では `NSArray` などのデータ構造に任意の class のインスタンスを格納でき、Swift のように型の制約がない。すなわち Swift からは多くの場合 `[AnyObject]` のように見える。ただし lightweight generics の機能によって、Objective-C の側で `NSArray<NSString *> *lines` などとなっていれば `lines: [String]` に見える。
+Objective-C では `NSArray` などのデータ構造に任意の class のインスタンスを格納でき、Swift のように型の制約がない。すなわち Swift からは多くの場合 `[Any]` のように見える。ただし lightweight generics の機能によって、Objective-C の側で `NSArray<NSString *> *lines` などとなっていれば `lines: [String]` に見える。
 
 Objective-C の型には Optional のように nil を区別する方法がない。`_Nullable` や `_Nonnull` のようなアノテーションが付けられている場合は、Swift から見たときにもそれが反映される。Objective-C の側にそういったアノテーションがなければ、ImplicitlyUnwrappedOptional 型になる。
 
