@@ -334,9 +334,6 @@ Swift にはいくつもの演算子がある。
 
 単項の `-` 演算子は数の正負を反転させる。この演算子と後に続く数との間に空白を入れてはならない。対称性のために単項の `+` 演算子も用意されている。
 
-`++` や `--` といった単項のインクリメント/デクリメントの演算子は、Swift 3.0 で削除され、Swift 2.2 からは非推奨の警告が表示されるようになった。
-複合代入演算子を用いて同様の結果を得ることできる。
-
 #### 複合代入演算子
 
 `+=` などの複合代入演算子が利用できる。
@@ -497,8 +494,6 @@ for case let i? in numbers {
 
 `continue` を用いて次のループの実行に移ることができる。また `break` を用いてループの実行をすべて終えることができる。
 
-Swift 2.1 までは C 言語などでも見られるような `for init; comparison; increment {}` 形式の `for` 文でも記述できたが、Swift 3.0 で削除されることが決まったため、Swift 2.2 からは非推奨の警告が表示されるようになった。
-
 #### While
 
 ```swift
@@ -606,7 +601,7 @@ Swift の関数定義は `func` キーワードを用いる。`func 関数名(�
 
 引数の名前は外部引数名と内部引数名にわけることができる。
 
-引数名の部分を空白で区切り、外部引数名・内部引数名の順に書く。外部引数名は呼び出し時のラベルになり、内部引数名は実装中で使う名前である。Swift 2.3 までは関数の第一引数のラベルは呼び出し時には省略されるため、呼び出し側で第一引数名を指定するには外部引数名を使用する必要があったが、Swift 3.0 からは、引数の順番によらず省略されなくなった。明示的にラベルを省略するには、外部引数名として `_` を使うことができる。
+引数名の部分を空白で区切り、外部引数名・内部引数名の順に書く。外部引数名は呼び出し時のラベルになり、内部引数名は実装中で使う名前である。明示的にラベルを省略するには、外部引数名として `_` を使うことができる。
 
 ```swift
 func multiply(_ number: Int, by: Int) -> Int {
@@ -632,8 +627,6 @@ increment(number: &number) // => 8
 ```
 
 関数の中で書き換えられる変数は、そのことを示すために `&` を前置して渡す必要がある。
-
-変更可能な引数を `var` を前置することで指定する方法は、Swift 3.0 で削除された、Swift 2.2 からは非推奨の警告が表示される。
 
 #### 引数のデフォルト値
 
@@ -747,13 +740,11 @@ recipient(contact)
 
 `guard let` のように定数や変数を作ると、同じスコープのそれ以降で利用できる。
 
-> ##### Column `@noreturn`
+> ##### Column `Never`
 >
-> 関数には `@noreturn` 属性を付与することができる。この属性のついた関数を呼び出しても呼び出し元には戻らないことを表す。例えば C 標準ライブラリの `@noreturn func exit(_:)` がそうであるように、一般的にはプログラムの終了を引き起こすような関数に付与される。
->
-> 実用的な事例としては、文字列を返す関数の実装中で、何らかの条件によっては何も返す値がないとき、`@noreturn` 属性のついている `fatalError` 関数を呼び出すことでコンパイルを通すことができる。単に返り値を Optional にするかまたは `throw` することもできるが、もしそれが存在し得ないような条件であれば（あるいはそのような状況がすでに回復不可能なエラーのとき）、このような方法で関数のインターフェースをシンプルに保てる。
+> 列挙型の `Never` を関数の返り値に指定することで `@noreturn` 呼び出し元に制御を戻さないことができる。一般的にはプログラムの終了を引き起こすような関数に付与される。
 > 
-> 注) @noreturn 属性は廃止されて、代わりに列挙型のNeverを戻り値として指定するようになった。代わりに `func fatalError(msg: String) -> Never` のように `Never` を関数の返り値に指定することで`@noreturn` と同様に呼び出し元に制御を戻さないことができる。
+> 実用的な事例としては、文字列を返す関数の実装中で、何らかの条件によっては何も返す値がないとき、返り値が `Never` の `fatalError` 関数を呼び出すことでコンパイルを通すことができる。単に返り値を Optional にするかまたは `throw` することもできるが、もしそれが存在し得ないような条件であれば（あるいはそのような状況がすでに回復不可能なエラーのとき）、このような方法で関数のインターフェースをシンプルに保てる。
  
 > #### Ref.
 >
@@ -833,15 +824,11 @@ c2()
 
 クロージャは参照型なので上記のように新たな変数に代入しても同じ状態を共有する。
 
-> #### Column `@noescape`, `@autoclosure`
+> #### Column `@escaping`, `@autoclosure`
+> クロージャには即時に評価されるものと遅延して評価されるものがある。例えば `filter` 関数に渡されたクロージャであれば必ずその時点で評価されるだろうし、ネットワーク通信のコールバックであれば通信が終わってから評価されるだろう。このとき遅延して評価されるクロージャは、その実装中で参照する外部環境を保存する。Swift ではこれを escape と呼ぶ。escape する必要がある場合、すなわち即時に評価しないような場合には、受け取ったクロージャを即時に実行する関数に `func someFunc(closure: @escaping () -> Void)` といった形で `@escaping` 属性を付けることで明示する。`@escaping` なクロージャ内で self の変数やメソッドを呼び出したいときは、 self をキャプチャすることを明らかにするため `self.` を省略できない。
 >
-> クロージャには即時に評価されるものと遅延して評価されるものがある。例えば `filter` 関数に渡されたクロージャであれば必ずその時点で評価されるだろうし、ネットワーク通信のコールバックであれば通信が終わってから評価されるだろう。このとき遅延して評価されるクロージャは、その実装中で参照する外部環境を保存する。Swift ではこれを escape と呼ぶ。もしクロージャが即時に評価されると決まっていれば escape は不要である。escape しなくてよいなら、`self.` を省略でき、またパフォーマンスも多少改善される。Swift では受け取ったクロージャを即時に実行する関数に `func someFunc(@noescape closure: () -> Void)` といった形で `@noescape` 属性を付けられる。
->
-> クロージャを受け取る関数は、そのクロージャを評価しても評価しなくてもよい。このため特定の条件に当てはまる場合にだけ必要な値を得るのに、その値を返すクロージャを受け取るようにすることができる。もし必要なければクロージャを評価しないことでパフォーマンスを改善できるかもしれない。このようなユースケースのために `@autoclosure` 属性があり、関数の引数にこの属性をつけることができ、この属性がつけられた引数に渡す値は自動的にクロージャに変わる。例えば `func someFunc(@autoclosure parameter: () -> String)` という関数に `someFunc("A" + "B")` という風に引数を与えることができ、このとき `"A" + "B"` は呼び出し時には評価されず、関数の内部でクロージャを評価したときに実際に評価される。実際に `??` 演算子はこの属性を活用しており、`func ??<T>(optional: T?, @autoclosure defaultValue: () -> T) -> T` という定義になっている。左辺値が nil でなければ右辺を評価しない短絡評価はこのように実装されている。
->
-> `@autoclosure` はデフォルト状態では `@noescape` と同じように escape されない。もし escape が必要な、すなわち即時に評価しないような場合には `@autoclosure(escaping)` とアノテートする必要がある。
+> クロージャを受け取る関数は、そのクロージャを評価しても評価しなくてもよい。このため特定の条件に当てはまる場合にだけ必要な値を得るのに、その値を返すクロージャを受け取るようにすることができる。もし必要なければクロージャを評価しないことでパフォーマンスを改善できるかもしれない。このようなユースケースのために `@autoclosure` 属性があり、関数の引数にこの属性をつけることができ、この属性がつけられた引数に渡す値は自動的にクロージャに変わる。例えば `func someFunc(parameter: @autoclosure () -> String)` という関数に `someFunc("A" + "B")` という風に引数を与えることができ、このとき `"A" + "B"` は呼び出し時には評価されず、関数の内部でクロージャを評価したときに実際に評価される。実際に `??` 演算子はこの属性を活用しており、`func ??<T>(optional: T?, defaultValue: @autoclosure () -> T) -> T` という定義になっている。左辺値が nil でなければ右辺を評価しない短絡評価はこのように実装されている。
 
-> 注) Swift 3.0 からは クロージャは escape しないのがデフォルトになり、escape する必要のあるクロージャには `@escaping` とアノテートする必要がある。`@autoclosure(escaping)` は単に `@autoclosure @escaping` と書く。
 > #### Ref.
 >
 > - [The Swift Programming Language — Language Guide — The Basics — Closures](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html#//apple_ref/doc/uid/TP40014097-CH11-ID94)
@@ -872,7 +859,7 @@ enum Diagram {
     case circle(Double)
 }
 
-func calculateArea(diagram: Diagram) -> Double {
+func calculateArea(of diagram: Diagram) -> Double {
     let area: Double
     switch diagram {
     case .line(_):
@@ -885,7 +872,7 @@ func calculateArea(diagram: Diagram) -> Double {
     return area
 }
 
-calculateArea(diagram: .circle(3.0))
+calculateArea(of: .circle(3.0))
 ```
 
 enum 型の要素を引数に与えるとき、enum の型名を省略することができる。
@@ -932,12 +919,12 @@ struct Body {
 
 let myBody = Body(height: 129.3, mass: 129.3)
 
-func calculateBodyMassIndex(body: Body) -> Double {
+func calculateBodyMassIndex(of body: Body) -> Double {
     let meterHeight = body.height / 100.0
     return body.mass / (meterHeight * meterHeight)
 }
 
-calculateBodyMassIndex(body: myBody)
+calculateBodyMassIndex(of: myBody)
 ```
 
 `let` で宣言された変数の値は、その内部の property が `let` であっても `var` であっても変更できない。変更したい場合は `var` を用いる。
@@ -980,7 +967,7 @@ class Lot {
     }
 }
 
-func pickFromLot(_ lot: Lot, count: Int) -> [String] {
+func pick(from lot: Lot, count: Int) -> [String] {
     var result: [String] = []
     for _ in (0..<count) {
         lot.choose().map { result.append($0) }
@@ -989,7 +976,7 @@ func pickFromLot(_ lot: Lot, count: Int) -> [String] {
 }
 
 let lot = Lot("Swift", "Objective-C", "Java", "Scala", "Perl", "Ruby")
-pickFromLot(lot, count: 3)
+pick(from: lot, count: 3)
 lot.remains
 ```
 
@@ -1725,7 +1712,7 @@ class ConsumptionlessLot<Item>: LotType {
     }
 }
 
-func pickItemsFrom<Lot: LotType>(lot: Lot, count: Int) -> [Lot.ItemType] {
+func pickItems<Lot: LotType>(from lot: Lot, count: Int) -> [Lot.ItemType] {
     var result: [Lot.ItemType] = []
     for _ in (0..<count) {
         lot.choose().map { result.append($0) }
@@ -1734,7 +1721,7 @@ func pickItemsFrom<Lot: LotType>(lot: Lot, count: Int) -> [Lot.ItemType] {
 }
 
 let lot = ConsumptionlessLot("A", "B", "C", "D")
-pickItemsFrom(lot: lot, count: 3)
+pickItems(from: lot, count: 3)
 ```
 
 このようにすることで何らかの protocol を引数に取る関数などにおいてもその型を抽象化できる。
@@ -1821,11 +1808,11 @@ Objective-C は C 言語にオブジェクト指向のパラダイムを取り�
 
 Objective-C の class は Swift からもそのまま利用できる。イニシャライザは Swift のイニシャライザとして呼び出せるようになり、またファクトリーメソッドもイニシャライザとして使えるようになる。プロパティやメソッドも基本的には Swift から利用できる。
 
-Objective-C では `id` 型という全てのオブジェクトを表す型があり、Swift では `AnyObject` 型がこれに対応する。Objective-C ではすべてのオブジェクトは `NSObject`（または `NSProxy`）を継承していなければならない。Swift にはこのような制約はなく、明示的に `class Some: NSObject` としない限りは継承しない。`NSObject` の持つ機能を利用したい場合は注意が必要である。
+Objective-C では `id` 型という全てのオブジェクトを表す型があり、Swift では `Any` 型がこれに対応する。Objective-C ではすべてのオブジェクトは `NSObject`（または `NSProxy`）を継承していなければならない。Swift にはこのような制約はなく、明示的に `class Some: NSObject` としない限りは継承しない。`NSObject` の持つ機能を利用したい場合は注意が必要である。
 
 `NSString` や `NSArray`、`NSDictionary`、`NSSet` といった基本的な class は、Swift においてはそれぞれ `String`、`Array`、`Dictionary`、`Set` といった対応する型に変換される。
 
-Objective-C では `NSArray` などのデータ構造に任意の class のインスタンスを格納でき、Swift のように型の制約がない。すなわち Swift からは多くの場合 `[AnyObject]` のように見える。ただし lightweight generics の機能によって、Objective-C の側で `NSArray<NSString *> *lines` などとなっていれば `lines: [String]` に見える。
+Objective-C では `NSArray` などのデータ構造に任意の class のインスタンスを格納でき、Swift のように型の制約がない。すなわち Swift からは多くの場合 `[Any]` のように見える。ただし lightweight generics の機能によって、Objective-C の側で `NSArray<NSString *> *lines` などとなっていれば `lines: [String]` に見える。
 
 Objective-C の型には Optional のように nil を区別する方法がない。`_Nullable` や `_Nonnull` のようなアノテーションが付けられている場合は、Swift から見たときにもそれが反映される。Objective-C の側にそういったアノテーションがなければ、ImplicitlyUnwrappedOptional 型になる。
 
