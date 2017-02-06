@@ -862,7 +862,7 @@ implicit def str2greatStr(s: String): GreatString = {
 "hello".bang // まるでStringに新しいメソッドが生えたように見える
 ```
 
-implicit case classを用いることもできる
+implicit classを用いることもできる
 ```scala
 implicit class GreatString(s: String)  {
   def bang: String = s + "!!!!"
