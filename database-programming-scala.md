@@ -24,7 +24,6 @@ import java.sql.{Connection, ResultSet, Statement, PreparedStatement, DriverMana
 
 object Main {
    def main(args: Array[String]) {
-     Class.forName("com.mysql.jdbc.Driver")
      val conn: Connection = DriverManager.getConnection("jdbc:mysql://localhost/vocaloid", "nobody", "nobody")
 
      val st: PreparedStatement = conn.prepareStatement("SELECT * FROM artist WHERE birthday < ? ORDER BY birthday ASC")
