@@ -24,7 +24,7 @@ my $sth = $dbh->prepare(q[
     ORDER BY birthday ASC
 ]);
 $sth->execute('2008-01-01');
-my $artists = $dbh->fetchall_arrayref(+{});
+my $artists = $sth->fetchall_arrayref(+{});
 
 # => [
 #      {
@@ -85,7 +85,7 @@ my $rows = $dbh->select_all($sql, @$bind);
 * 対応するレコードを表すオブジェクト( = Model)に変換すると便利
   * 得られたハッシュはそのままでは区別がない
 * 例:
-  * artistテーブルに対応するArticstクラス
+  * artistテーブルに対応するArtistクラス
   * albumテーブルに対応するAlbumクラス
 
 ```perl
@@ -860,7 +860,7 @@ sub set_output {
 ├── script
 │   ├── app.psgi # WAFの授業で使います
 │   ├── appup    # WAFの授業で使います
-│   ├── appup.pl # WAFの授業で使います 
+│   ├── appup.pl # WAFの授業で使います
 │   └── setup_db.sh
 ├── t
 │   ├── engine # WAFの授業で使います
