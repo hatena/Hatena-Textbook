@@ -256,7 +256,7 @@ curl -v http://hatenablog.com/
 
 - WebアプリケーションはHTTPリクエストに対し、動的にHTTPレスポンスを返す
 - サーバ側はWebサーバ、WAF、Webアプリケーション処理に分けられる
-- WAFを使えばWebアプリケーション処理の実装に集注できる
+- WAFを使えばWebアプリケーション処理の実装に集中できる
 
 
 # MVC
