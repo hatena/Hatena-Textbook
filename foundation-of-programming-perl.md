@@ -769,7 +769,7 @@ my $file = IO::File->new($filename, 'r');
 while (my $line = $file->getline) {
     print $line;
 }
-$flie->close;
+$file->close;
 ```
 * $fileに対してできる操作はすべてメソッドとして定義されている
 
